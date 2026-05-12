@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@android:color/transparent"
     android:fillViewport="true">
 
     <LinearLayout
@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
             android:text="Fundamentos da LGPD"
+            android:textColor="@color/white"
             android:textAppearance="@style/TextAppearance.LGPD.ScreenTitle"
             android:textSize="24sp" />
 
@@ -28,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            android:textColor="#E2E8F0"
             android:text="Pergunta 1 de 4"
             android:textAppearance="@style/TextAppearance.LGPD.BodySmall" />
 
@@ -39,167 +41,137 @@
             android:layout_marginBottom="20dp"
             android:progressDrawable="@drawable/progress_bar" />
 
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:id="@+id/questionCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
-            app:cardBackgroundColor="@color/surface"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="@dimen/card_elevation"
-            app:strokeColor="@color/border"
-            app:strokeWidth="1dp">
+            android:background="@drawable/bg_glass_card"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_card">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/questionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/padding_card">
+                android:layout_marginBottom="16dp"
+                android:text="Qual é o principal objetivo da LGPD?"
+                android:textAppearance="@style/TextAppearance.LGPD.SectionTitle"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/questionText"
+            <RadioGroup
+                android:id="@+id/optionsGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/optionA"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="Qual é o principal objetivo da LGPD?"
-                    android:textAppearance="@style/TextAppearance.LGPD.SectionTitle"
-                    android:textSize="18sp" />
+                    android:layout_marginBottom="8dp"
+                    android:minHeight="48dp"
+                    android:text="Alternativa A"
+                    android:textAppearance="@style/TextAppearance.LGPD.Body" />
 
-                <RadioGroup
-                    android:id="@+id/optionsGroup"
+                <RadioButton
+                    android:id="@+id/optionB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="8dp"
+                    android:minHeight="48dp"
+                    android:text="Alternativa B"
+                    android:textAppearance="@style/TextAppearance.LGPD.Body" />
 
-                    <RadioButton
-                        android:id="@+id/optionA"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:minHeight="48dp"
-                        android:text="Alternativa A"
-                        android:textAppearance="@style/TextAppearance.LGPD.Body" />
+                <RadioButton
+                    android:id="@+id/optionC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:minHeight="48dp"
+                    android:text="Alternativa C"
+                    android:textAppearance="@style/TextAppearance.LGPD.Body" />
 
-                    <RadioButton
-                        android:id="@+id/optionB"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:minHeight="48dp"
-                        android:text="Alternativa B"
-                        android:textAppearance="@style/TextAppearance.LGPD.Body" />
+                <RadioButton
+                    android:id="@+id/optionD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:text="Alternativa D"
+                    android:textAppearance="@style/TextAppearance.LGPD.Body" />
 
-                    <RadioButton
-                        android:id="@+id/optionC"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:minHeight="48dp"
-                        android:text="Alternativa C"
-                        android:textAppearance="@style/TextAppearance.LGPD.Body" />
+            </RadioGroup>
 
-                    <RadioButton
-                        android:id="@+id/optionD"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="48dp"
-                        android:text="Alternativa D"
-                        android:textAppearance="@style/TextAppearance.LGPD.Body" />
+        </LinearLayout>
 
-                </RadioGroup>
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:id="@+id/explanationCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
             android:visibility="gone"
-            app:cardBackgroundColor="@color/surface_variant"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/secondary_light"
-            app:strokeWidth="1dp">
+            android:background="@drawable/bg_glass_card"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_card">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/answerStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/padding_card">
+                android:layout_marginBottom="8dp"
+                android:text="Correto!"
+                android:textAppearance="@style/TextAppearance.LGPD.SectionTitle"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/answerStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="Correto!"
-                    android:textAppearance="@style/TextAppearance.LGPD.SectionTitle"
-                    android:textSize="18sp" />
+            <TextView
+                android:id="@+id/explanationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Explicação da resposta."
+                android:textAppearance="@style/TextAppearance.LGPD.BodySmall" />
 
-                <TextView
-                    android:id="@+id/explanationText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Explicação da resposta."
-                    android:textAppearance="@style/TextAppearance.LGPD.BodySmall" />
+        </LinearLayout>
 
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:id="@+id/resultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
             android:visibility="gone"
-            app:cardBackgroundColor="@color/surface"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="@dimen/card_elevation"
-            app:strokeColor="@color/border"
-            app:strokeWidth="1dp">
+            android:background="@drawable/bg_glass_card"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_card">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/resultTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="@dimen/padding_card">
+                android:text="Resultado"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.LGPD.SectionTitle" />
 
-                <TextView
-                    android:id="@+id/resultTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Resultado"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.LGPD.SectionTitle" />
+            <TextView
+                android:id="@+id/resultScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="0%"
+                android:textAlignment="center"
+                android:textColor="@color/primary"
+                android:textSize="34sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/resultScore"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="0%"
-                    android:textAlignment="center"
-                    android:textColor="@color/primary"
-                    android:textSize="34sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/resultMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Mensagem do resultado"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.LGPD.BodySmall" />
 
-                <TextView
-                    android:id="@+id/resultMessage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Mensagem do resultado"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.LGPD.BodySmall" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
         <Button
             android:id="@+id/primaryActionButton"

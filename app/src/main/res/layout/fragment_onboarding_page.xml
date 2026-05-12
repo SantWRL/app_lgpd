@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@android:color/transparent"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="28dp">
@@ -12,8 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
-        app:cardBackgroundColor="@color/primary_light"
+        app:cardBackgroundColor="#33FFFFFF"
         app:cardCornerRadius="28dp"
+        app:strokeWidth="0dp"
         app:cardElevation="0dp">
 
         <ImageView
@@ -24,7 +25,7 @@
             android:padding="22dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_shield_lock"
-            app:tint="@color/primary" />
+            app:tint="@color/white" />
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -34,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
         android:textAppearance="@style/TextAppearance.LGPD.ScreenTitle"
+        android:textColor="@color/white"
         android:textAlignment="center"
         android:text="Título da Página" />
 
@@ -43,6 +45,7 @@
         android:layout_height="wrap_content"
         android:lineSpacingExtra="6sp"
         android:textAppearance="@style/TextAppearance.LGPD.Body"
+        android:textColor="#E2E8F0"
         android:textAlignment="center"
         android:text="Subtítulo da página" />
 

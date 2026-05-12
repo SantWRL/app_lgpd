@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@drawable/bg_gradient_primary"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_toolbar"
-        android:elevation="@dimen/toolbar_elevation"
+        android:background="#1AFFFFFF"
+        android:elevation="0dp"
         android:minHeight="?attr/actionBarSize"
         android:paddingStart="8dp"
         android:paddingEnd="16dp"
@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@android:color/transparent"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
 
@@ -31,8 +32,8 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_nav_height"
-        android:background="@color/surface"
-        app:elevation="10dp"
+        android:background="@drawable/bg_glass_card"
+        app:elevation="0dp"
         app:itemIconSize="24dp"
         app:itemIconTint="@color/bottom_nav_selector"
         app:itemPaddingTop="8dp"

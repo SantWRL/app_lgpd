@@ -1,121 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:elevation="2dp"
-    android:radius="@dimen/card_corner_radius">
+    android:layout_marginVertical="4dp"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:padding="12dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:background="@color/surface">
+    <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/badge_background"
+        android:backgroundTint="#33FFFFFF">
 
-        <FrameLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="12dp"
-            android:background="@color/secondary_light">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_quiz"
-                android:contentDescription="Quiz"
-                android:tint="@color/secondary"
-                android:layout_gravity="center" />
-
-        </FrameLayout>
-
-        <!-- Informações -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="4dp">
-
-                <TextView
-                    android:id="@+id/quizTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@style/TextAppearance.LGPD.Body"
-                    android:textStyle="bold"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:text="Título do teste" />
-
-                <TextView
-                    android:id="@+id/difficultyBadge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="2dp"
-                    android:text="BEGINNER"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:background="@drawable/badge_background"
-                    android:layout_marginStart="8dp"
-                    tools:background="@color/accent" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/quizCategory"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@style/TextAppearance.LGPD.BodySmall"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Categoria" />
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:src="@drawable/ic_question"
-                    android:contentDescription="Perguntas"
-                    android:tint="@color/text_secondary"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="4dp" />
-
-                <TextView
-                    android:id="@+id/quizQuestions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.LGPD.BodySmall"
-                    android:text="5" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Seta -->
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_right"
-            android:contentDescription="Ir para quiz"
-            android:tint="@color/primary"
-            android:layout_marginStart="12dp" />
+            android:src="@drawable/ic_quiz"
+            android:contentDescription="Quiz"
+            app:tint="@color/white"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
+
+    <!-- Informações -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/quizTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.LGPD.Body"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Título do teste" />
+
+            <TextView
+                android:id="@+id/difficultyBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="BEGINNER"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@drawable/badge_background"
+                android:layout_marginStart="8dp"
+                tools:background="@color/accent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/quizCategory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.LGPD.BodySmall"
+                android:textColor="#E2E8F0"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Categoria" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_question"
+                android:contentDescription="Perguntas"
+                app:tint="#E2E8F0"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/quizQuestions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.LGPD.BodySmall"
+                android:textColor="#E2E8F0"
+                android:text="5" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+    <!-- Seta -->
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_arrow_right"
+        android:contentDescription="Ir para quiz"
+        app:tint="@color/white"
+        android:layout_marginStart="12dp" />
+
+</LinearLayout>

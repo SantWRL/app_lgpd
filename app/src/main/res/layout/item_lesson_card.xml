@@ -2,93 +2,161 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="168dp"
-    android:layout_height="208dp"
-    android:layout_marginHorizontal="6dp"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
     android:layout_marginVertical="4dp"
     android:clickable="true"
     android:focusable="true"
     app:cardBackgroundColor="@color/surface"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="@dimen/card_elevation"
-    app:rippleColor="@color/primary_light"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="2dp"
     app:strokeColor="@color/border"
     app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="14dp">
 
-        <LinearLayout
+        <!-- Top Gradient Image Placeholder -->
+        <FrameLayout
+            android:id="@+id/cardGradientBg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="end"
-            android:orientation="horizontal">
+            android:layout_height="140dp"
+            android:background="@drawable/bg_gradient_primary"
+            android:layout_marginBottom="14dp">
 
+            <!-- Category Badge -->
             <TextView
                 android:id="@+id/difficultyBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="12dp"
                 android:background="@drawable/badge_background"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp"
-                android:text="BEGINNER"
+                android:backgroundTint="#33000000"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="FUNDAMENTOS"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                tools:background="@color/secondary" />
+                android:letterSpacing="0.05" />
 
-        </LinearLayout>
+            <!-- Play / Checkmark Icon -->
+            <FrameLayout
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_avatar_circle"
+                android:backgroundTint="#40FFFFFF">
 
-        <TextView
-            android:id="@+id/lessonTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textAppearance="@style/TextAppearance.LGPD.Body"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:text="Título da aula" />
+                <ImageView
+                    android:id="@+id/iconStatus"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="@color/white" />
 
-        <TextView
-            android:id="@+id/lessonDescription"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:textAppearance="@style/TextAppearance.LGPD.BodySmall"
-            android:lineSpacingExtra="2dp"
-            android:text="Descrição da aula" />
+            </FrameLayout>
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:contentDescription="@string/message_loading"
-                android:src="@drawable/ic_clock"
-                app:tint="@color/text_tertiary" />
+            android:orientation="vertical"
+            android:paddingHorizontal="4dp">
 
             <TextView
-                android:id="@+id/lessonTime"
-                android:layout_width="wrap_content"
+                android:id="@+id/lessonTitle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="15 min"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
+                android:layout_marginBottom="10dp"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2dp"
+                android:maxLines="2"
+                android:text="Título do Curso de LGPD"
+                android:textColor="@color/text_primary"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="14dp">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_clock"
+                    app:tint="@color/text_secondary" />
+
+                <TextView
+                    android:id="@+id/lessonTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="15m"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_star"
+                    app:tint="#F59E0B" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="4.9"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/border"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Bottom Action Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="2dp">
+
+                <TextView
+                    android:id="@+id/actionText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Acessar"
+                    android:textColor="@color/primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/actionIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="@color/primary" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

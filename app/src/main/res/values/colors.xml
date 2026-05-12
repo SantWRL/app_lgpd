@@ -1,52 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Colors -->
-    <color name="primary">#2563EB</color>
-    <color name="primary_dark">#1E3A8A</color>
-    <color name="primary_light">#DBEAFE</color>
+    <!-- Primary Colors (app-lei Deep Navy) -->
+    <color name="primary">#0A2472</color>
+    <color name="primary_dark">#001A5E</color>
+    <color name="primary_light">#F0F5FF</color>
 
-    <!-- Secondary Colors -->
-    <color name="secondary">#0F766E</color>
-    <color name="secondary_dark">#134E4A</color>
-    <color name="secondary_light">#CCFBF1</color>
+    <!-- Secondary Colors (app-lei Tech Blue) -->
+    <color name="secondary">#007BFF</color>
+    <color name="secondary_dark">#0056B3</color>
+    <color name="secondary_light">#E6F2FF</color>
 
-    <!-- Accent Colors -->
-    <color name="accent">#F97316</color>
-    <color name="accent_dark">#C2410C</color>
-    <color name="accent_light">#FFEDD5</color>
+    <!-- Accent / Purple (app-lei Violet) -->
+    <color name="accent">#8B5CF6</color>
+    <color name="accent_dark">#6D28D9</color>
+    <color name="accent_light">#F5F3FF</color>
 
-    <!-- Semantic Colors -->
-    <color name="success">#22C55E</color>
+    <!-- Semantic Colors from app-lei -->
+    <color name="success">#10B981</color>
+    <color name="success_light">#ECFDF5</color>
     <color name="error">#EF4444</color>
+    <color name="error_light">#FEF2F2</color>
     <color name="warning">#F59E0B</color>
-    <color name="info">#0EA5E9</color>
+    <color name="warning_light">#FFFBEB</color>
+    <color name="info">#3B82F6</color>
 
     <!-- Neutral Colors -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="gray_50">#F8FAFC</color>
-    <color name="gray_100">#F1F5F9</color>
-    <color name="gray_200">#E2E8F0</color>
-    <color name="gray_300">#CBD5E1</color>
-    <color name="gray_400">#94A3B8</color>
-    <color name="gray_500">#64748B</color>
-    <color name="gray_600">#475569</color>
-    <color name="gray_700">#334155</color>
-    <color name="gray_800">#1E293B</color>
-    <color name="gray_900">#0F172A</color>
-
-    <!-- Background -->
-    <color name="background">#F6F8FB</color>
+    
+    <!-- Background and Surface -->
+    <color name="background">#F8FAFC</color>
     <color name="surface">#FFFFFF</color>
-    <color name="surface_variant">#EEF6F5</color>
+    <color name="surface_variant">#F1F5F9</color>
 
-    <!-- Text -->
+    <!-- Text from app-lei -->
     <color name="text_primary">#0F172A</color>
     <color name="text_secondary">#475569</color>
-    <color name="text_tertiary">#64748B</color>
+    <color name="text_tertiary">#94A3B8</color>
     <color name="text_on_primary">#FFFFFF</color>
 
     <!-- Border -->
-    <color name="border">#D1D5DB</color>
-    <color name="border_light">#E2E8F0</color>
+    <color name="border">#E2E8F0</color>
+    <color name="border_light">#F8FAFC</color>
 </resources>

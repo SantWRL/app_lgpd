@@ -1,9 +1,14 @@
 package br.ufpi.lgpd.educacional.ui.profile
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -29,6 +34,10 @@ class ProfileFragment : Fragment() {
     private lateinit var userPreferences: UserPreferences
     private lateinit var achievementAdapter: AchievementAdapter
 
+    private val avatarColors = listOf(
+        "#4F46E5", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#EC4899"
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,7 +52,8 @@ class ProfileFragment : Fragment() {
 
         userPreferences = UserPreferences(requireContext())
         setupAchievements()
-        setupProfileEditor()
+        setupButtons()
+        setupColorSelector()
         observeData()
         loadProfile()
     }
@@ -56,18 +66,83 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun setupProfileEditor() {
-        binding.nameInput.setText(userPreferences.userName)
-        binding.saveNameButton.setOnClickListener {
-            val typedName = binding.nameInput.text?.toString().orEmpty().trim()
-            if (typedName.isNotBlank()) {
-                userPreferences.userName = typedName
-                loadProfile()
-                Snackbar.make(binding.root, getString(R.string.profile_saved_name), Snackbar.LENGTH_SHORT).show()
-            } else {
-                binding.nameInput.error = getString(R.string.profile_name_hint)
+    private fun setupButtons() {
+        binding.btnShare.setOnClickListener {
+            val profile = viewModel.userProfile.value
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Estou aprendendo sobre a LGPD e já conquistei ${profile.totalPoints} pontos com uma ofensiva de ${profile.streakDays} dias! Junte-se a mim!")
+                type = "text/plain"
             }
+            startActivity(Intent.createChooser(sendIntent, "Compartilhar Progresso"))
         }
+
+        binding.btnEditAvatar.setOnClickListener {
+            showEditProfileDialog()
+        }
+
+        binding.btnAccountData.setOnClickListener {
+            showEditProfileDialog()
+        }
+
+        binding.btnPrivacyPolicy.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Privacidade & LGPD")
+                .setMessage("Seus dados são tratados com total segurança, seguindo as diretrizes da LGPD (Lei nº 13.709/2018).\n\n" +
+                        "• Progresso salvo localmente\n" +
+                        "• Sem rastreamento externo\n" +
+                        "• Transparência total")
+                .setPositiveButton("Entendido", null)
+                .show()
+        }
+
+        binding.logoutButton.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Limpar Progresso")
+                .setMessage("Tem certeza? Todos os seus pontos e aulas concluídas serão apagados.")
+                .setPositiveButton("Sim, limpar") { _, _ ->
+                    userPreferences.clearAll()
+                    loadProfile()
+                    Snackbar.make(binding.root, "Progresso limpo.", Snackbar.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("Cancelar", null)
+                .show()
+        }
+    }
+
+    private fun setupColorSelector() {
+        binding.color0.setOnClickListener { updateAvatarColor(0) }
+        binding.color1.setOnClickListener { updateAvatarColor(1) }
+        binding.color2.setOnClickListener { updateAvatarColor(2) }
+        binding.color3.setOnClickListener { updateAvatarColor(3) }
+        binding.color4.setOnClickListener { updateAvatarColor(4) }
+        binding.color5.setOnClickListener { updateAvatarColor(5) }
+    }
+
+    private fun updateAvatarColor(index: Int) {
+        userPreferences.avatarColorIndex = index
+        binding.avatarColorContainer.backgroundTintList = ColorStateList.valueOf(Color.parseColor(avatarColors[index]))
+    }
+
+    private fun showEditProfileDialog() {
+        val input = EditText(requireContext())
+        input.setText(userPreferences.userName)
+        input.setPadding(40, 40, 40, 40)
+        
+        AlertDialog.Builder(requireContext())
+            .setTitle("Editar Perfil")
+            .setMessage("Digite seu nome de exibição:")
+            .setView(input)
+            .setPositiveButton("Salvar") { _, _ ->
+                val newName = input.text.toString().trim()
+                if (newName.isNotBlank()) {
+                    userPreferences.userName = newName
+                    loadProfile()
+                    Snackbar.make(binding.root, "Perfil salvo!", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 
     private fun observeData() {
@@ -90,33 +165,29 @@ class ProfileFragment : Fragment() {
     private fun loadProfile() {
         viewModel.loadUserProfile(
             savedName = userPreferences.userName,
-            quizzesCompleted = userPreferences.quizzesCompleted,
-            averageScore = userPreferences.averageQuizScore,
-            totalPoints = userPreferences.totalPoints
+            lessonsCompleted = userPreferences.getLessonsCompleted().size,
+            quizzesCompleted = userPreferences.getQuizzesCompleted().size,
+            averageScore = userPreferences.getAverageScore(),
+            totalPoints = userPreferences.totalPoints,
+            streakDays = userPreferences.streakDays,
+            unlockedAchievements = userPreferences.getUnlockedAchievements()
         )
     }
 
     private fun updateUI(profile: UserProfile) {
         binding.apply {
             userName.text = profile.name
-            userLevel.text = "Nível ${profile.level} - trilha LGPD"
-            userPoints.text = "${profile.totalPoints} pontos"
+            userLevel.text = "Nível ${profile.level}"
             lessonsCompleted.text = profile.lessonsCompleted.toString()
             quizzesCompleted.text = profile.quizzesCompleted.toString()
-            averageScore.text = "%.1f%%".format(profile.averageScore)
-            avatarInitials.text = getInitials(profile.name)
-            if (nameInput.text.isNullOrBlank()) {
-                nameInput.setText(profile.name)
+            streakDays.text = profile.streakDays.toString()
+            avatarInitials.text = userPreferences.getInitials(profile.name)
+            
+            // Apply saved color
+            val colorIndex = userPreferences.avatarColorIndex
+            if (colorIndex in avatarColors.indices) {
+                avatarColorContainer.backgroundTintList = ColorStateList.valueOf(Color.parseColor(avatarColors[colorIndex]))
             }
-        }
-    }
-
-    private fun getInitials(name: String): String {
-        val words = name.trim().split(" ").filter { it.isNotBlank() }
-        return when {
-            words.isEmpty() -> "U"
-            words.size == 1 -> words.first().take(2).uppercase()
-            else -> (words.first().first().toString() + words.last().first().toString()).uppercase()
         }
     }
 
@@ -140,5 +211,6 @@ data class UserProfile(
     val totalPoints: Int,
     val lessonsCompleted: Int,
     val quizzesCompleted: Int,
-    val averageScore: Double
+    val averageScore: Double,
+    val streakDays: Int
 )

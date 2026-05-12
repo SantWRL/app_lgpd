@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Spacing from app-lei -->
     <dimen name="padding_screen">24dp</dimen>
-    <dimen name="padding_card">20dp</dimen>
+    <dimen name="padding_card">16dp</dimen>
     <dimen name="padding_screen_horizontal">24dp</dimen>
-    <dimen name="card_corner_radius">8dp</dimen>
-    <dimen name="card_corner_radius_small">6dp</dimen>
-    <dimen name="card_elevation">2dp</dimen>
-    <dimen name="toolbar_elevation">3dp</dimen>
-    <dimen name="bottom_nav_height">68dp</dimen>
+    
+    <!-- Radius from app-lei (sm: 8, md: 16, lg: 24) -->
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="card_corner_radius_small">8dp</dimen>
+    <dimen name="card_corner_radius_large">24dp</dimen>
+    
+    <!-- Shadows / Elevation from app-lei -->
+    <dimen name="card_elevation">8dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+    
+    <dimen name="bottom_nav_height">72dp</dimen>
 </resources>

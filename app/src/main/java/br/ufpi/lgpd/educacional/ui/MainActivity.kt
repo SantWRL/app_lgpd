@@ -10,6 +10,7 @@ import androidx.navigation.ui.NavigationUI
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.databinding.ActivityMainBinding
 import br.ufpi.lgpd.educacional.ui.onboarding.OnboardingActivity
+import br.ufpi.lgpd.educacional.util.UserPreferences
 import timber.log.Timber
 
 /**
@@ -19,9 +20,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private lateinit var userPreferences: UserPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        userPreferences = UserPreferences(this)
         
         // Setup Timber logging
         if (BuildConfig.DEBUG) {
@@ -31,12 +35,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Verificar se é primeira vez do usuário
-        if (isFirstTime()) {
+        // Verificar se o usuário já passou pelo Onboarding
+        if (!userPreferences.hasSeenOnboarding) {
             startActivity(Intent(this, OnboardingActivity::class.java))
             finish()
             return
         }
+
+        // Atualizar ofensiva (streak) do usuário ao abrir o app
+        userPreferences.updateStreak()
 
         setupNavigation()
     }
@@ -53,28 +60,29 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.toolbar.title = when (destination.id) {
                 R.id.homeFragment -> getString(R.string.home_title)
-                R.id.lessonsFragment -> getString(R.string.home_lessons)
-                R.id.quizzesFragment -> getString(R.string.home_quizzes)
-                R.id.profileFragment -> getString(R.string.profile_title)
-                R.id.quizDetailFragment -> getString(R.string.quiz_results)
-                else -> getString(R.string.home_title)
+                R.id.lessonsFragment -> "Lições"
+                R.id.quizzesFragment -> "Testes"
+                R.id.profileFragment -> "Perfil"
+                R.id.quizDetailFragment -> "Responder Teste"
+                R.id.wordleFragment -> "Termo"
+                R.id.wordsearchFragment -> "Caça-Palavras"
+                R.id.lessonDetailFragment -> "Estudo"
+                else -> getString(R.string.app_name)
             }
-            binding.bottomNavigation.visibility = if (destination.id == R.id.quizDetailFragment) {
+            
+            // Ocultar bottom nav em telas de jogos ou detalhes profundos
+            val fullScreens = listOf(
+                R.id.quizDetailFragment, 
+                R.id.wordleFragment, 
+                R.id.wordsearchFragment, 
+                R.id.lessonDetailFragment
+            )
+            binding.bottomNavigation.visibility = if (destination.id in fullScreens) {
                 View.GONE
             } else {
                 View.VISIBLE
             }
         }
-    }
-
-    private fun isFirstTime(): Boolean {
-        val sharedPref = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        return !sharedPref.getBoolean("has_opened_before", false)
-            .also {
-                if (!it) {
-                    sharedPref.edit().putBoolean("has_opened_before", true).apply()
-                }
-            }
     }
 
     override fun onSupportNavigateUp(): Boolean {

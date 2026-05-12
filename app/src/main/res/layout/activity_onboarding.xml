@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background">
+    android:background="@drawable/bg_gradient_primary">
 
     <!-- ViewPager2 -->
     <androidx.viewpager2.widget.ViewPager2
@@ -18,14 +18,14 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/surface"
-        android:elevation="2dp"
-        app:tabIndicatorColor="@color/primary"
+        android:background="#1AFFFFFF"
+        android:elevation="0dp"
+        app:tabIndicatorColor="@color/white"
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorHeight="3dp"
         app:tabRippleColor="@color/primary_light"
-        app:tabSelectedTextColor="@color/primary"
-        app:tabTextColor="@color/text_secondary" />
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="#E2E8F0" />
 
     <!-- Buttons -->
     <LinearLayout
@@ -34,7 +34,7 @@
         android:orientation="horizontal"
         android:padding="16dp"
         android:gravity="center"
-        android:background="@color/surface">
+        android:background="@drawable/bg_glass_card">
 
         <Button
             android:id="@+id/btnSkip"
@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
+            android:backgroundTint="#F2FFFFFF"
             android:text="@string/button_back" />
 
         <Button

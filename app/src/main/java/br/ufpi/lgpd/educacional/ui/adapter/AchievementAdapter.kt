@@ -34,7 +34,7 @@ class AchievementAdapter :
         fun bind(achievement: AchievementItem) {
             val context = binding.root.context
             val iconTint = if (achievement.isUnlocked) R.color.accent else R.color.text_tertiary
-            val badgeTint = if (achievement.isUnlocked) R.color.accent_light else R.color.gray_100
+            val badgeTint = if (achievement.isUnlocked) R.color.accent_light else R.color.surface_variant
             val statusText = if (achievement.isUnlocked) "Desbloqueada" else "Em progresso"
 
             binding.achievementName.text = achievement.title

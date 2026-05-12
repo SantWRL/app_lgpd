@@ -38,8 +38,8 @@ class LessonCardAdapter(
         fun bind(lesson: Lesson) {
             binding.apply {
                 lessonTitle.text = lesson.title
-                lessonDescription.text = lesson.description
-                lessonTime.text = "${lesson.estimatedTime} min"
+                
+                lessonTime.text = "${lesson.estimatedTime}m"
                 
                 val (difficultyLabel, difficultyColor) = when (lesson.difficulty) {
                     "BEGINNER" -> "Iniciante" to Color.parseColor("#0F766E")

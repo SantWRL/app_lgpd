@@ -25,11 +25,13 @@ class LessonsViewModel : ViewModel() {
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
-    fun loadLessons() {
+    fun loadLessons(completedIds: Set<Int>) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                _lessons.value = getMockLessons()
+                _lessons.value = getMockLessons().map { lesson ->
+                    lesson.copy(isCompleted = completedIds.contains(lesson.id))
+                }
             } catch (e: Exception) {
                 _errorMessage.value = e.message
             } finally {

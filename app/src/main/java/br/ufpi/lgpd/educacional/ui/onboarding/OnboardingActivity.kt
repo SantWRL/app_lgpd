@@ -7,6 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.databinding.ActivityOnboardingBinding
 import br.ufpi.lgpd.educacional.ui.MainActivity
+import br.ufpi.lgpd.educacional.util.UserPreferences
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
@@ -15,10 +16,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 class OnboardingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOnboardingBinding
+    private lateinit var userPreferences: UserPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        
+        userPreferences = UserPreferences(this)
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -49,7 +52,7 @@ class OnboardingActivity : AppCompatActivity() {
             object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    binding.btnNext.text = if (position == 2) {
+                    binding.btnNext.text = if (position == 4) {
                         getString(R.string.onboarding_get_started)
                     } else {
                         getString(R.string.button_continue)
@@ -60,6 +63,9 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun goToHome() {
+        // Marca que o usuário já viu o onboarding para não mostrar novamente
+        userPreferences.hasSeenOnboarding = true
+        
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

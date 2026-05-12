@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.model.Lesson
 import br.ufpi.lgpd.educacional.databinding.FragmentLessonsBinding
 import br.ufpi.lgpd.educacional.ui.adapter.LessonsListAdapter
+import br.ufpi.lgpd.educacional.util.UserPreferences
 import kotlinx.coroutines.launch
 
 /**
@@ -23,7 +26,8 @@ class LessonsFragment : Fragment() {
     private var _binding: FragmentLessonsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: LessonsViewModel by viewModels()
+    private val viewModel: LessonsViewModel by activityViewModels()
+    private lateinit var userPreferences: UserPreferences
 
     private lateinit var adapter: LessonsListAdapter
     private var allLessons: List<Lesson> = emptyList()
@@ -39,17 +43,17 @@ class LessonsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userPreferences = UserPreferences(requireContext())
 
         setupRecyclerView()
         setupFilters()
         observeData()
-        viewModel.loadLessons()
     }
 
     private fun setupRecyclerView() {
         adapter = LessonsListAdapter { lesson ->
             viewModel.selectLesson(lesson)
-            // Navegar para detalhes da lição
+            findNavController().navigate(R.id.action_lessonsFragment_to_lessonDetailFragment)
         }
 
         binding.lessonsRecyclerView.apply {
@@ -78,6 +82,15 @@ class LessonsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun loadContent() {
+        viewModel.loadLessons(userPreferences.getLessonsCompleted())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadContent()
     }
 
     override fun onDestroyView() {

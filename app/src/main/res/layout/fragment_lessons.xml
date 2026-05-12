@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background"
+    android:background="@android:color/transparent"
     android:padding="16dp">
 
     <TextView
@@ -13,6 +13,7 @@
         android:layout_marginBottom="6dp"
         android:text="Trilha de aulas"
         android:textAppearance="@style/TextAppearance.LGPD.ScreenTitle"
+        android:textColor="@color/white"
         android:textSize="24sp" />
 
     <TextView
@@ -20,13 +21,15 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Do básico à aplicação prática: conceitos, direitos, bases legais, segurança e rotinas acadêmicas."
+        android:textColor="#E2E8F0"
         android:textAppearance="@style/TextAppearance.LGPD.BodySmall" />
 
     <!-- Filtro por dificuldade -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -39,6 +42,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:backgroundTint="#F2FFFFFF"
+                android:textColor="@color/primary_dark"
                 android:text="Todas" />
 
             <Button
@@ -47,6 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:backgroundTint="#80FFFFFF"
+                android:textColor="@color/white"
                 android:text="Iniciante" />
 
             <Button
@@ -55,6 +62,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:backgroundTint="#80FFFFFF"
+                android:textColor="@color/white"
                 android:text="Intermediário" />
 
             <Button
@@ -62,6 +71,8 @@
                 style="@style/Button.Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#80FFFFFF"
+                android:textColor="@color/white"
                 android:text="Avançado" />
 
         </LinearLayout>
@@ -74,6 +85,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@drawable/bg_glass_card"
+        android:padding="8dp"
         tools:listitem="@layout/item_lesson_list" />
 
 </LinearLayout>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TERMO"
+                android:textColor="@color/white"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Adivinhe a palavra da LGPD"
+                android:textColor="#E2E8F0"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <!-- Tentativas restantes -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_glass_card"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tvAttemptsLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="tentativas"
+                android:textColor="#E2E8F0"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Grade 5x6 do Wordle -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
+
+        <!-- Linha 1 -->
+        <LinearLayout android:id="@+id/row0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+            <TextView android:id="@+id/cell_0_0" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_0_1" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_0_2" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_0_3" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_0_4" style="@style/WordleCell" />
+        </LinearLayout>
+
+        <!-- Linha 2 -->
+        <LinearLayout android:id="@+id/row1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+            <TextView android:id="@+id/cell_1_0" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_1_1" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_1_2" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_1_3" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_1_4" style="@style/WordleCell" />
+        </LinearLayout>
+
+        <!-- Linha 3 -->
+        <LinearLayout android:id="@+id/row2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+            <TextView android:id="@+id/cell_2_0" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_2_1" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_2_2" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_2_3" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_2_4" style="@style/WordleCell" />
+        </LinearLayout>
+
+        <!-- Linha 4 -->
+        <LinearLayout android:id="@+id/row3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+            <TextView android:id="@+id/cell_3_0" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_3_1" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_3_2" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_3_3" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_3_4" style="@style/WordleCell" />
+        </LinearLayout>
+
+        <!-- Linha 5 -->
+        <LinearLayout android:id="@+id/row4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+            <TextView android:id="@+id/cell_4_0" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_4_1" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_4_2" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_4_3" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_4_4" style="@style/WordleCell" />
+        </LinearLayout>
+
+        <!-- Linha 6 -->
+        <LinearLayout android:id="@+id/row5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+            <TextView android:id="@+id/cell_5_0" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_5_1" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_5_2" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_5_3" style="@style/WordleCell" />
+            <TextView android:id="@+id/cell_5_4" style="@style/WordleCell" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Teclado Virtual -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_glass_card"
+        android:padding="10dp"
+        android:gravity="center">
+
+        <!-- Linha 1: Q W E R T Y U I O P -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="6dp">
+            <Button android:id="@+id/key_Q" style="@style/WordleKey" android:text="Q" />
+            <Button android:id="@+id/key_W" style="@style/WordleKey" android:text="W" />
+            <Button android:id="@+id/key_E" style="@style/WordleKey" android:text="E" />
+            <Button android:id="@+id/key_R" style="@style/WordleKey" android:text="R" />
+            <Button android:id="@+id/key_T" style="@style/WordleKey" android:text="T" />
+            <Button android:id="@+id/key_Y" style="@style/WordleKey" android:text="Y" />
+            <Button android:id="@+id/key_U" style="@style/WordleKey" android:text="U" />
+            <Button android:id="@+id/key_I" style="@style/WordleKey" android:text="I" />
+            <Button android:id="@+id/key_O" style="@style/WordleKey" android:text="O" />
+            <Button android:id="@+id/key_P" style="@style/WordleKey" android:text="P" />
+        </LinearLayout>
+
+        <!-- Linha 2: A S D F G H J K L -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="6dp">
+            <Button android:id="@+id/key_A" style="@style/WordleKey" android:text="A" />
+            <Button android:id="@+id/key_S" style="@style/WordleKey" android:text="S" />
+            <Button android:id="@+id/key_D" style="@style/WordleKey" android:text="D" />
+            <Button android:id="@+id/key_F" style="@style/WordleKey" android:text="F" />
+            <Button android:id="@+id/key_G" style="@style/WordleKey" android:text="G" />
+            <Button android:id="@+id/key_H" style="@style/WordleKey" android:text="H" />
+            <Button android:id="@+id/key_J" style="@style/WordleKey" android:text="J" />
+            <Button android:id="@+id/key_K" style="@style/WordleKey" android:text="K" />
+            <Button android:id="@+id/key_L" style="@style/WordleKey" android:text="L" />
+        </LinearLayout>
+
+        <!-- Linha 3: ENTER Z X C V B N M DEL -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button android:id="@+id/key_ENTER" style="@style/WordleKeyWide" android:text="OK" />
+            <Button android:id="@+id/key_Z" style="@style/WordleKey" android:text="Z" />
+            <Button android:id="@+id/key_X" style="@style/WordleKey" android:text="X" />
+            <Button android:id="@+id/key_C" style="@style/WordleKey" android:text="C" />
+            <Button android:id="@+id/key_V" style="@style/WordleKey" android:text="V" />
+            <Button android:id="@+id/key_B" style="@style/WordleKey" android:text="B" />
+            <Button android:id="@+id/key_N" style="@style/WordleKey" android:text="N" />
+            <Button android:id="@+id/key_M" style="@style/WordleKey" android:text="M" />
+            <Button android:id="@+id/key_DEL" style="@style/WordleKeyWide" android:text="⌫" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Definição da Palavra (dica LGPD) -->
+    <LinearLayout
+        android:id="@+id/definitionCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@drawable/bg_glass_card"
+        android:orientation="vertical"
+        android:padding="14dp"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/tvDefinitionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tvDefinition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#E2E8F0"
+            android:textSize="13sp"
+            android:lineSpacingExtra="3dp" />
+
+        <Button
+            android:id="@+id/btnNewGame"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Nova Palavra" />
+
+    </LinearLayout>
+
+</LinearLayout>

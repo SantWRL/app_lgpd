@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.ufpi.lgpd.educacional.data.LgpdContent
 import br.ufpi.lgpd.educacional.data.model.Lesson
 import br.ufpi.lgpd.educacional.data.model.Quiz
+import br.ufpi.lgpd.educacional.util.UserPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +18,7 @@ class HomeViewModel : ViewModel() {
 
     private val _lessons = MutableStateFlow<List<Lesson>>(emptyList())
     val lessons: StateFlow<List<Lesson>> = _lessons.asStateFlow()
+    private var allLessons: List<Lesson> = emptyList()
 
     private val _quizzes = MutableStateFlow<List<Quiz>>(emptyList())
     val quizzes: StateFlow<List<Quiz>> = _quizzes.asStateFlow()
@@ -32,10 +34,19 @@ class HomeViewModel : ViewModel() {
     private val _selectedQuiz = MutableStateFlow<Quiz?>(null)
     val selectedQuiz: StateFlow<Quiz?> = _selectedQuiz.asStateFlow()
 
-    fun loadLessons() {
+    fun loadLessons(completedIds: Set<Int>) {
         viewModelScope.launch {
-            _lessons.value = getMockLessons()
+            val list = getMockLessons().map { lesson ->
+                lesson.copy(isCompleted = completedIds.contains(lesson.id))
+            }
+            allLessons = list
+            _lessons.value = list
         }
+    }
+
+    fun filterByCategory(category: String) {
+        _lessons.value = if (category == "Todos") allLessons
+        else allLessons.filter { it.category == category }
     }
 
     fun loadQuizzes() {
@@ -44,14 +55,20 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun loadUserProgress() {
+    fun loadUserProgress(
+        lessonsCompleted: Int,
+        totalLessons: Int,
+        completionPercentage: Int,
+        totalPoints: Int,
+        currentLevel: Int
+    ) {
         viewModelScope.launch {
             _userProgress.value = UserProgressStats(
-                lessonsCompleted = 3,
-                totalLessons = 10,
-                completionPercentage = 30,
-                totalPoints = 250,
-                currentLevel = 2
+                lessonsCompleted = lessonsCompleted,
+                totalLessons = totalLessons,
+                completionPercentage = completionPercentage,
+                totalPoints = totalPoints,
+                currentLevel = currentLevel
             )
         }
     }
@@ -83,3 +100,11 @@ class HomeViewModel : ViewModel() {
         return LgpdContent.quizzes
     }
 }
+
+data class UserProgressStats(
+    val lessonsCompleted: Int,
+    val totalLessons: Int,
+    val completionPercentage: Int,
+    val totalPoints: Int,
+    val currentLevel: Int
+)

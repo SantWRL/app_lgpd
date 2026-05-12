@@ -38,8 +38,8 @@ class QuizCardAdapter(
         fun bind(quiz: Quiz) {
             binding.apply {
                 quizTitle.text = quiz.title
-                quizDescription.text = quiz.description
-                quizQuestions.text = "${quiz.totalQuestions} perguntas"
+                
+                quizQuestions.text = "${quiz.totalQuestions} perg."
                 
                 val (difficultyLabel, difficultyColor) = when (quiz.difficulty) {
                     "BEGINNER" -> "Iniciante" to Color.parseColor("#0F766E")
