@@ -16,6 +16,7 @@ data class Lesson(
     val orderIndex: Int,
     val estimatedTime: Int, // em minutos
     val difficulty: String, // BEGINNER, INTERMEDIATE, ADVANCED
+    val videoId: String? = null, // YouTube video ID, se houver
     var isCompleted: Boolean = false
 )
 

@@ -1,6 +1,5 @@
 package br.ufpi.lgpd.educacional.ui.profile
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -9,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,11 +19,12 @@ import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.databinding.FragmentProfileBinding
 import br.ufpi.lgpd.educacional.ui.adapter.AchievementAdapter
 import br.ufpi.lgpd.educacional.util.UserPreferences
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 /**
- * ProfileFragment - Tela de perfil e progresso do usuário
+ * ProfileFragment — tela de perfil, progresso e conquistas do usuário.
  */
 class ProfileFragment : Fragment() {
 
@@ -55,7 +56,6 @@ class ProfileFragment : Fragment() {
         setupButtons()
         setupColorSelector()
         observeData()
-        loadProfile()
     }
 
     private fun setupAchievements() {
@@ -77,16 +77,11 @@ class ProfileFragment : Fragment() {
             startActivity(Intent.createChooser(sendIntent, "Compartilhar Progresso"))
         }
 
-        binding.btnEditAvatar.setOnClickListener {
-            showEditProfileDialog()
-        }
-
-        binding.btnAccountData.setOnClickListener {
-            showEditProfileDialog()
-        }
+        binding.btnEditAvatar.setOnClickListener { showEditNameDialog() }
+        binding.btnAccountData.setOnClickListener { showEditNameDialog() }
 
         binding.btnPrivacyPolicy.setOnClickListener {
-            AlertDialog.Builder(requireContext())
+            MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Privacidade & LGPD")
                 .setMessage("Seus dados são tratados com total segurança, seguindo as diretrizes da LGPD (Lei nº 13.709/2018).\n\n" +
                         "• Progresso salvo localmente\n" +
@@ -97,12 +92,11 @@ class ProfileFragment : Fragment() {
         }
 
         binding.logoutButton.setOnClickListener {
-            AlertDialog.Builder(requireContext())
+            MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Limpar Progresso")
                 .setMessage("Tem certeza? Todos os seus pontos e aulas concluídas serão apagados.")
                 .setPositiveButton("Sim, limpar") { _, _ ->
-                    userPreferences.clearAll()
-                    loadProfile()
+                    viewModel.clearSession()
                     Snackbar.make(binding.root, "Progresso limpo.", Snackbar.LENGTH_SHORT).show()
                 }
                 .setNegativeButton("Cancelar", null)
@@ -111,33 +105,31 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupColorSelector() {
-        binding.color0.setOnClickListener { updateAvatarColor(0) }
-        binding.color1.setOnClickListener { updateAvatarColor(1) }
-        binding.color2.setOnClickListener { updateAvatarColor(2) }
-        binding.color3.setOnClickListener { updateAvatarColor(3) }
-        binding.color4.setOnClickListener { updateAvatarColor(4) }
-        binding.color5.setOnClickListener { updateAvatarColor(5) }
+        val colorViews = listOf(
+            binding.color0, binding.color1, binding.color2,
+            binding.color3, binding.color4, binding.color5
+        )
+        colorViews.forEachIndexed { index, view ->
+            view.setOnClickListener {
+                viewModel.saveAvatarColor(index)
+            }
+        }
     }
 
-    private fun updateAvatarColor(index: Int) {
-        userPreferences.avatarColorIndex = index
-        binding.avatarColorContainer.backgroundTintList = ColorStateList.valueOf(Color.parseColor(avatarColors[index]))
-    }
-
-    private fun showEditProfileDialog() {
+    private fun showEditNameDialog() {
         val input = EditText(requireContext())
         input.setText(userPreferences.userName)
-        input.setPadding(40, 40, 40, 40)
+        val padding = (16 * resources.displayMetrics.density).toInt()
+        input.setPadding(padding, padding, padding, padding)
         
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Editar Perfil")
             .setMessage("Digite seu nome de exibição:")
             .setView(input)
             .setPositiveButton("Salvar") { _, _ ->
                 val newName = input.text.toString().trim()
                 if (newName.isNotBlank()) {
-                    userPreferences.userName = newName
-                    loadProfile()
+                    viewModel.saveName(newName)
                     Snackbar.make(binding.root, "Perfil salvo!", Snackbar.LENGTH_SHORT).show()
                 }
             }
@@ -148,69 +140,71 @@ class ProfileFragment : Fragment() {
     private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userProfile.collect { profile ->
-                    updateUI(profile)
+                launch {
+                    viewModel.userProfile.collect { profile ->
+                        updateUI(profile)
+                    }
+                }
+                launch {
+                    viewModel.achievements.collect { list ->
+                        achievementAdapter.submitList(list)
+                    }
+                }
+                launch {
+                    viewModel.isLoading.collect { loading ->
+                        binding.loadingIndicator.isVisible = loading
+                    }
                 }
             }
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.achievements.collect { achievements ->
-                    achievementAdapter.submitList(achievements)
-                }
-            }
-        }
-    }
-
-    private fun loadProfile() {
-        viewModel.loadUserProfile(
-            savedName = userPreferences.userName,
-            lessonsCompleted = userPreferences.getLessonsCompleted().size,
-            quizzesCompleted = userPreferences.getQuizzesCompleted().size,
-            averageScore = userPreferences.getAverageScore(),
-            totalPoints = userPreferences.totalPoints,
-            streakDays = userPreferences.streakDays,
-            unlockedAchievements = userPreferences.getUnlockedAchievements()
-        )
     }
 
     private fun updateUI(profile: UserProfile) {
         binding.apply {
             userName.text = profile.name
             userLevel.text = "Nível ${profile.level}"
+            userPoints.text = "${profile.totalPoints} pontos"
             lessonsCompleted.text = profile.lessonsCompleted.toString()
             quizzesCompleted.text = profile.quizzesCompleted.toString()
+            averageScore.text = "%.1f%%".format(profile.averageScore)
             streakDays.text = profile.streakDays.toString()
             avatarInitials.text = userPreferences.getInitials(profile.name)
             
-            // Apply saved color
-            val colorIndex = userPreferences.avatarColorIndex
-            if (colorIndex in avatarColors.indices) {
-                avatarColorContainer.backgroundTintList = ColorStateList.valueOf(Color.parseColor(avatarColors[colorIndex]))
-            }
+            // Cor do avatar
+            try {
+                val color = Color.parseColor(profile.avatarColor)
+                avatarColorContainer.backgroundTintList = ColorStateList.valueOf(color)
+            } catch (_: Exception) { }
+
+            // Destaca a cor selecionada
+            highlightSelectedColor(profile.avatarColorIndex)
+
+            // Barra de progresso de aulas
+            val pct = ((profile.lessonsCompleted / 10.0) * 100).toInt().coerceIn(0, 100)
+            lessonsProgressBar.progress = pct
+            lessonsProgressText.text = "${profile.lessonsCompleted}/10 aulas"
         }
+    }
+
+    private fun highlightSelectedColor(selectedIndex: Int) {
+        val colorViews = listOf(
+            binding.color0, binding.color1, binding.color2,
+            binding.color3, binding.color4, binding.color5
+        )
+        colorViews.forEachIndexed { index, view ->
+            view.alpha = if (index == selectedIndex) 1f else 0.4f
+            view.scaleX = if (index == selectedIndex) 1.25f else 1f
+            view.scaleY = if (index == selectedIndex) 1.25f else 1f
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadFromDatabase()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-    override fun onResume() {
-        super.onResume()
-        if (::userPreferences.isInitialized) {
-            loadProfile()
-        }
-    }
 }
-
-data class UserProfile(
-    val name: String,
-    val email: String,
-    val level: Int,
-    val totalPoints: Int,
-    val lessonsCompleted: Int,
-    val quizzesCompleted: Int,
-    val averageScore: Double,
-    val streakDays: Int
-)

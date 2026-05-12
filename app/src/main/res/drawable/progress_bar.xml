@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background of the progress bar -->
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
             <solid android:color="@color/surface_variant" />
             <corners android:radius="100dp" />
         </shape>
     </item>
+    
+    <!-- Progress itself -->
     <item android:id="@android:id/progress">
-        <clip>
+        <scale android:scaleWidth="100%">
             <shape android:shape="rectangle">
                 <solid android:color="@color/secondary" />
                 <corners android:radius="100dp" />
             </shape>
-        </clip>
+        </scale>
     </item>
 </layer-list>

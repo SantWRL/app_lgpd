@@ -16,9 +16,7 @@ class AchievementAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AchievementViewHolder {
         val binding = ItemAchievementBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
         return AchievementViewHolder(binding)
     }
@@ -33,20 +31,19 @@ class AchievementAdapter :
 
         fun bind(achievement: AchievementItem) {
             val context = binding.root.context
-            val iconTint = if (achievement.isUnlocked) R.color.accent else R.color.text_tertiary
             val badgeTint = if (achievement.isUnlocked) R.color.accent_light else R.color.surface_variant
-            val statusText = if (achievement.isUnlocked) "Desbloqueada" else "Em progresso"
+            val statusText = if (achievement.isUnlocked) "✓ Desbloqueada" else "Em progresso"
+            val statusColor = if (achievement.isUnlocked) R.color.success else R.color.text_tertiary
 
             binding.achievementName.text = achievement.title
             binding.achievementDescription.text = achievement.description
             binding.achievementStatus.text = statusText
-            binding.achievementIcon.imageTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(context, iconTint)
-            )
+            binding.achievementStatus.setTextColor(ContextCompat.getColor(context, statusColor))
+            binding.achievementEmoji.text = achievement.emoji
             binding.achievementIconContainer.backgroundTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(context, badgeTint)
             )
-            binding.root.alpha = if (achievement.isUnlocked) 1f else 0.72f
+            binding.root.alpha = if (achievement.isUnlocked) 1f else 0.68f
         }
     }
 

@@ -24,6 +24,18 @@
     <color name="warning_light">#FFFBEB</color>
     <color name="info">#3B82F6</color>
 
+    <!-- Duolingo Inspired Palette (Auxiliary) -->
+    <color name="duo_green">#58CC02</color>
+    <color name="duo_green_dark">#46A302</color>
+    <color name="duo_blue">#1CB0F6</color>
+    <color name="duo_blue_dark">#1899D6</color>
+    <color name="duo_yellow">#FFC800</color>
+    <color name="duo_yellow_dark">#E5A400</color>
+    <color name="duo_red">#FF4B4B</color>
+    <color name="duo_red_dark">#D33131</color>
+    <color name="duo_gray">#AFAFAF</color>
+    <color name="duo_gray_dark">#828282</color>
+
     <!-- Neutral Colors -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>

@@ -7,11 +7,16 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.core.text.HtmlCompat
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.LgpdContent
 import br.ufpi.lgpd.educacional.data.QuizQuestionContent
+import br.ufpi.lgpd.educacional.data.database.AppDatabase
+import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentQuizDetailBinding
 import br.ufpi.lgpd.educacional.util.UserPreferences
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import com.google.android.material.snackbar.Snackbar
 
 class QuizDetailFragment : Fragment() {
@@ -20,6 +25,7 @@ class QuizDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var userPreferences: UserPreferences
+    private lateinit var repository: UserRepository
     private lateinit var questions: List<QuizQuestionContent>
 
     private var quizId: Int = 1
@@ -43,6 +49,9 @@ class QuizDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         userPreferences = UserPreferences(requireContext())
+        val db = AppDatabase.getInstance(requireContext())
+        repository = UserRepository(db.userDao())
+        
         quizId = arguments?.getInt(ARG_QUIZ_ID) ?: 1
         questions = LgpdContent.questionsForQuiz(quizId)
 
@@ -55,6 +64,10 @@ class QuizDetailFragment : Fragment() {
             } else {
                 submitAnswer()
             }
+        }
+
+        binding.btnClose.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         showQuestion()
@@ -71,7 +84,13 @@ class QuizDetailFragment : Fragment() {
         )
         binding.quizProgress.max = questions.size
         binding.quizProgress.progress = currentQuestionIndex + 1
-        binding.questionText.text = question.question
+        
+        // Formatar Markdown simples
+        val questionHtml = question.question
+            .replace(Regex("\\*\\*(.*?)\\*\\*"), "<b>$1</b>")
+            .replace("\n", "<br>")
+        binding.questionText.text = HtmlCompat.fromHtml(questionHtml, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        
         binding.explanationCard.visibility = View.GONE
         binding.optionsGroup.clearCheck()
         binding.primaryActionButton.text = getString(R.string.button_submit)
@@ -80,6 +99,10 @@ class QuizDetailFragment : Fragment() {
             radioButton.text = question.options[index]
             radioButton.isEnabled = true
         }
+
+        // Reset Duo Style
+        binding.bottomActionArea.setBackgroundColor(requireContext().getColor(android.R.color.transparent))
+        binding.primaryActionButton.setBackgroundResource(R.drawable.bg_button_duo_green)
     }
 
     private fun submitAnswer() {
@@ -95,14 +118,29 @@ class QuizDetailFragment : Fragment() {
 
         hasAnsweredCurrentQuestion = true
         optionButtons.forEach { it.isEnabled = false }
-        binding.answerStatus.text = if (isCorrect) getString(R.string.quiz_correct) else getString(R.string.quiz_incorrect)
-        binding.answerStatus.setTextColor(
-            requireContext().getColor(if (isCorrect) R.color.success else R.color.error)
-        )
-        binding.explanationText.text = question.explanation
+        
+        val statusColor = requireContext().getColor(if (isCorrect) R.color.duo_green else R.color.duo_red)
+        val statusBg = if (isCorrect) "#E5F9D1" else "#FFDFE0"
+        
+        binding.answerStatus.text = if (isCorrect) "EXCELENTE!" else "OPS, FOI QUASE..."
+        binding.answerStatus.setTextColor(statusColor)
+        binding.bottomActionArea.setBackgroundColor(android.graphics.Color.parseColor(statusBg))
+        
+        // Formatar Markdown para explicação
+        val explanationHtml = question.explanation
+            .replace(Regex("\\*\\*(.*?)\\*\\*"), "<b>$1</b>")
+            .replace("\n", "<br>")
+        binding.explanationText.text = HtmlCompat.fromHtml(explanationHtml, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        
         binding.explanationCard.visibility = View.VISIBLE
-        binding.primaryActionButton.text =
-            if (currentQuestionIndex == questions.lastIndex) getString(R.string.quiz_finish) else getString(R.string.quiz_next)
+        binding.primaryActionButton.text = if (currentQuestionIndex == questions.lastIndex) "FINALIZAR" else "CONTINUAR"
+        
+        // Troca cor do botão se estiver errado
+        if (!isCorrect) {
+            binding.primaryActionButton.setBackgroundResource(R.drawable.bg_button_duo_red)
+        } else {
+            binding.primaryActionButton.setBackgroundResource(R.drawable.bg_button_duo_green)
+        }
     }
 
     private fun goToNextQuestion() {
@@ -117,8 +155,12 @@ class QuizDetailFragment : Fragment() {
 
     private fun showResult() {
         val score = ((correctAnswers.toDouble() / questions.size) * 100).toInt()
-        userPreferences.saveQuizResult(quizId, score)
-
+        
+        // Salva no banco de dados via repositório (Fonte de Verdade)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.saveQuizResult(quizId, score)
+        }
+        
         binding.questionCard.visibility = View.GONE
         binding.explanationCard.visibility = View.GONE
         binding.resultCard.visibility = View.VISIBLE

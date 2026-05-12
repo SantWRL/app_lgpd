@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selecionado -->
+    <item android:state_checked="true">
+        <shape>
+            <solid android:color="#E0F2FE" />
+            <stroke android:width="2dp" android:color="@color/duo_blue" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <!-- Pressionado -->
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="#F1F5F9" />
+            <stroke android:width="2dp" android:color="@color/gray_300" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <!-- Normal -->
+    <item>
+        <shape>
+            <solid android:color="@color/white" />
+            <stroke android:width="2dp" android:color="@color/gray_200" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+</selector>

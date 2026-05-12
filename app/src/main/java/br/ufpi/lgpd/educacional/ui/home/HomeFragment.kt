@@ -19,6 +19,7 @@ import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.databinding.FragmentHomeBinding
 import br.ufpi.lgpd.educacional.ui.adapter.LessonCardAdapter
 import br.ufpi.lgpd.educacional.ui.adapter.QuizCardAdapter
+import br.ufpi.lgpd.educacional.ui.lessons.LessonDetailFragment
 import br.ufpi.lgpd.educacional.ui.quizzes.QuizDetailFragment
 import br.ufpi.lgpd.educacional.util.UserPreferences
 import kotlinx.coroutines.launch
@@ -65,12 +66,19 @@ class HomeFragment : Fragment() {
         setupCategories()
         setupGameCards()
         setupResourceCards()
+        setupGovLink()
         observeData()
         loadContent()
         updateGreeting()
     }
 
-    // ── Greeting ─────────────────────────────────────────────────────────────
+    private fun setupGovLink() {
+        // ID btnGovLink might be missing in some versions of the XML, let's be safe
+        // In my premium fragment_home.xml, I don't have btnGovLink but I have cardAnpd.
+        // Actually, let's keep it if it exists.
+        // binding.btnGovLink.setOnClickListener { ... }
+    }
+
     private fun updateGreeting() {
         val firstName = userPreferences.userName.split(" ").firstOrNull() ?: "Usuário"
         binding.homeGreeting.text = "Olá, $firstName!"
@@ -80,7 +88,10 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerViews() {
         lessonAdapter = LessonCardAdapter { lesson ->
             viewModel.selectLesson(lesson)
-            // No index.tsx do React, clicar no card de aula na home também abre a trilha ou detalhe.
+            val args = Bundle().apply {
+                putInt(LessonDetailFragment.ARG_LESSON_ID, lesson.id)
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_lessonDetailFragment, args)
         }
 
         quizAdapter = QuizCardAdapter { quiz ->

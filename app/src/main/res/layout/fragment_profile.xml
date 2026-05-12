@@ -138,7 +138,7 @@
 
         </LinearLayout>
 
-        <!-- ── Stats Row (Módulos, Testes, Ofensiva) ── -->
+        <!-- ── Stats Row ── -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -154,20 +154,6 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
-
-                <FrameLayout
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/bg_gradient_primary"
-                    android:backgroundTint="@color/primary">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_book"
-                        app:tint="@color/white" />
-                </FrameLayout>
 
                 <TextView
                     android:id="@+id/lessonsCompleted"
@@ -194,33 +180,19 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <FrameLayout
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/badge_background"
-                    android:backgroundTint="@color/accent">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_quiz"
-                        app:tint="@color/white" />
-                </FrameLayout>
-
                 <TextView
-                    android:id="@+id/quizzesCompleted"
+                    android:id="@+id/userPoints"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/secondary"
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TESTES"
+                    android:text="PONTOS"
                     android:textColor="@color/text_tertiary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -233,26 +205,12 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <FrameLayout
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/badge_background"
-                    android:backgroundTint="#FFB12B">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_star"
-                        app:tint="@color/white" />
-                </FrameLayout>
-
                 <TextView
                     android:id="@+id/streakDays"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/accent"
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
@@ -275,30 +233,14 @@
             android:paddingHorizontal="20dp"
             android:layout_marginBottom="40dp">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="18dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Minhas Conquistas"
-                    android:textColor="@color/text_primary"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ver todas"
-                    android:textColor="@color/primary"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:text="Minhas Conquistas"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="18dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/achievementsRecyclerView"
@@ -307,6 +249,92 @@
                 android:clipToPadding="false"
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_achievement" />
+        </LinearLayout>
+
+        <!-- ── Progresso Global ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:layout_marginBottom="40dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Progresso Global"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_glass_card"
+                android:padding="20dp"
+                android:orientation="vertical">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Curso LGPD"
+                        android:textColor="@color/text_primary"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/lessonsProgressText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0/10 aulas"
+                        android:textColor="@color/primary"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/lessonsProgressBar"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:progressDrawable="@drawable/progress_bar"
+                    android:progress="0" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="12dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Média nos Testes"
+                        android:textColor="@color/text_primary"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/averageScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textColor="@color/secondary"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/quizzesCompletedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/quizzesCompleted"
+                    android:visibility="gone"
+                    tools:text="0" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <!-- ── Seletor de Cores do Avatar ── -->
@@ -382,7 +410,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_shield_lock"
+                        android:src="@drawable/ic_check"
                         app:tint="@color/primary" />
                 </FrameLayout>
 
@@ -425,7 +453,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_shield_lock"
+                        android:src="@drawable/ic_check"
                         app:tint="@color/success" />
                 </FrameLayout>
 
@@ -460,13 +488,6 @@
             android:orientation="horizontal"
             android:paddingVertical="18dp">
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_clock"
-                app:tint="@color/error" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -482,11 +503,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="Versão 2.4.0 (Premium)"
+            android:text="Versão 2.5.0 (Premium)"
             android:textColor="@color/text_tertiary"
             android:textSize="12sp"
             android:textStyle="bold" />
 
-    </LinearLayout>
+        <!-- Progress Indicator Overlay (from ViewModel) -->
+        <ProgressBar
+            android:id="@+id/loadingIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
+    </LinearLayout>
 </ScrollView>

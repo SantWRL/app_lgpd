@@ -53,7 +53,10 @@ class LessonsFragment : Fragment() {
     private fun setupRecyclerView() {
         adapter = LessonsListAdapter { lesson ->
             viewModel.selectLesson(lesson)
-            findNavController().navigate(R.id.action_lessonsFragment_to_lessonDetailFragment)
+            val args = Bundle().apply {
+                putInt(LessonDetailFragment.ARG_LESSON_ID, lesson.id)
+            }
+            findNavController().navigate(R.id.action_lessonsFragment_to_lessonDetailFragment, args)
         }
 
         binding.lessonsRecyclerView.apply {

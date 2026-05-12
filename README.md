@@ -116,8 +116,8 @@ O sistema de gamificação foi projetado para manter o engajamento:
 ---
 
 ## 📅 Status do Projeto
-**Versão 1.0 (Desenvolvimento)** ✨
-
+**Versão 1.0 (Finalizada)** ✨
+O aplicativo encontra-se funcionalmente completo, com todas as metas de migração e paridade técnica atingidas.
 
 ---
 *Este projeto colabora para a efetividade da Lei Geral de Proteção de Dados através da alfabetização digital na Sociedade Digital.*

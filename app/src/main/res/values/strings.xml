@@ -24,6 +24,17 @@
     <string name="home_summary">Aprenda LGPD de forma prática: direitos, bases legais, segurança, dados sensíveis e cuidados no ambiente acadêmico.</string>
     <string name="home_lgpd_summary_title">LGPD em poucas palavras</string>
     <string name="home_lgpd_summary_text">A LGPD protege direitos fundamentais de liberdade, privacidade e desenvolvimento da personalidade. Ela regula o tratamento de dados pessoais em meios físicos e digitais, por organizações públicas ou privadas.</string>
+    
+    <string name="home_gdpr_title">A Inspiração: GDPR Europeia</string>
+    <string name="home_gdpr_text">A LGPD brasileira foi fortemente inspirada na GDPR (General Data Protection Regulation) da União Europeia. O objetivo é garantir um padrão global de segurança e privacidade, facilitando o comércio internacional e a proteção mútua.</string>
+    
+    <string name="home_legal_terms_title">Dicionário Jurídico Simplificado</string>
+    <string name="home_legal_terms_text">• Titular: Você, a pessoa física dona dos dados.\n• Controlador: A empresa ou órgão que decide o que fazer com seus dados.\n• Operador: Quem apenas executa o processamento a mando do controlador.\n• Tratamento: Qualquer ação (coletar, apagar, armazenar) feita com seus dados.</string>
+    
+    <string name="home_gov_link_title">Portal Oficial do Governo</string>
+    <string name="home_gov_link_text">A ANPD (Autoridade Nacional de Proteção de Dados) é o órgão do governo responsável por fiscalizar e orientar sobre a LGPD.</string>
+    <string name="button_gov_site">Acessar gov.br/anpd</string>
+
     <string name="home_quick_guide_title">O que você vai dominar</string>
     <string name="home_quick_guide_text">Identificar dados pessoais e sensíveis; reconhecer bases legais; exercer direitos do titular; entender papéis de controlador, operador e encarregado; aplicar boas práticas de segurança e prevenção de incidentes.</string>
     <string name="home_lessons">Aulas</string>
@@ -88,6 +99,12 @@
     <string name="profile_name_hint">Digite seu nome</string>
     <string name="profile_save_name">Salvar nome</string>
     <string name="profile_saved_name">Nome salvo com sucesso</string>
+    <string name="profile_bio_hint">Ex: Estudante de Ciência da Computação na UFPI…</string>
+    <string name="profile_save_bio">Salvar bio</string>
+    <string name="profile_bio_saved">Bio salva com sucesso</string>
+    <string name="profile_streak">dias seguidos</string>
+    <string name="profile_progress_trail">Progresso na trilha</string>
+    <string name="profile_change_type">Alterar tipo de perfil</string>
 
     <!-- Buttons -->
     <string name="button_continue">Continuar</string>
