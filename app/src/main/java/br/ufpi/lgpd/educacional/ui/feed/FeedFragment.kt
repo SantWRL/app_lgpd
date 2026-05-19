@@ -38,62 +38,53 @@ class FeedFragment : Fragment() {
     }
 
     private fun loadFeedData() {
+        // Dados estáticos iniciais caso a internet falhe
         val mockData = listOf(
             FeedPost(
                 id = 1,
-                authorName = "ANPD Oficial",
+                authorName = "Carregando Notícias...",
                 authorUsername = "@anpd_gov",
                 authorInitials = "A",
-                timeAgo = "2h",
-                content = "Proteção de Dados é tema de Fórum com Educadores Físicos e ANPD. Evento promovido teve por objetivo estreitar o diálogo. Gestão, ECA Digital e atuação dos encarregados também estavam entre os assuntos abordados.",
-                linkTitle = "Ler artigo completo no gov.br",
-                linkUrl = "https://www.gov.br/anpd/pt-br/assuntos/noticias/anpd-forum-confef",
-                commentsCount = 12,
-                repostsCount = 5,
-                likesCount = 48
-            ),
-            FeedPost(
-                id = 2,
-                authorName = "Guia da LGPD",
-                authorUsername = "@guia_lgpd",
-                authorInitials = "G",
-                timeAgo = "5h",
-                content = "Você sabia? A LGPD garante o direito de portabilidade dos seus dados. Isso significa que você pode solicitar que uma empresa envie suas informações para outra, de forma estruturada e legível.",
+                timeAgo = "Agora",
+                content = "Conectando ao portal Gov.br para buscar as atualizações mais recentes sobre a LGPD...",
                 linkTitle = null,
                 linkUrl = null,
-                commentsCount = 34,
-                repostsCount = 89,
-                likesCount = 312
-            ),
-            FeedPost(
-                id = 3,
-                authorName = "Professor Silva",
-                authorUsername = "@profsilva_law",
-                authorInitials = "S",
-                timeAgo = "1d",
-                content = "A diferença entre 'Dado Pessoal' e 'Dado Pessoal Sensível' é fundamental. O sensível (como biometria, religião, saúde) exige bases legais muito mais rigorosas para o tratamento. Fiquem atentos nas aulas do app!",
-                linkTitle = null,
-                linkUrl = null,
-                commentsCount = 8,
-                repostsCount = 15,
-                likesCount = 105
-            ),
-            FeedPost(
-                id = 4,
-                authorName = "Tech Privacy News",
-                authorUsername = "@techprivacybr",
-                authorInitials = "T",
-                timeAgo = "2d",
-                content = "Multas da ANPD começam a ser aplicadas a empresas de pequeno porte que ignoram a LGPD. A adaptação não é apenas para gigantes de tecnologia. Toda empresa que coleta dados precisa estar adequada.",
-                linkTitle = "Veja as últimas sanções aplicadas",
-                linkUrl = "https://www.gov.br/anpd/pt-br",
-                commentsCount = 56,
-                repostsCount = 112,
-                likesCount = 420
+                commentsCount = 0,
+                repostsCount = 0,
+                likesCount = 0
             )
         )
-        
         adapter.submitList(mockData)
+
+        // Extração em Tempo Real (Scraping com Threads e Semáforos)
+        NewsScraper.fetchNews(
+            onSuccess = { posts ->
+                // O resultado vem de uma Thread em background. Precisamos atualizar a UI na Main Thread.
+                activity?.runOnUiThread {
+                    adapter.submitList(posts)
+                }
+            },
+            onError = { exception ->
+                activity?.runOnUiThread {
+                    // Se falhar, adicionamos um post de erro com mock alternativo
+                    val errorData = mockData.toMutableList()
+                    errorData[0] = FeedPost(
+                        id = 1,
+                        authorName = "Erro de Conexão",
+                        authorUsername = "@sistema",
+                        authorInitials = "!",
+                        timeAgo = "Agora",
+                        content = "Não foi possível carregar as notícias em tempo real: ${exception.localizedMessage}. Verifique sua internet.",
+                        linkTitle = "Ir para o portal ANPD",
+                        linkUrl = "https://www.gov.br/anpd/pt-br",
+                        commentsCount = 0,
+                        repostsCount = 0,
+                        likesCount = 0
+                    )
+                    adapter.submitList(errorData)
+                }
+            }
+        )
     }
 
     override fun onDestroyView() {
