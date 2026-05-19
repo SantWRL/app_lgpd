@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TERMO"
-                android:textColor="@color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="26sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.08" />
@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Adivinhe a palavra da LGPD"
-                android:textColor="#E2E8F0"
+                android:textColor="@color/text_secondary"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6"
-                android:textColor="@color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -60,10 +60,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="tentativas"
-                android:textColor="#E2E8F0"
+                android:textColor="@color/text_secondary"
                 android:textSize="10sp" />
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Botão de Dica + Texto de dica -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="4dp">
+
+        <Button
+            android:id="@+id/btnHint"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:backgroundTint="@color/accent"
+            android:textColor="@color/text_on_primary"
+            android:text="💡 Pedir Dica"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:paddingHorizontal="14dp" />
+
+        <TextView
+            android:id="@+id/tvHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/accent"
+            android:textSize="13sp"
+            android:textStyle="italic"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -209,7 +242,7 @@
             android:id="@+id/tvDefinitionTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/text_primary"
             android:textSize="15sp"
             android:textStyle="bold"
             android:layout_marginBottom="4dp" />
@@ -218,7 +251,7 @@
             android:id="@+id/tvDefinition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#E2E8F0"
+            android:textColor="@color/text_secondary"
             android:textSize="13sp"
             android:lineSpacingExtra="3dp" />
 

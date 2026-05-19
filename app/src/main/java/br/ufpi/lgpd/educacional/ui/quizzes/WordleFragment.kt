@@ -31,11 +31,12 @@ class WordleFragment : Fragment() {
     private lateinit var cells: Array<Array<TextView>>
     private val keyMap = mutableMapOf<Char, Button>()
 
-    // Colors
-    private val colorCorrect  = Color.parseColor("#538D4E")  // green
-    private val colorPresent  = Color.parseColor("#B59F3B")  // yellow
-    private val colorAbsent   = Color.parseColor("#3A3A3C")  // dark grey
-    private val colorKey      = Color.parseColor("#0A2472")  // primary blue (unused key)
+    // Colors — paleta suave
+    private val colorCorrect  = Color.parseColor("#A6E3A1")  // green pastel
+    private val colorPresent  = Color.parseColor("#F9E2AF")  // yellow pastel
+    private val colorAbsent   = Color.parseColor("#45475A")  // surface variant
+    private val colorKey      = Color.parseColor("#89B4FA")  // primary pastel
+    private val colorTextDark = Color.parseColor("#11111B")  // texto escuro p/ contraste
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,6 +108,7 @@ class WordleFragment : Fragment() {
         binding.keyENTER.setOnClickListener { onEnter() }
         binding.keyDEL.setOnClickListener { onDelete() }
         binding.btnNewGame.setOnClickListener { startNewGame() }
+        binding.btnHint.setOnClickListener { showHint() }
     }
 
     // ── Start / Reset ────────────────────────────────────────────────────────
@@ -132,6 +134,16 @@ class WordleFragment : Fragment() {
         // Reset UI state
         binding.definitionCard.visibility = View.GONE
         binding.tvAttemptsLeft.text = "6"
+        binding.btnHint.visibility = View.VISIBLE
+        binding.tvHint.visibility = View.GONE
+    }
+
+    // ── Sistema de Dicas ──────────────────────────────────────────────────────
+    private fun showHint() {
+        val hint = "Dica: ${targetDefinition.take(60)}..."
+        binding.tvHint.text = hint
+        binding.tvHint.visibility = View.VISIBLE
+        binding.btnHint.visibility = View.GONE
     }
 
     // ── Input Handlers ───────────────────────────────────────────────────────
@@ -191,13 +203,17 @@ class WordleFragment : Fragment() {
             when (result[i]) {
                 2 -> {
                     cell.setBackgroundColor(colorCorrect)
+                    cell.setTextColor(colorTextDark)
                     keyBtn?.setBackgroundColor(colorCorrect)
+                    keyBtn?.setTextColor(colorTextDark)
                 }
                 1 -> {
                     cell.setBackgroundColor(colorPresent)
-                    // Only downgrade key if not already green
-                    if (keyBtn?.currentTextColor != colorCorrect)
+                    cell.setTextColor(colorTextDark)
+                    if (keyBtn?.currentTextColor != colorTextDark) {
                         keyBtn?.setBackgroundColor(colorPresent)
+                        keyBtn?.setTextColor(colorTextDark)
+                    }
                 }
                 else -> {
                     cell.setBackgroundColor(colorAbsent)
