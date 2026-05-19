@@ -66,22 +66,49 @@ class FeedFragment : Fragment() {
             },
             onError = { exception ->
                 activity?.runOnUiThread {
-                    // Se falhar, adicionamos um post de erro com mock alternativo
-                    val errorData = mockData.toMutableList()
-                    errorData[0] = FeedPost(
-                        id = 1,
-                        authorName = "Erro de Conexão",
-                        authorUsername = "@sistema",
-                        authorInitials = "!",
-                        timeAgo = "Agora",
-                        content = "Não foi possível carregar as notícias em tempo real: ${exception.localizedMessage}. Verifique sua internet.",
-                        linkTitle = "Ir para o portal ANPD",
-                        linkUrl = "https://www.gov.br/anpd/pt-br",
-                        commentsCount = 0,
-                        repostsCount = 0,
-                        likesCount = 0
+                    // Se falhar a extração na internet (Thread), usamos Semáforos/Threads para pelo menos exibir os mocks (Fallback em tempo real)
+                    val fallbackData = listOf(
+                        FeedPost(
+                            id = 1,
+                            authorName = "ANPD Oficial",
+                            authorUsername = "@anpd_gov",
+                            authorInitials = "A",
+                            timeAgo = "Agora",
+                            content = "Proteção de Dados é tema de Fórum com Educadores Físicos e ANPD. Evento promovido teve por objetivo estreitar o diálogo. Gestão, ECA Digital e atuação dos encarregados também estavam entre os assuntos abordados.",
+                            linkTitle = "Ler artigo completo no gov.br",
+                            linkUrl = "https://www.gov.br/anpd/pt-br/assuntos/noticias/anpd-forum-confef",
+                            commentsCount = 12,
+                            repostsCount = 5,
+                            likesCount = 48
+                        ),
+                        FeedPost(
+                            id = 2,
+                            authorName = "Sistema Offline",
+                            authorUsername = "@alerta",
+                            authorInitials = "!",
+                            timeAgo = "1m",
+                            content = "Conexão com a ANPD falhou ou está lenta (${exception.localizedMessage}). Exibindo feed armazenado localmente.",
+                            linkTitle = null,
+                            linkUrl = null,
+                            commentsCount = 0,
+                            repostsCount = 0,
+                            likesCount = 0
+                        ),
+                        FeedPost(
+                            id = 3,
+                            authorName = "Guia da LGPD",
+                            authorUsername = "@guia_lgpd",
+                            authorInitials = "G",
+                            timeAgo = "5h",
+                            content = "Você sabia? A LGPD garante o direito de portabilidade dos seus dados. Isso significa que você pode solicitar que uma empresa envie suas informações para outra, de forma estruturada e legível.",
+                            linkTitle = null,
+                            linkUrl = null,
+                            commentsCount = 34,
+                            repostsCount = 89,
+                            likesCount = 312
+                        )
                     )
-                    adapter.submitList(errorData)
+                    adapter.submitList(fallbackData)
                 }
             }
         )

@@ -23,8 +23,14 @@ object NewsScraper {
                 // Tenta adquirir a permissão do semáforo. Bloqueia a thread se já estiver em uso.
                 semaphore.acquire()
                 
-                // Conecta e baixa o HTML da página
-                val doc = Jsoup.connect(URL).timeout(15000).get()
+                // Conecta e baixa o HTML da página (com User-Agent para não ser bloqueado por firewalls do gov)
+                val doc = Jsoup.connect(URL)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                    .ignoreHttpErrors(true)
+                    .sslSocketFactory(null) // Para evitar erros de certificado antigos, se houver
+                    .timeout(20000)
+                    .get()
                 
                 val posts = mutableListOf<FeedPost>()
                 
@@ -32,8 +38,11 @@ object NewsScraper {
                 // Ou 'a.summary.url'. Vamos tentar capturar links de notícias:
                 val elements = doc.select("a.summary.url")
                 
-                // Fallback: se não achar 'a.summary.url', tenta pegar links de h2
-                val items = if (elements.isNotEmpty()) elements else doc.select("h2 a")
+                // Fallback: se não achar 'a.summary.url', tenta pegar links de h2 ou links dentro de article
+                var items = if (elements.isNotEmpty()) elements else doc.select("h2 a")
+                if (items.isEmpty()) {
+                    items = doc.select("article a")
+                }
 
                 for ((index, item) in items.withIndex()) {
                     if (index >= 20) break // Limita aos 20 itens mais recentes
