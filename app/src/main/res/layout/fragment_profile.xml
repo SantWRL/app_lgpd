@@ -327,10 +327,9 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/quizzesCompletedText"
+                    android:id="@+id/quizzesCompleted"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/quizzesCompleted"
                     android:visibility="gone"
                     tools:text="0" />
 
@@ -345,27 +344,184 @@
             android:paddingHorizontal="20dp"
             android:layout_marginBottom="36dp">
 
-            <TextView
+            <!-- Título + instrução -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cor do Perfil"
-                android:textColor="@color/text_primary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp">
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cor do Perfil"
+                        android:textColor="@color/text_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Toque para personalizar seu avatar"
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Linha 1 de cores -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="12dp">
+
+                <!-- Índigo -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+                    <View
+                        android:id="@+id/color0"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_avatar_circle"
+                        android:backgroundTint="@color/avatar_indigo"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:elevation="2dp" />
+                </FrameLayout>
+
+                <!-- Cyan -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+                    <View
+                        android:id="@+id/color1"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_avatar_circle"
+                        android:backgroundTint="@color/avatar_cyan"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:elevation="2dp" />
+                </FrameLayout>
+
+                <!-- Esmeralda -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+                    <View
+                        android:id="@+id/color2"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_avatar_circle"
+                        android:backgroundTint="@color/avatar_emerald"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:elevation="2dp" />
+                </FrameLayout>
+
+                <!-- Âmbar -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+                    <View
+                        android:id="@+id/color3"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_avatar_circle"
+                        android:backgroundTint="@color/avatar_amber"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:elevation="2dp" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <!-- Linha 2 de cores -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center">
 
-                <View android:id="@+id/color0" android:layout_width="40dp" android:layout_height="40dp" android:layout_margin="6dp" android:background="@drawable/bg_avatar_circle" android:backgroundTint="#4F46E5" android:clickable="true" />
-                <View android:id="@+id/color1" android:layout_width="40dp" android:layout_height="40dp" android:layout_margin="6dp" android:background="@drawable/bg_avatar_circle" android:backgroundTint="#10B981" android:clickable="true" />
-                <View android:id="@+id/color2" android:layout_width="40dp" android:layout_height="40dp" android:layout_margin="6dp" android:background="@drawable/bg_avatar_circle" android:backgroundTint="#F59E0B" android:clickable="true" />
-                <View android:id="@+id/color3" android:layout_width="40dp" android:layout_height="40dp" android:layout_margin="6dp" android:background="@drawable/bg_avatar_circle" android:backgroundTint="#EF4444" android:clickable="true" />
-                <View android:id="@+id/color4" android:layout_width="40dp" android:layout_height="40dp" android:layout_margin="6dp" android:background="@drawable/bg_avatar_circle" android:backgroundTint="#8B5CF6" android:clickable="true" />
-                <View android:id="@+id/color5" android:layout_width="40dp" android:layout_height="40dp" android:layout_margin="6dp" android:background="@drawable/bg_avatar_circle" android:backgroundTint="#EC4899" android:clickable="true" />
+                <!-- Rosa/Vermelho -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+                    <View
+                        android:id="@+id/color4"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_avatar_circle"
+                        android:backgroundTint="@color/avatar_rose"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:elevation="2dp" />
+                </FrameLayout>
+
+                <!-- Violeta -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+                    <View
+                        android:id="@+id/color5"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_avatar_circle"
+                        android:backgroundTint="@color/avatar_violet"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:elevation="2dp" />
+                </FrameLayout>
+
+                <!-- Fúcsia -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+                    <View
+                        android:id="@+id/color6"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_avatar_circle"
+                        android:backgroundTint="@color/avatar_fuchsia"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:elevation="2dp" />
+                </FrameLayout>
+
+                <!-- Coral -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+                    <View
+                        android:id="@+id/color7"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_avatar_circle"
+                        android:backgroundTint="@color/avatar_coral"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:elevation="2dp" />
+                </FrameLayout>
 
             </LinearLayout>
         </LinearLayout>

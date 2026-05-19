@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Colors (app-lei Deep Navy) -->
-    <color name="primary">#0A2472</color>
-    <color name="primary_dark">#001A5E</color>
-    <color name="primary_light">#F0F5FF</color>
+    <!-- ── Primary Colors (Deep Navy/Indigo) ── -->
+    <color name="primary">#1A237E</color>
+    <color name="primary_dark">#0D1B6E</color>
+    <color name="primary_light">#E8EAF6</color>
 
-    <!-- Secondary Colors (app-lei Tech Blue) -->
-    <color name="secondary">#007BFF</color>
-    <color name="secondary_dark">#0056B3</color>
-    <color name="secondary_light">#E6F2FF</color>
+    <!-- ── Secondary Colors (Vibrant Cyan/Blue) ── -->
+    <color name="secondary">#0288D1</color>
+    <color name="secondary_dark">#01579B</color>
+    <color name="secondary_light">#E1F5FE</color>
 
-    <!-- Accent / Purple (app-lei Violet) -->
-    <color name="accent">#8B5CF6</color>
-    <color name="accent_dark">#6D28D9</color>
-    <color name="accent_light">#F5F3FF</color>
+    <!-- ── Accent / Purple (Vivid Violet) ── -->
+    <color name="accent">#7C3AED</color>
+    <color name="accent_dark">#5B21B6</color>
+    <color name="accent_light">#EDE9FE</color>
 
-    <!-- Semantic Colors from app-lei -->
-    <color name="success">#10B981</color>
-    <color name="success_light">#ECFDF5</color>
-    <color name="error">#EF4444</color>
-    <color name="error_light">#FEF2F2</color>
-    <color name="warning">#F59E0B</color>
-    <color name="warning_light">#FFFBEB</color>
-    <color name="info">#3B82F6</color>
+    <!-- ── Semantic Colors ── -->
+    <color name="success">#059669</color>
+    <color name="success_light">#D1FAE5</color>
+    <color name="error">#DC2626</color>
+    <color name="error_light">#FEE2E2</color>
+    <color name="warning">#D97706</color>
+    <color name="warning_light">#FEF3C7</color>
+    <color name="info">#0284C7</color>
 
-    <!-- Duolingo Inspired Palette (Auxiliary) -->
+    <!-- ── Duolingo-inspired Palette ── -->
     <color name="duo_green">#58CC02</color>
     <color name="duo_green_dark">#46A302</color>
     <color name="duo_blue">#1CB0F6</color>
@@ -36,22 +36,37 @@
     <color name="duo_gray">#AFAFAF</color>
     <color name="duo_gray_dark">#828282</color>
 
-    <!-- Neutral Colors -->
+    <!-- ── Neutral ── -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    
-    <!-- Background and Surface -->
-    <color name="background">#F8FAFC</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="surface_variant">#F1F5F9</color>
 
-    <!-- Text from app-lei -->
+    <!-- ── Background &amp; Surface ── -->
+    <color name="background">#F1F4F9</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#EEF2F7</color>
+    <color name="surface_dark">#1E2A4A</color>
+
+    <!-- ── Text ── -->
     <color name="text_primary">#0F172A</color>
     <color name="text_secondary">#475569</color>
     <color name="text_tertiary">#94A3B8</color>
     <color name="text_on_primary">#FFFFFF</color>
 
-    <!-- Border -->
-    <color name="border">#E2E8F0</color>
-    <color name="border_light">#F8FAFC</color>
+    <!-- ── Border ── -->
+    <color name="border">#DDE3EE</color>
+    <color name="border_light">#F1F4F9</color>
+
+    <!-- ── Aliases de compatibilidade (drawables legados) ── -->
+    <color name="gray_200">#DDE3EE</color>
+    <color name="gray_300">#CBD5E1</color>
+
+    <!-- ── Avatar Palette (Color Picker) ── -->
+    <color name="avatar_indigo">#4F46E5</color>
+    <color name="avatar_cyan">#0891B2</color>
+    <color name="avatar_emerald">#059669</color>
+    <color name="avatar_amber">#D97706</color>
+    <color name="avatar_rose">#E11D48</color>
+    <color name="avatar_violet">#7C3AED</color>
+    <color name="avatar_fuchsia">#C026D3</color>
+    <color name="avatar_coral">#EA580C</color>
 </resources>

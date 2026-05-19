@@ -2,27 +2,30 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="180dp"
-    android:layout_height="160dp"
-    android:layout_marginHorizontal="6dp"
+    android:layout_width="170dp"
+    android:layout_height="170dp"
+    android:layout_marginEnd="12dp"
     android:layout_marginVertical="4dp"
-    app:cardBackgroundColor="#33FFFFFF"
-    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="#2A1A237E"
+    app:cardCornerRadius="20dp"
     app:cardElevation="0dp"
-    app:strokeWidth="0dp">
+    app:strokeColor="#33FFFFFF"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="14dp">
+        android:padding="16dp">
 
+        <!-- Icon Container -->
         <FrameLayout
             android:id="@+id/achievementIconContainer"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/badge_background">
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/badge_background"
+            android:backgroundTint="#40FFFFFF">
 
             <TextView
                 android:id="@+id/achievementEmoji"
@@ -30,11 +33,12 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="⭐"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 tools:ignore="HardcodedText" />
 
         </FrameLayout>
 
+        <!-- Title -->
         <TextView
             android:id="@+id/achievementName"
             android:layout_width="match_parent"
@@ -43,10 +47,12 @@
             android:maxLines="2"
             android:text="Primeiro passo"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold"
+            android:lineSpacingExtra="2dp"
             tools:text="Guardião dos dados" />
 
+        <!-- Description -->
         <TextView
             android:id="@+id/achievementDescription"
             android:layout_width="match_parent"
@@ -56,17 +62,22 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="Concluiu a introdução à LGPD."
-            android:textColor="#E2E8F0"
-            android:textSize="12sp"
+            android:textColor="#B0C4DE"
+            android:textSize="11sp"
             tools:text="Aprendeu a identificar dados pessoais e sensíveis." />
 
+        <!-- Status badge -->
         <TextView
             android:id="@+id/achievementStatus"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/badge_background"
+            android:backgroundTint="#40FFFFFF"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="3dp"
             android:text="Desbloqueada"
-            android:textColor="#CBD5E1"
-            android:textSize="11sp"
+            android:textColor="#A5F3FC"
+            android:textSize="10sp"
             android:textStyle="bold"
             tools:text="Em progresso" />
 

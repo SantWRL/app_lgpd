@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Subtle bottom shadow -->
+    <item
+        android:top="4dp"
+        android:left="2dp"
+        android:right="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#1A000000" />
+            <corners android:radius="26dp" />
+        </shape>
+    </item>
+    <!-- White outer ring -->
+    <item android:bottom="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface" />
+            <corners android:radius="26dp" />
+        </shape>
+    </item>
+    <!-- Gradient fill -->
+    <item
+        android:left="3dp"
+        android:top="3dp"
+        android:right="3dp"
+        android:bottom="7dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="@color/secondary"
+                android:endColor="@color/secondary_dark"
+                android:angle="135" />
+            <corners android:radius="23dp" />
+        </shape>
+    </item>
+</layer-list>

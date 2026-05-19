@@ -36,7 +36,14 @@ class ProfileFragment : Fragment() {
     private lateinit var achievementAdapter: AchievementAdapter
 
     private val avatarColors = listOf(
-        "#4F46E5", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#EC4899"
+        "#4F46E5", // avatar_indigo
+        "#0891B2", // avatar_cyan
+        "#059669", // avatar_emerald
+        "#D97706", // avatar_amber
+        "#E11D48", // avatar_rose
+        "#7C3AED", // avatar_violet
+        "#C026D3", // avatar_fuchsia
+        "#EA580C"  // avatar_coral
     )
 
     override fun onCreateView(
@@ -106,8 +113,8 @@ class ProfileFragment : Fragment() {
 
     private fun setupColorSelector() {
         val colorViews = listOf(
-            binding.color0, binding.color1, binding.color2,
-            binding.color3, binding.color4, binding.color5
+            binding.color0, binding.color1, binding.color2, binding.color3,
+            binding.color4, binding.color5, binding.color6, binding.color7
         )
         colorViews.forEachIndexed { index, view ->
             view.setOnClickListener {
@@ -188,13 +195,18 @@ class ProfileFragment : Fragment() {
 
     private fun highlightSelectedColor(selectedIndex: Int) {
         val colorViews = listOf(
-            binding.color0, binding.color1, binding.color2,
-            binding.color3, binding.color4, binding.color5
+            binding.color0, binding.color1, binding.color2, binding.color3,
+            binding.color4, binding.color5, binding.color6, binding.color7
         )
         colorViews.forEachIndexed { index, view ->
-            view.alpha = if (index == selectedIndex) 1f else 0.4f
-            view.scaleX = if (index == selectedIndex) 1.25f else 1f
-            view.scaleY = if (index == selectedIndex) 1.25f else 1f
+            val isSelected = index == selectedIndex
+            view.animate()
+                .scaleX(if (isSelected) 1.20f else 1f)
+                .scaleY(if (isSelected) 1.20f else 1f)
+                .alpha(if (isSelected) 1f else 0.5f)
+                .setDuration(200)
+                .start()
+            view.elevation = if (isSelected) 8f else 2f
         }
     }
 

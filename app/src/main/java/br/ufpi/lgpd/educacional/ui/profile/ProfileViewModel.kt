@@ -36,9 +36,16 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    // Espelha ACHIEVEMENTS_LIST do UserProgressContext.tsx
+    // Paleta de cores do avatar — sincronizada com colors.xml (avatar_*)
     private val avatarColors = listOf(
-        "#4F46E5", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#EC4899"
+        "#4F46E5", // indigo
+        "#0891B2", // cyan
+        "#059669", // emerald
+        "#D97706", // amber
+        "#E11D48", // rose
+        "#7C3AED", // violet
+        "#C026D3", // fuchsia
+        "#EA580C"  // coral
     )
 
     init {

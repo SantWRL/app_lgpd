@@ -10,6 +10,8 @@
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorSecondaryContainer">@color/secondary_light</item>
         <item name="colorOnSecondaryContainer">@color/secondary_dark</item>
+        <item name="colorTertiary">@color/accent</item>
+        <item name="colorOnTertiary">@color/white</item>
         <item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="colorSurfaceVariant">@color/surface_variant</item>
@@ -22,6 +24,7 @@
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
         <item name="android:fontFamily">sans-serif</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="TextAppearance.LGPD.ToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
@@ -94,10 +97,10 @@
     </style>
 
     <style name="WordleKey">
-        <item name="android:layout_width">30dp</item>
-        <item name="android:layout_height">42dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">44dp</item>
         <item name="android:layout_marginHorizontal">2dp</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:backgroundTint">@color/primary</item>
@@ -105,6 +108,7 @@
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:elevation">2dp</item>
     </style>
 
     <style name="WordleKeyWide" parent="WordleKey">
@@ -147,6 +151,7 @@
         <item name="android:background">@drawable/badge_background</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textColor">@color/primary</item>
+        <item name="android:elevation">2dp</item>
     </style>
 
 </resources>
