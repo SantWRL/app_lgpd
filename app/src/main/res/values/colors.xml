@@ -19,14 +19,15 @@
 
     <color name="text_primary">#CDD6F4</color>
     <color name="text_secondary">#A6ADC8</color>
+    <color name="text_tertiary">#7F849C</color>
     <color name="text_on_primary">#11111B</color>
 
     <color name="error">#F38BA8</color>
     <color name="success">#A6E3A1</color>
+    <color name="success_light">#D2F1D0</color>
     <color name="warning">#F9E2AF</color>
 
     <!-- ── Botões / Navegação ── -->
-    <color name="bottom_nav_selector">#CDD6F4</color>
     <color name="btn_bg">#45475A</color>
     <color name="btn_text">#CDD6F4</color>
 
