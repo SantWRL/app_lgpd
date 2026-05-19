@@ -36,15 +36,11 @@ class ProfileFragment : Fragment() {
     private lateinit var achievementAdapter: AchievementAdapter
 
     private val avatarColors = listOf(
-        "#4F46E5", // avatar_indigo
-        "#0891B2", // avatar_cyan
-        "#059669", // avatar_emerald
-        "#D97706", // avatar_amber
-        "#E11D48", // avatar_rose
-        "#7C3AED", // avatar_violet
-        "#C026D3", // avatar_fuchsia
-        "#EA580C"  // avatar_coral
+        "#89B4FA", "#89DCEB", "#A6E3A1", "#F9E2AF",
+        "#F38BA8", "#CBA6F7", "#F5C2E7", "#FAB387"
     )
+
+    private val avatarEmojis = listOf("🦊", "🐱", "🐶", "🐼", "🦁", "🐸", "🦉", "🐺")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -175,7 +171,11 @@ class ProfileFragment : Fragment() {
             quizzesCompleted.text = profile.quizzesCompleted.toString()
             averageScore.text = "%.1f%%".format(profile.averageScore)
             streakDays.text = profile.streakDays.toString()
-            avatarInitials.text = userPreferences.getInitials(profile.name)
+            
+            // Avatar: exibe o emoji do animal selecionado
+            val emoji = avatarEmojis.getOrElse(profile.avatarColorIndex) { "🦊" }
+            avatarInitials.text = emoji
+            avatarInitials.textSize = 42f
             
             // Cor do avatar
             try {

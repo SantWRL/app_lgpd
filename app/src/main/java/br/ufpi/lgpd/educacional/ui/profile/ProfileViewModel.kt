@@ -36,17 +36,20 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    // Paleta de cores do avatar — sincronizada com colors.xml (avatar_*)
-    private val avatarColors = listOf(
-        "#4F46E5", // indigo
-        "#0891B2", // cyan
-        "#059669", // emerald
-        "#D97706", // amber
-        "#E11D48", // rose
-        "#7C3AED", // violet
-        "#C026D3", // fuchsia
-        "#EA580C"  // coral
+    // Paleta de cores do avatar — sincronizada com colors.xml (avatar_*) — tons pastéis
+    val avatarColors = listOf(
+        "#89B4FA", // indigo pastel
+        "#89DCEB", // cyan pastel
+        "#A6E3A1", // emerald pastel
+        "#F9E2AF", // amber pastel
+        "#F38BA8", // rose pastel
+        "#CBA6F7", // violet pastel
+        "#F5C2E7", // fuchsia pastel
+        "#FAB387"  // coral pastel
     )
+
+    // Emojis de animais para personalização do avatar
+    val avatarEmojis = listOf("🦊", "🐱", "🐶", "🐼", "🦁", "🐸", "🦉", "🐺")
 
     init {
         viewModelScope.launch {
@@ -139,7 +142,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         name = "Usuário", email = "", bio = "",
         profileType = "student", level = 1, totalPoints = 0,
         lessonsCompleted = 0, quizzesCompleted = 0, averageScore = 0.0,
-        streakDays = 0, avatarColor = "#4F46E5", avatarColorIndex = 0
+        streakDays = 0, avatarColor = "#89B4FA", avatarColorIndex = 0
     )
 
     private fun buildAchievements(user: User): List<AchievementItem> {

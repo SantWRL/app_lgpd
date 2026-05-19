@@ -336,7 +336,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- ── Seletor de Cores do Avatar ── -->
+        <!-- ── Seletor de Avatar (Animais + Cores Pastéis) ── -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -361,7 +361,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cor do Perfil"
+                        android:text="Escolha seu Avatar"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -370,7 +370,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Toque para personalizar seu avatar"
+                        android:text="Toque em um animal para personalizar"
                         android:textColor="@color/text_tertiary"
                         android:textSize="12sp" />
 
@@ -378,7 +378,7 @@
 
             </LinearLayout>
 
-            <!-- Linha 1 de cores -->
+            <!-- Linha 1: 4 avatares -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -386,142 +386,278 @@
                 android:gravity="center"
                 android:layout_marginBottom="12dp">
 
-                <!-- Índigo -->
-                <FrameLayout
-                    android:layout_width="wrap_content"
+                <!-- 🦊 Raposa -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
-                    <View
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_margin="4dp">
+                    <FrameLayout
                         android:id="@+id/color0"
-                        android:layout_width="52dp"
-                        android:layout_height="52dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_avatar_circle"
                         android:backgroundTint="@color/avatar_indigo"
                         android:clickable="true"
                         android:focusable="true"
-                        android:elevation="2dp" />
-                </FrameLayout>
+                        android:elevation="2dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="🦊"
+                            android:textSize="28sp" />
+                    </FrameLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Raposa"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
 
-                <!-- Cyan -->
-                <FrameLayout
-                    android:layout_width="wrap_content"
+                <!-- 🐱 Gato -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
-                    <View
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_margin="4dp">
+                    <FrameLayout
                         android:id="@+id/color1"
-                        android:layout_width="52dp"
-                        android:layout_height="52dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_avatar_circle"
                         android:backgroundTint="@color/avatar_cyan"
                         android:clickable="true"
                         android:focusable="true"
-                        android:elevation="2dp" />
-                </FrameLayout>
+                        android:elevation="2dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="🐱"
+                            android:textSize="28sp" />
+                    </FrameLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Gato"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
 
-                <!-- Esmeralda -->
-                <FrameLayout
-                    android:layout_width="wrap_content"
+                <!-- 🐶 Cachorro -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
-                    <View
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_margin="4dp">
+                    <FrameLayout
                         android:id="@+id/color2"
-                        android:layout_width="52dp"
-                        android:layout_height="52dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_avatar_circle"
                         android:backgroundTint="@color/avatar_emerald"
                         android:clickable="true"
                         android:focusable="true"
-                        android:elevation="2dp" />
-                </FrameLayout>
+                        android:elevation="2dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="🐶"
+                            android:textSize="28sp" />
+                    </FrameLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Cachorro"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
 
-                <!-- Âmbar -->
-                <FrameLayout
-                    android:layout_width="wrap_content"
+                <!-- 🐼 Panda -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
-                    <View
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_margin="4dp">
+                    <FrameLayout
                         android:id="@+id/color3"
-                        android:layout_width="52dp"
-                        android:layout_height="52dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_avatar_circle"
                         android:backgroundTint="@color/avatar_amber"
                         android:clickable="true"
                         android:focusable="true"
-                        android:elevation="2dp" />
-                </FrameLayout>
+                        android:elevation="2dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="🐼"
+                            android:textSize="28sp" />
+                    </FrameLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Panda"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Linha 2 de cores -->
+            <!-- Linha 2: 4 avatares -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center">
 
-                <!-- Rosa/Vermelho -->
-                <FrameLayout
-                    android:layout_width="wrap_content"
+                <!-- 🦁 Leão -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
-                    <View
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_margin="4dp">
+                    <FrameLayout
                         android:id="@+id/color4"
-                        android:layout_width="52dp"
-                        android:layout_height="52dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_avatar_circle"
                         android:backgroundTint="@color/avatar_rose"
                         android:clickable="true"
                         android:focusable="true"
-                        android:elevation="2dp" />
-                </FrameLayout>
+                        android:elevation="2dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="🦁"
+                            android:textSize="28sp" />
+                    </FrameLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Leão"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
 
-                <!-- Violeta -->
-                <FrameLayout
-                    android:layout_width="wrap_content"
+                <!-- 🐸 Sapo -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
-                    <View
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_margin="4dp">
+                    <FrameLayout
                         android:id="@+id/color5"
-                        android:layout_width="52dp"
-                        android:layout_height="52dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_avatar_circle"
                         android:backgroundTint="@color/avatar_violet"
                         android:clickable="true"
                         android:focusable="true"
-                        android:elevation="2dp" />
-                </FrameLayout>
+                        android:elevation="2dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="🐸"
+                            android:textSize="28sp" />
+                    </FrameLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Sapo"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
 
-                <!-- Fúcsia -->
-                <FrameLayout
-                    android:layout_width="wrap_content"
+                <!-- 🦉 Coruja -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
-                    <View
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_margin="4dp">
+                    <FrameLayout
                         android:id="@+id/color6"
-                        android:layout_width="52dp"
-                        android:layout_height="52dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_avatar_circle"
                         android:backgroundTint="@color/avatar_fuchsia"
                         android:clickable="true"
                         android:focusable="true"
-                        android:elevation="2dp" />
-                </FrameLayout>
+                        android:elevation="2dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="🦉"
+                            android:textSize="28sp" />
+                    </FrameLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Coruja"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
 
-                <!-- Coral -->
-                <FrameLayout
-                    android:layout_width="wrap_content"
+                <!-- 🐺 Lobo -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
-                    <View
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_margin="4dp">
+                    <FrameLayout
                         android:id="@+id/color7"
-                        android:layout_width="52dp"
-                        android:layout_height="52dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_avatar_circle"
                         android:backgroundTint="@color/avatar_coral"
                         android:clickable="true"
                         android:focusable="true"
-                        android:elevation="2dp" />
-                </FrameLayout>
+                        android:elevation="2dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="🐺"
+                            android:textSize="28sp" />
+                    </FrameLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Lobo"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
