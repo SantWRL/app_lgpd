@@ -1,6 +1,5 @@
 package br.ufpi.lgpd.educacional.ui.quizzes
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.databinding.FragmentWordleBinding
@@ -30,13 +30,6 @@ class WordleFragment : Fragment() {
     // ── All cells and key buttons ───────────────────────────────────────────
     private lateinit var cells: Array<Array<TextView>>
     private val keyMap = mutableMapOf<Char, Button>()
-
-    // Colors — paleta suave
-    private val colorCorrect  = Color.parseColor("#A6E3A1")  // green pastel
-    private val colorPresent  = Color.parseColor("#F9E2AF")  // yellow pastel
-    private val colorAbsent   = Color.parseColor("#45475A")  // surface variant
-    private val colorKey      = Color.parseColor("#89B4FA")  // primary pastel
-    private val colorTextDark = Color.parseColor("#11111B")  // texto escuro p/ contraste
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -120,17 +113,25 @@ class WordleFragment : Fragment() {
         currentCol = 0
         guessLetters.forEach { it.fill(' ') }
 
-        // Reset cells
+        // Reset cells — use drawable for rounded corners
         cells.forEach { row ->
             row.forEach { cell ->
                 cell.text = ""
                 cell.setBackgroundResource(R.drawable.bg_wordle_cell_empty)
+                cell.setTextColor(ContextCompat.getColor(requireContext(), R.color.wordle_text_light))
             }
         }
-        // Reset keys
+        // Reset keys — use drawable for rounded corners
         keyMap.values.forEach { btn ->
-            btn.backgroundTintList = requireContext().getColorStateList(R.color.primary)
+            btn.setBackgroundResource(R.drawable.bg_wordle_key)
+            btn.setTextColor(ContextCompat.getColor(requireContext(), R.color.wordle_text_light))
         }
+        // Reset action keys
+        binding.keyENTER.setBackgroundResource(R.drawable.bg_wordle_key_action)
+        binding.keyENTER.setTextColor(ContextCompat.getColor(requireContext(), R.color.wordle_text_dark))
+        binding.keyDEL.setBackgroundResource(R.drawable.bg_wordle_key_action)
+        binding.keyDEL.setTextColor(ContextCompat.getColor(requireContext(), R.color.wordle_text_dark))
+
         // Reset UI state
         binding.definitionCard.visibility = View.GONE
         binding.tvAttemptsLeft.text = "6"
@@ -196,28 +197,39 @@ class WordleFragment : Fragment() {
             }
         }
 
-        // Apply colors to cells and keyboard
+        val colorTextDark = ContextCompat.getColor(requireContext(), R.color.wordle_text_dark)
+        val colorTextLight = ContextCompat.getColor(requireContext(), R.color.wordle_text_light)
+
+        // Apply drawable backgrounds to cells and keyboard (preserves rounded corners)
         for (i in 0..4) {
             val cell = cells[currentRow][i]
             val keyBtn = keyMap[guessChars[i]]
             when (result[i]) {
                 2 -> {
-                    cell.setBackgroundColor(colorCorrect)
+                    cell.setBackgroundResource(R.drawable.bg_wordle_cell_correct)
                     cell.setTextColor(colorTextDark)
-                    keyBtn?.setBackgroundColor(colorCorrect)
+                    keyBtn?.setBackgroundResource(R.drawable.bg_wordle_key_correct)
                     keyBtn?.setTextColor(colorTextDark)
                 }
                 1 -> {
-                    cell.setBackgroundColor(colorPresent)
+                    cell.setBackgroundResource(R.drawable.bg_wordle_cell_present)
                     cell.setTextColor(colorTextDark)
-                    if (keyBtn?.currentTextColor != colorTextDark) {
-                        keyBtn?.setBackgroundColor(colorPresent)
+                    // Only upgrade key color if not already correct (green)
+                    if (keyBtn?.background?.constantState !=
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_wordle_key_correct)?.constantState) {
+                        keyBtn?.setBackgroundResource(R.drawable.bg_wordle_key_present)
                         keyBtn?.setTextColor(colorTextDark)
                     }
                 }
                 else -> {
-                    cell.setBackgroundColor(colorAbsent)
-                    keyBtn?.setBackgroundColor(colorAbsent)
+                    cell.setBackgroundResource(R.drawable.bg_wordle_cell_absent)
+                    cell.setTextColor(colorTextLight)
+                    // Only downgrade key color if still default
+                    if (keyBtn?.background?.constantState ==
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_wordle_key)?.constantState) {
+                        keyBtn?.setBackgroundResource(R.drawable.bg_wordle_key_absent)
+                        keyBtn?.setTextColor(colorTextLight)
+                    }
                 }
             }
         }
