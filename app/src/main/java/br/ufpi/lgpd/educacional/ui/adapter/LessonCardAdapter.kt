@@ -39,7 +39,7 @@ class LessonCardAdapter(
             binding.apply {
                 lessonTitle.text = lesson.title
                 
-                lessonTime.text = "${lesson.estimatedTime}m"
+                lessonDuration.text = "${lesson.estimatedTime} min"
                 
                 val (difficultyLabel, difficultyColor) = when (lesson.difficulty) {
                     "BEGINNER" -> "Iniciante" to Color.parseColor("#0F766E")
@@ -47,8 +47,8 @@ class LessonCardAdapter(
                     "ADVANCED" -> "Avançado" to Color.parseColor("#DC2626")
                     else -> lesson.difficulty to Color.parseColor("#64748B")
                 }
-                difficultyBadge.backgroundTintList = ColorStateList.valueOf(difficultyColor)
-                difficultyBadge.text = difficultyLabel
+                lessonDifficultyChip.backgroundTintList = ColorStateList.valueOf(difficultyColor)
+                lessonDifficultyChip.text = difficultyLabel
                 
                 root.setOnClickListener {
                     onLessonClick(lesson)

@@ -39,7 +39,7 @@ class QuizCardAdapter(
             binding.apply {
                 quizTitle.text = quiz.title
                 
-                quizQuestions.text = "${quiz.totalQuestions} perg."
+                quizQuestionsCount.text = "${quiz.totalQuestions} Questões"
                 
                 val (difficultyLabel, difficultyColor) = when (quiz.difficulty) {
                     "BEGINNER" -> "Iniciante" to Color.parseColor("#0F766E")
@@ -47,8 +47,8 @@ class QuizCardAdapter(
                     "ADVANCED" -> "Avançado" to Color.parseColor("#DC2626")
                     else -> quiz.difficulty to Color.parseColor("#64748B")
                 }
-                difficultyBadge.backgroundTintList = ColorStateList.valueOf(difficultyColor)
-                difficultyBadge.text = difficultyLabel
+                quizCategoryChip.backgroundTintList = ColorStateList.valueOf(difficultyColor)
+                quizCategoryChip.text = difficultyLabel
                 
                 root.setOnClickListener {
                     onQuizClick(quiz)

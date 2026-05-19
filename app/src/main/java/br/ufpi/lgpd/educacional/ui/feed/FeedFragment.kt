@@ -64,7 +64,7 @@ class FeedFragment : Fragment() {
                     adapter.submitList(posts)
                 }
             },
-            onError = { exception ->
+            onError = { _ ->
                 activity?.runOnUiThread {
                     // Se falhar a extração na internet (Thread), usamos Semáforos/Threads para pelo menos exibir os mocks (Fallback em tempo real)
                     val fallbackData = listOf(
