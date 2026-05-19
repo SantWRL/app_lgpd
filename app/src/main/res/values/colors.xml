@@ -1,72 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- ── Primary Colors (Deep Navy/Indigo) ── -->
-    <color name="primary">#1A237E</color>
-    <color name="primary_dark">#0D1B6E</color>
-    <color name="primary_light">#E8EAF6</color>
+    <color name="primary">#89B4FA</color>
+    <color name="primary_light">#B4CAFB</color>
+    <color name="primary_dark">#749CE0</color>
 
-    <!-- ── Secondary Colors (Vibrant Cyan/Blue) ── -->
-    <color name="secondary">#0288D1</color>
-    <color name="secondary_dark">#01579B</color>
-    <color name="secondary_light">#E1F5FE</color>
+    <color name="secondary">#F5C2E7</color>
+    <color name="secondary_light">#F8D7EF</color>
+    <color name="secondary_dark">#DCA9CF</color>
 
-    <!-- ── Accent / Purple (Vivid Violet) ── -->
-    <color name="accent">#7C3AED</color>
-    <color name="accent_dark">#5B21B6</color>
-    <color name="accent_light">#EDE9FE</color>
+    <color name="accent">#CBA6F7</color>
+    <color name="accent_light">#DDC0F9</color>
+    <color name="accent_dark">#B38FE0</color>
 
-    <!-- ── Semantic Colors ── -->
-    <color name="success">#059669</color>
-    <color name="success_light">#D1FAE5</color>
-    <color name="error">#DC2626</color>
-    <color name="error_light">#FEE2E2</color>
-    <color name="warning">#D97706</color>
-    <color name="warning_light">#FEF3C7</color>
-    <color name="info">#0284C7</color>
+    <color name="background">#1E1E2E</color>
+    <color name="surface">#313244</color>
+    <color name="surface_variant">#45475A</color>
 
-    <!-- ── Duolingo-inspired Palette ── -->
-    <color name="duo_green">#58CC02</color>
-    <color name="duo_green_dark">#46A302</color>
-    <color name="duo_blue">#1CB0F6</color>
-    <color name="duo_blue_dark">#1899D6</color>
-    <color name="duo_yellow">#FFC800</color>
-    <color name="duo_yellow_dark">#E5A400</color>
-    <color name="duo_red">#FF4B4B</color>
-    <color name="duo_red_dark">#D33131</color>
-    <color name="duo_gray">#AFAFAF</color>
-    <color name="duo_gray_dark">#828282</color>
+    <color name="text_primary">#CDD6F4</color>
+    <color name="text_secondary">#A6ADC8</color>
+    <color name="text_on_primary">#11111B</color>
 
-    <!-- ── Neutral ── -->
+    <color name="error">#F38BA8</color>
+    <color name="success">#A6E3A1</color>
+    <color name="warning">#F9E2AF</color>
+
+    <!-- ── Botões / Navegação ── -->
+    <color name="bottom_nav_selector">#CDD6F4</color>
+    <color name="btn_bg">#45475A</color>
+    <color name="btn_text">#CDD6F4</color>
+
+    <!-- ── Cores do Mini-game Wordle / Termo ── -->
+    <color name="wordle_correct">#A6E3A1</color>
+    <color name="wordle_present">#F9E2AF</color>
+    <color name="wordle_absent">#45475A</color>
+    <color name="wordle_empty">#313244</color>
+    <color name="wordle_text_dark">#11111B</color>
+    <color name="wordle_text_light">#CDD6F4</color>
+    <color name="wordle_border">#585B70</color>
+
+    <color name="duo_green">#A6E3A1</color>
+    <color name="duo_green_dark">#87C482</color>
+    <color name="duo_red">#F38BA8</color>
+    <color name="duo_red_dark">#D46C89</color>
+    <color name="duo_blue">#89B4FA</color>
+    <color name="duo_blue_dark">#6A95DB</color>
+    
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <!-- ── Background &amp; Surface ── -->
-    <color name="background">#F1F4F9</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="surface_variant">#EEF2F7</color>
-    <color name="surface_dark">#1E2A4A</color>
-
-    <!-- ── Text ── -->
-    <color name="text_primary">#0F172A</color>
-    <color name="text_secondary">#475569</color>
-    <color name="text_tertiary">#94A3B8</color>
-    <color name="text_on_primary">#FFFFFF</color>
-
     <!-- ── Border ── -->
-    <color name="border">#DDE3EE</color>
-    <color name="border_light">#F1F4F9</color>
+    <color name="border">#585B70</color>
+    <color name="border_light">#45475A</color>
 
     <!-- ── Aliases de compatibilidade (drawables legados) ── -->
-    <color name="gray_200">#DDE3EE</color>
-    <color name="gray_300">#CBD5E1</color>
+    <color name="gray_200">#313244</color>
+    <color name="gray_300">#45475A</color>
 
-    <!-- ── Avatar Palette (Color Picker) ── -->
-    <color name="avatar_indigo">#4F46E5</color>
-    <color name="avatar_cyan">#0891B2</color>
-    <color name="avatar_emerald">#059669</color>
-    <color name="avatar_amber">#D97706</color>
-    <color name="avatar_rose">#E11D48</color>
-    <color name="avatar_violet">#7C3AED</color>
-    <color name="avatar_fuchsia">#C026D3</color>
-    <color name="avatar_coral">#EA580C</color>
+    <!-- ── Avatar Palette (Color Picker - Tons Pasteis) ── -->
+    <color name="avatar_indigo">#89B4FA</color>
+    <color name="avatar_cyan">#89DCEB</color>
+    <color name="avatar_emerald">#A6E3A1</color>
+    <color name="avatar_amber">#F9E2AF</color>
+    <color name="avatar_rose">#F38BA8</color>
+    <color name="avatar_violet">#CBA6F7</color>
+    <color name="avatar_fuchsia">#F5C2E7</color>
+    <color name="avatar_coral">#FAB387</color>
 </resources>

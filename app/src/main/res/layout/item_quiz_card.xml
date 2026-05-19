@@ -1,207 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="270dp"
+    android:layout_width="220dp"
     android:layout_height="wrap_content"
     android:layout_marginEnd="16dp"
-    android:layout_marginVertical="6dp"
-    android:clickable="true"
-    android:focusable="true"
-    app:cardBackgroundColor="@color/surface"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="4dp"
-    app:strokeWidth="0dp">
+    android:background="@drawable/bg_glass_card"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:elevation="4dp"
+    android:translationZ="2dp"
+    android:stateListAnimator="@null">
 
+    <!-- Ícone de topo e Chip de Categoria -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <!-- Hero Banner com gradiente roxo/accent -->
         <FrameLayout
-            android:id="@+id/cardGradientBg"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:clipToOutline="true">
-
-            <!-- Gradient background (accent purple) -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FF7C3AED" />
-
-            <!-- Overlay gradient escuro -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#335B21B6" />
-
-            <!-- Badge top-left -->
-            <TextView
-                android:id="@+id/difficultyBadge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|start"
-                android:layout_margin="12dp"
-                android:background="@drawable/badge_background"
-                android:backgroundTint="#33000000"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp"
-                android:text="AVALIAÇÃO"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.08" />
-
-            <!-- Quiz Icon centered -->
-            <FrameLayout
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_avatar_circle"
+            android:backgroundTint="@color/primary_light">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="center"
-                android:background="@drawable/bg_avatar_circle"
-                android:backgroundTint="#50FFFFFF">
-
-                <ImageView
-                    android:id="@+id/iconStatus"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_quiz"
-                    app:tint="@color/white" />
-
-            </FrameLayout>
-
+                android:src="@drawable/ic_quiz"
+                app:tint="@color/primary_dark" />
         </FrameLayout>
 
-        <!-- Card body -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/quizCategoryChip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/quizTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:ellipsize="end"
-                android:lineSpacingExtra="2dp"
-                android:maxLines="2"
-                android:text="Teste de Conhecimento"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <!-- Meta chips -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_marginBottom="14dp">
-
-                <!-- Questions chip -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/badge_background"
-                    android:backgroundTint="@color/accent_light"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp"
-                    android:layout_marginEnd="8dp">
-
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:src="@drawable/ic_question"
-                        app:tint="@color/accent" />
-
-                    <TextView
-                        android:id="@+id/quizQuestions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:text="5 perguntas"
-                        android:textColor="@color/accent"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Score chip -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/badge_background"
-                    android:backgroundTint="#FFF8E1"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp">
-
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:src="@drawable/ic_star"
-                        app:tint="#F59E0B" />
-
-                    <TextView
-                        android:id="@+id/quizScore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:text="0/100 pts"
-                        android:textColor="#D97706"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/border"
-                android:layout_marginBottom="12dp" />
-
-            <!-- CTA Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/actionText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Responder quiz"
-                    android:textColor="@color/accent"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <FrameLayout
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_avatar_circle"
-                    android:backgroundTint="@color/accent_light">
-                    <ImageView
-                        android:id="@+id/actionIcon"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_arrow_right"
-                        app:tint="@color/accent" />
-                </FrameLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
+            android:background="@drawable/badge_background"
+            android:backgroundTint="@color/surface_variant"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:text="Conceitos"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+    <TextView
+        android:id="@+id/quizTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Fundamentos LGPD"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:lineSpacingExtra="2dp" />
+
+    <TextView
+        android:id="@+id/quizDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Teste seus conhecimentos sobre o que é a lei."
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <!-- Metadata e Botão -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_book"
+                app:tint="@color/primary" />
+            <TextView
+                android:id="@+id/quizQuestionsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="10 Questões"
+                android:textColor="@color/primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Botão Iniciar Redondo -->
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_avatar_circle"
+            android:backgroundTint="@color/primary">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="2dp"
+                android:src="@android:drawable/ic_media_play"
+                app:tint="@color/text_on_primary" />
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>
