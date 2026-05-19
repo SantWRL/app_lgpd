@@ -86,7 +86,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@drawable/bg_glass_card"
-        android:padding="8dp"
+        android:paddingTop="8dp"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="88dp"
+        android:clipToPadding="false"
         tools:listitem="@layout/item_quiz_list" />
 
 </LinearLayout>

@@ -72,5 +72,9 @@
         android:id="@+id/wordsearchFragment"
         android:name="br.ufpi.lgpd.educacional.ui.quizzes.WordsearchFragment"
         android:label="Caça-Palavras" />
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="br.ufpi.lgpd.educacional.ui.feed.FeedFragment"
+        android:label="Feed de Notícias" />
 
 </navigation>
