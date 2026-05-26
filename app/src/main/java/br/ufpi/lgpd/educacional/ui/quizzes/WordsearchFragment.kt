@@ -12,35 +12,41 @@ import android.widget.GridLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import br.ufpi.lgpd.educacional.R
+import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentWordsearchBinding
-import br.ufpi.lgpd.educacional.util.UserPreferences
+import br.ufpi.lgpd.educacional.util.PointsConstants
+import br.ufpi.lgpd.educacional.util.WordsearchConstants
+import br.ufpi.lgpd.educacional.util.getUserRepository
+import kotlinx.coroutines.launch
 
 class WordsearchFragment : Fragment() {
 
     private var _binding: FragmentWordsearchBinding? = null
     private val binding get() = _binding!!
 
-    // ── Game config ─────────────────────────────────────────────────────────
-    private val gridSize = 10
+    private val gridSize = WordsearchConstants.GRID_SIZE
     private val wordsToFind = listOf("DADOS", "BASES", "RISCO", "MULTA", "FINAL")
     private val foundWords = mutableSetOf<String>()
-
-    // ── Grid state ──────────────────────────────────────────────────────────
+    private val foundCells = mutableSetOf<Pair<Int, Int>>()
     private val grid = Array(gridSize) { CharArray(gridSize) { ' ' } }
-    private lateinit var cells: Array<Array<TextView>>
 
-    // ── Touch/drag state ────────────────────────────────────────────────────
+    @Suppress("UNCHECKED_CAST")
+    private lateinit var cells: Array<Array<TextView>>
+    private lateinit var repository: UserRepository
+
     private val selectedCells = mutableListOf<Pair<Int, Int>>()
     private var startRow = -1
     private var startCol = -1
 
-    private val colorFound   = Color.parseColor("#538D4E")   // green
-    private val colorSelect  = Color.parseColor("#B59F3B")   // yellow while selecting
-    private val colorDefault = Color.parseColor("#33FFFFFF")  // glass
+    private val colorFound = Color.parseColor("#538D4E")
+    private val colorSelect = Color.parseColor("#B59F3B")
+    private val colorDefault = Color.parseColor("#33FFFFFF")
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWordsearchBinding.inflate(inflater, container, false)
@@ -49,20 +55,32 @@ class WordsearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        repository = getUserRepository()
         buildGrid()
         setupWordChips()
         binding.btnNewWordSearch.setOnClickListener { resetGame() }
     }
 
-    // ── Build 10×10 grid ────────────────────────────────────────────────────
     private fun buildGrid() {
-        cells = Array(gridSize) { arrayOfNulls<TextView>(gridSize) as Array<TextView> }
-        placeWordsInGrid()
+        cells = Array(gridSize) {
+            Array(gridSize) {
+                TextView(requireContext()).apply { text = "" }
+            }
+        }
+        generatePlayableGrid()
         fillRemainingCells()
         renderGrid()
     }
 
-    private fun placeWordsInGrid() {
+    private fun generatePlayableGrid() {
+        repeat(50) {
+            grid.forEach { it.fill(' ') }
+            if (placeWordsInGrid()) return
+        }
+        error("Não foi possível gerar um caça-palavras válido.")
+    }
+
+    private fun placeWordsInGrid(): Boolean {
         for (word in wordsToFind) {
             var placed = false
             var attempts = 0
@@ -76,14 +94,16 @@ class WordsearchFragment : Fragment() {
                     placed = true
                 }
             }
+            if (!placed) return false
         }
+        return true
     }
 
     private fun canPlace(word: String, row: Int, col: Int, dir: Pair<Int, Int>): Boolean {
         for (i in word.indices) {
             val r = row + i * dir.first
             val c = col + i * dir.second
-            if (r < 0 || r >= gridSize || c < 0 || c >= gridSize) return false
+            if (r !in 0 until gridSize || c !in 0 until gridSize) return false
             if (grid[r][c] != ' ' && grid[r][c] != word[i]) return false
         }
         return true
@@ -97,12 +117,13 @@ class WordsearchFragment : Fragment() {
 
     private fun fillRemainingCells() {
         val letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        for (r in 0 until gridSize)
-            for (c in 0 until gridSize)
+        for (r in 0 until gridSize) {
+            for (c in 0 until gridSize) {
                 if (grid[r][c] == ' ') grid[r][c] = letters.random()
+            }
+        }
     }
 
-    // ── Render grid into GridLayout ──────────────────────────────────────────
     private fun renderGrid() {
         val gridLayout = binding.searchGrid
         gridLayout.removeAllViews()
@@ -120,14 +141,13 @@ class WordsearchFragment : Fragment() {
                     setTextColor(Color.WHITE)
                     gravity = Gravity.CENTER
                     setBackgroundColor(colorDefault)
-                    val params = GridLayout.LayoutParams().apply {
+                    layoutParams = GridLayout.LayoutParams().apply {
                         width = cellSizePx
                         height = cellSizePx
                         setMargins(2, 2, 2, 2)
                         rowSpec = GridLayout.spec(r)
                         columnSpec = GridLayout.spec(c)
                     }
-                    layoutParams = params
                 }
                 cells[r][c] = tv
                 gridLayout.addView(tv)
@@ -137,9 +157,8 @@ class WordsearchFragment : Fragment() {
         setupTouchDetection()
     }
 
-    // ── Touch drag detection ─────────────────────────────────────────────────
     private fun setupTouchDetection() {
-        binding.searchGrid.setOnTouchListener { v, event ->
+        binding.searchGrid.setOnTouchListener { _, event ->
             val cellSize = binding.searchGrid.width / gridSize.toFloat()
             val col = (event.x / cellSize).toInt().coerceIn(0, gridSize - 1)
             val row = (event.y / cellSize).toInt().coerceIn(0, gridSize - 1)
@@ -147,7 +166,8 @@ class WordsearchFragment : Fragment() {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     clearSelection()
-                    startRow = row; startCol = col
+                    startRow = row
+                    startCol = col
                     selectCell(row, col)
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -155,8 +175,7 @@ class WordsearchFragment : Fragment() {
                     selectLineBetween(startRow, startCol, row, col)
                 }
                 MotionEvent.ACTION_UP -> {
-                    val word = getSelectedWord()
-                    checkWord(word)
+                    checkWord(getSelectedWord())
                     clearSelection()
                 }
             }
@@ -176,29 +195,34 @@ class WordsearchFragment : Fragment() {
         selectedCells.clear()
     }
 
-    private fun isCellFound(row: Int, col: Int): Boolean {
-        return foundWords.any { word ->
-            // check if this cell belongs to a found word (simplified check)
-            cells[row][col].currentTextColor == colorFound
-        }
-    }
+    private fun isCellFound(row: Int, col: Int): Boolean = foundCells.contains(row to col)
 
     private fun selectLineBetween(r1: Int, c1: Int, r2: Int, c2: Int) {
-        val dr = (r2 - r1).coerceIn(-1, 1)
-        val dc = (c2 - c1).coerceIn(-1, 1)
-        var r = r1; var c = c1
+        val rowDelta = r2 - r1
+        val colDelta = c2 - c1
+        val isHorizontal = rowDelta == 0
+        val isVertical = colDelta == 0
+        val isDiagonal = kotlin.math.abs(rowDelta) == kotlin.math.abs(colDelta)
+
+        if (!isHorizontal && !isVertical && !isDiagonal) {
+            selectCell(r1, c1)
+            return
+        }
+
+        val dr = rowDelta.compareTo(0)
+        val dc = colDelta.compareTo(0)
+        var r = r1
+        var c = c1
         while (r != r2 || c != c2) {
             selectCell(r, c)
-            if (r == r2 && c == c2) break
             if (r != r2) r += dr
             if (c != c2) c += dc
         }
         selectCell(r2, c2)
     }
 
-    private fun getSelectedWord(): String {
-        return selectedCells.joinToString("") { (r, c) -> grid[r][c].toString() }
-    }
+    private fun getSelectedWord(): String =
+        selectedCells.joinToString("") { (r, c) -> grid[r][c].toString() }
 
     private fun checkWord(word: String) {
         val reversed = word.reversed()
@@ -207,28 +231,34 @@ class WordsearchFragment : Fragment() {
             wordsToFind.contains(reversed) && !foundWords.contains(reversed) -> reversed
             else -> null
         }
+
         matched?.let {
             foundWords.add(it)
-            highlightFoundWord(it)
+            highlightFoundWord()
             markChipFound(it)
             binding.tvWordsLeft.text = (wordsToFind.size - foundWords.size).toString()
             if (foundWords.size == wordsToFind.size) onAllWordsFound()
         }
     }
 
-    private fun highlightFoundWord(word: String) {
+    private fun highlightFoundWord() {
         selectedCells.forEach { (r, c) ->
+            foundCells.add(r to c)
             cells[r][c].setBackgroundColor(colorFound)
+            cells[r][c].setTextColor(Color.WHITE)
         }
     }
 
-    // ── Word chips (labels abaixo do grid) ───────────────────────────────────
     private val chipIds = listOf(R.id.chip_0, R.id.chip_1, R.id.chip_2, R.id.chip_3, R.id.chip_4)
 
     private fun setupWordChips() {
         wordsToFind.forEachIndexed { i, word ->
             if (i < chipIds.size) {
-                binding.root.findViewById<TextView>(chipIds[i])?.text = word
+                binding.root.findViewById<TextView>(chipIds[i])?.apply {
+                    text = word
+                    setBackgroundColor(Color.TRANSPARENT)
+                    paintFlags = paintFlags and android.graphics.Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                }
             }
         }
     }
@@ -245,14 +275,17 @@ class WordsearchFragment : Fragment() {
 
     private fun onAllWordsFound() {
         binding.btnNewWordSearch.visibility = View.VISIBLE
-        UserPreferences(requireContext()).addPoints(20)
-        Toast.makeText(requireContext(), "🎉 Parabéns! +20 pontos!", Toast.LENGTH_LONG).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.ensureUserExists()
+            repository.addBonusPoints(PointsConstants.WORDSEARCH_WIN)
+        }
+        Toast.makeText(requireContext(), "Parabéns! +${PointsConstants.WORDSEARCH_WIN} pontos!", Toast.LENGTH_LONG).show()
     }
 
     private fun resetGame() {
         foundWords.clear()
-        grid.forEach { it.fill(' ') }
-        placeWordsInGrid()
+        foundCells.clear()
+        generatePlayableGrid()
         fillRemainingCells()
         renderGrid()
         setupWordChips()

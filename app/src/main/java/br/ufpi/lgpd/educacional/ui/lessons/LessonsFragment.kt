@@ -13,9 +13,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.model.Lesson
+import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentLessonsBinding
 import br.ufpi.lgpd.educacional.ui.adapter.LessonsListAdapter
-import br.ufpi.lgpd.educacional.util.UserPreferences
+import br.ufpi.lgpd.educacional.util.getUserRepository
 import kotlinx.coroutines.launch
 
 /**
@@ -27,7 +28,7 @@ class LessonsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: LessonsViewModel by activityViewModels()
-    private lateinit var userPreferences: UserPreferences
+    private lateinit var repository: UserRepository
 
     private lateinit var adapter: LessonsListAdapter
     private var allLessons: List<Lesson> = emptyList()
@@ -43,7 +44,7 @@ class LessonsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userPreferences = UserPreferences(requireContext())
+        repository = getUserRepository()
 
         setupRecyclerView()
         setupFilters()
@@ -88,7 +89,10 @@ class LessonsFragment : Fragment() {
     }
 
     private fun loadContent() {
-        viewModel.loadLessons(userPreferences.getLessonsCompleted())
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.ensureUserExists()
+            viewModel.loadLessons(repository.getCompletedLessonIds())
+        }
     }
 
     override fun onResume() {

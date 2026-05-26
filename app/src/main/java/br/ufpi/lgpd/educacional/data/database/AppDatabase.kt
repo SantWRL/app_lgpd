@@ -5,12 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import br.ufpi.lgpd.educacional.data.dao.UserDao
-import br.ufpi.lgpd.educacional.data.model.*
+import br.ufpi.lgpd.educacional.data.model.Achievement
+import br.ufpi.lgpd.educacional.data.model.LessonProgress
+import br.ufpi.lgpd.educacional.data.model.Question
+import br.ufpi.lgpd.educacional.data.model.Quiz
+import br.ufpi.lgpd.educacional.data.model.QuizResultRecord
+import br.ufpi.lgpd.educacional.data.model.User
+import br.ufpi.lgpd.educacional.data.model.UserAchievement
+import br.ufpi.lgpd.educacional.data.model.UserAnswer
 
 /**
  * Banco de dados Room do aplicativo LGPD Educacional.
  *
- * Versão 2 — adicionados: bio, avatarColorIndex, streakDays, lastStreakDate e tabela quiz_results.
+ * Versão 3 — adiciona unicidade em lesson_progress por userId + lessonId.
  */
 @Database(
     entities = [
@@ -23,7 +30,7 @@ import br.ufpi.lgpd.educacional.data.model.*
         Question::class,
         UserAnswer::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -41,7 +48,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "lgpd_educacional.db"
                 )
-                    .fallbackToDestructiveMigration()   // simples p/ desenvolvimento
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

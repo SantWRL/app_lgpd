@@ -1,6 +1,7 @@
 package br.ufpi.lgpd.educacional.data.model
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
@@ -28,7 +29,10 @@ data class User(
 /**
  * Progresso do usuário em uma lição
  */
-@Entity(tableName = "lesson_progress")
+@Entity(
+    tableName = "lesson_progress",
+    indices = [Index(value = ["userId", "lessonId"], unique = true)]
+)
 data class LessonProgress(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val userId: String,

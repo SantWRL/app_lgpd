@@ -1,49 +1,56 @@
 package br.ufpi.lgpd.educacional.ui
 
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import br.ufpi.lgpd.educacional.R
+import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.ActivityMainBinding
 import br.ufpi.lgpd.educacional.ui.onboarding.OnboardingActivity
 import br.ufpi.lgpd.educacional.util.UserPreferences
+import br.ufpi.lgpd.educacional.util.getUserRepository
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
- * MainActivity - Tela principal do app com navegação
+ * MainActivity - Tela principal do app com navegação.
  */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var userPreferences: UserPreferences
+    private lateinit var repository: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         userPreferences = UserPreferences(this)
-        
-        // Setup Timber logging
-        if (BuildConfig.DEBUG) {
+        repository = getUserRepository()
+
+        if ((applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
             Timber.plant(Timber.DebugTree())
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Verificar se o usuário já passou pelo Onboarding
         if (!userPreferences.hasSeenOnboarding) {
             startActivity(Intent(this, OnboardingActivity::class.java))
             finish()
             return
         }
 
-        // Atualizar ofensiva (streak) do usuário ao abrir o app
-        userPreferences.updateStreak()
+        lifecycleScope.launch {
+            repository.ensureUserExists()
+            repository.updateStreak()
+        }
 
         setupNavigation()
     }
@@ -53,10 +60,8 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Setup com bottom navigation
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
 
-        // Listener para mudança de fragmentos
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.toolbar.title = when (destination.id) {
                 R.id.homeFragment -> getString(R.string.home_title)
@@ -69,12 +74,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.lessonDetailFragment -> "Estudo"
                 else -> getString(R.string.app_name)
             }
-            
-            // Ocultar bottom nav em telas de jogos ou detalhes profundos
+
             val fullScreens = listOf(
-                R.id.quizDetailFragment, 
-                R.id.wordleFragment, 
-                R.id.wordsearchFragment, 
+                R.id.quizDetailFragment,
+                R.id.wordleFragment,
+                R.id.wordsearchFragment,
                 R.id.lessonDetailFragment
             )
             binding.bottomNavigation.visibility = if (destination.id in fullScreens) {
@@ -88,9 +92,4 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-}
-
-// Placeholder para BuildConfig
-object BuildConfig {
-    const val DEBUG = true
 }

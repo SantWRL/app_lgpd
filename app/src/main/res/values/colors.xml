@@ -14,18 +14,31 @@
     <color name="accent_dark">#B38FE0</color>
 
     <color name="background">#1E1E2E</color>
+    <color name="background_top">#0F172A</color>
+    <color name="background_bottom">#172033</color>
+    <color name="background_glow">#2D3F73</color>
     <color name="surface">#313244</color>
+    <color name="surface_strong">#262A3C</color>
     <color name="surface_variant">#45475A</color>
+    <color name="surface_elevated">#35384D</color>
 
     <color name="text_primary">#CDD6F4</color>
     <color name="text_secondary">#A6ADC8</color>
     <color name="text_tertiary">#7F849C</color>
     <color name="text_on_primary">#11111B</color>
+    <color name="text_muted_light">#DCE6F6</color>
 
     <color name="error">#F38BA8</color>
     <color name="success">#A6E3A1</color>
     <color name="success_light">#D2F1D0</color>
     <color name="warning">#F9E2AF</color>
+    <color name="panel_stroke">#2E435E</color>
+    <color name="panel_overlay">#223149</color>
+    <color name="hero_badge">#2FFFFFFF</color>
+    <color name="promo_wordle_start">#7C3AED</color>
+    <color name="promo_wordle_end">#C084FC</color>
+    <color name="promo_search_start">#059669</color>
+    <color name="promo_search_end">#34D399</color>
 
     <!-- ── Botões / Navegação ── -->
     <color name="btn_bg">#45475A</color>

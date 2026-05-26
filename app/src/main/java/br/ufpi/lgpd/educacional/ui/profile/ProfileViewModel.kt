@@ -3,29 +3,22 @@ package br.ufpi.lgpd.educacional.ui.profile
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import br.ufpi.lgpd.educacional.data.database.AppDatabase
 import br.ufpi.lgpd.educacional.data.model.User
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
-import br.ufpi.lgpd.educacional.util.UserPreferences
+import br.ufpi.lgpd.educacional.util.AvatarConstants
+import br.ufpi.lgpd.educacional.util.getUserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-/**
- * ViewModel para o perfil do usuário.
- * Combina dados do Room (via UserRepository) com SharedPreferences.
- */
 class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: UserRepository by lazy {
-        val db = AppDatabase.getInstance(application)
-        UserRepository(db.userDao())
+        application.getUserRepository()
     }
 
-    private val prefs: UserPreferences by lazy {
-        UserPreferences(application)
-    }
+    private val avatarColors = AvatarConstants.COLORS
 
     private val _userProfile = MutableStateFlow(buildDefaultProfile())
     val userProfile: StateFlow<UserProfile> = _userProfile.asStateFlow()
@@ -35,21 +28,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-    // Paleta de cores do avatar — sincronizada com colors.xml (avatar_*) — tons pastéis
-    val avatarColors = listOf(
-        "#89B4FA", // indigo pastel
-        "#89DCEB", // cyan pastel
-        "#A6E3A1", // emerald pastel
-        "#F9E2AF", // amber pastel
-        "#F38BA8", // rose pastel
-        "#CBA6F7", // violet pastel
-        "#F5C2E7", // fuchsia pastel
-        "#FAB387"  // coral pastel
-    )
-
-    // Emojis de animais para personalização do avatar
-    val avatarEmojis = listOf("🦊", "🐱", "🐶", "🐼", "🦁", "🐸", "🦉", "🐺")
 
     init {
         viewModelScope.launch {
@@ -64,17 +42,8 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             _isLoading.value = true
             try {
                 val user = repository.getUser() ?: User()
-
-                // Sincroniza prefs → Room
-                if (user.name == "Usuário" && prefs.userName != "Usuário") {
-                    repository.updateUserName(prefs.userName)
-                }
-                
-                val freshUser = repository.getUser() ?: user
-                _userProfile.value = freshUser.toProfile(avatarColors)
-                
-                // Gera conquistas baseadas no progresso real
-                _achievements.value = buildAchievements(freshUser)
+                _userProfile.value = user.toProfile(avatarColors)
+                _achievements.value = buildAchievements(user)
             } finally {
                 _isLoading.value = false
             }
@@ -83,7 +52,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     fun saveName(name: String) {
         viewModelScope.launch {
-            prefs.userName = name
             repository.updateUserName(name)
             loadFromDatabase()
         }
@@ -91,7 +59,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     fun saveBio(bio: String) {
         viewModelScope.launch {
-            prefs.userBio = bio
             repository.updateUserBio(bio)
             loadFromDatabase()
         }
@@ -99,7 +66,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     fun saveProfileType(type: String) {
         viewModelScope.launch {
-            prefs.profileType = type
             repository.updateProfileType(type)
             loadFromDatabase()
         }
@@ -107,7 +73,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     fun saveAvatarColor(index: Int) {
         viewModelScope.launch {
-            prefs.avatarColorIndex = index
             repository.updateAvatarColor(index)
             loadFromDatabase()
         }
@@ -115,9 +80,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     fun clearSession() {
         viewModelScope.launch {
-            val db = AppDatabase.getInstance(getApplication())
-            db.clearAllTables()
-            prefs.clearAll()
+            br.ufpi.lgpd.educacional.data.database.AppDatabase.getInstance(getApplication()).clearAllTables()
             _userProfile.value = buildDefaultProfile()
             _achievements.value = emptyList()
         }
@@ -139,38 +102,28 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     )
 
     private fun buildDefaultProfile() = UserProfile(
-        name = "Usuário", email = "", bio = "",
-        profileType = "student", level = 1, totalPoints = 0,
-        lessonsCompleted = 0, quizzesCompleted = 0, averageScore = 0.0,
-        streakDays = 0, avatarColor = "#89B4FA", avatarColorIndex = 0
+        name = "Usuário",
+        email = "",
+        bio = "",
+        profileType = "student",
+        level = 1,
+        totalPoints = 0,
+        lessonsCompleted = 0,
+        quizzesCompleted = 0,
+        averageScore = 0.0,
+        streakDays = 0,
+        avatarColor = avatarColors.first(),
+        avatarColorIndex = 0
     )
 
     private fun buildAchievements(user: User): List<AchievementItem> {
         return listOf(
-            AchievementItem(
-                "Primeiro passo", "Concluiu a introdução à LGPD.",
-                user.lessonsCompleted >= 1, "🎯"
-            ),
-            AchievementItem(
-                "Guardião dos dados", "Aprendeu a identificar dados pessoais e sensíveis.",
-                user.lessonsCompleted >= 2, "🛡️"
-            ),
-            AchievementItem(
-                "Titular consciente", "Revisou os principais direitos previstos na LGPD.",
-                user.lessonsCompleted >= 3, "⚖️"
-            ),
-            AchievementItem(
-                "Mestre LGPD", "Complete todas as 10 aulas.",
-                user.lessonsCompleted >= 10, "🏆"
-            ),
-            AchievementItem(
-                "Foco Total", "Estude por 3 dias seguidos.",
-                user.streakDays >= 3, "🔥"
-            ),
-            AchievementItem(
-                "Expert LGPD", "Acumulou mais de 100 pontos.",
-                user.totalPoints >= 100, "⭐"
-            )
+            AchievementItem("Primeiro passo", "Concluiu a introdução à LGPD.", user.lessonsCompleted >= 1, "\uD83C\uDFAF"),
+            AchievementItem("Guardião dos dados", "Aprendeu a identificar dados pessoais e sensíveis.", user.lessonsCompleted >= 2, "\uD83D\uDEE1\uFE0F"),
+            AchievementItem("Titular consciente", "Revisou os principais direitos previstos na LGPD.", user.lessonsCompleted >= 3, "\u2696\uFE0F"),
+            AchievementItem("Mestre LGPD", "Complete todas as 10 aulas.", user.lessonsCompleted >= 10, "\uD83C\uDFC6"),
+            AchievementItem("Foco Total", "Estude por 3 dias seguidos.", user.streakDays >= 3, "\uD83D\uDD25"),
+            AchievementItem("Expert LGPD", "Acumulou mais de 100 pontos.", user.totalPoints >= 100, "\u2B50")
         )
     }
 }
@@ -179,7 +132,7 @@ data class UserProfile(
     val name: String,
     val email: String,
     val bio: String,
-    val profileType: String,   // student | teacher | technician
+    val profileType: String,
     val level: Int,
     val totalPoints: Int,
     val lessonsCompleted: Int,
@@ -194,5 +147,5 @@ data class AchievementItem(
     val title: String,
     val description: String,
     val isUnlocked: Boolean,
-    val emoji: String = "⭐"
+    val emoji: String = "\u2B50"
 )

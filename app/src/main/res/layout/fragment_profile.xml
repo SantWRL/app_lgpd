@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="20dp"
-            android:paddingTop="40dp"
+            android:paddingTop="28dp"
             android:paddingBottom="24dp"
             android:gravity="center_vertical">
 
@@ -38,7 +38,7 @@
                 android:id="@+id/btnShare"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/bg_glass_card"
+                android:background="@drawable/bg_panel_frost"
                 android:clickable="true"
                 android:focusable="true">
 
@@ -46,7 +46,7 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_arrow_right"
+                    android:src="@drawable/ic_share"
                     app:tint="@color/primary" />
             </FrameLayout>
 
@@ -144,16 +144,20 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="36dp"
-            android:background="@drawable/bg_glass_card"
             android:orientation="horizontal"
-            android:paddingVertical="24dp">
+            android:baselineAligned="false"
+            android:weightSum="3">
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="104dp"
                 android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_stat_tile"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="16dp">
 
                 <TextView
                     android:id="@+id/lessonsCompleted"
@@ -161,24 +165,30 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textColor="@color/text_primary"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
                     android:text="MÓDULOS"
                     android:textColor="@color/text_tertiary"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="104dp"
                 android:layout_weight="1"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_stat_tile"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="16dp">
 
                 <TextView
                     android:id="@+id/userPoints"
@@ -186,24 +196,30 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textColor="@color/secondary"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
                     android:text="PONTOS"
                     android:textColor="@color/text_tertiary"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="104dp"
                 android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_stat_tile"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="16dp">
 
                 <TextView
                     android:id="@+id/streakDays"
@@ -211,15 +227,17 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textColor="@color/accent"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
                     android:text="OFENSIVA"
                     android:textColor="@color/text_tertiary"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -245,7 +263,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/achievementsRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="196dp"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_achievement" />
@@ -271,8 +289,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_glass_card"
-                android:padding="20dp"
+                android:background="@drawable/bg_panel_frost"
+                android:padding="22dp"
                 android:orientation="vertical">
                 
                 <LinearLayout
@@ -685,7 +703,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_glass_card"
+                android:background="@drawable/bg_panel_frost"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
@@ -728,7 +746,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_glass_card"
+                android:background="@drawable/bg_panel_frost"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
@@ -773,7 +791,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:background="@drawable/bg_glass_card"
+            android:background="@drawable/bg_panel_frost"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"

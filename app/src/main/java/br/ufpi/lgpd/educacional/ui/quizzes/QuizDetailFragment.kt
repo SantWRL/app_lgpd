@@ -11,11 +11,10 @@ import androidx.core.text.HtmlCompat
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.LgpdContent
 import br.ufpi.lgpd.educacional.data.QuizQuestionContent
-import br.ufpi.lgpd.educacional.data.database.AppDatabase
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentQuizDetailBinding
-import br.ufpi.lgpd.educacional.util.UserPreferences
 import androidx.lifecycle.lifecycleScope
+import br.ufpi.lgpd.educacional.util.getUserRepository
 import kotlinx.coroutines.launch
 import com.google.android.material.snackbar.Snackbar
 
@@ -24,7 +23,6 @@ class QuizDetailFragment : Fragment() {
     private var _binding: FragmentQuizDetailBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var userPreferences: UserPreferences
     private lateinit var repository: UserRepository
     private lateinit var questions: List<QuizQuestionContent>
 
@@ -48,9 +46,7 @@ class QuizDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userPreferences = UserPreferences(requireContext())
-        val db = AppDatabase.getInstance(requireContext())
-        repository = UserRepository(db.userDao())
+        repository = getUserRepository()
         
         quizId = arguments?.getInt(ARG_QUIZ_ID) ?: 1
         questions = LgpdContent.questionsForQuiz(quizId)

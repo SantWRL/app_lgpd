@@ -21,7 +21,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="20dp"
-            android:paddingTop="20dp"
+            android:paddingTop="28dp"
             android:paddingBottom="20dp">
 
             <!-- Avatar Circle -->
@@ -75,7 +75,7 @@
                 android:id="@+id/notificationBtn"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
-                android:background="@drawable/bg_glass_card"
+                android:background="@drawable/bg_panel_frost"
                 android:clickable="true"
                 android:focusable="true">
 
@@ -95,18 +95,19 @@
         <LinearLayout
             android:id="@+id/heroBanner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="188dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="28dp"
             android:background="@drawable/bg_hero_banner"
             android:orientation="horizontal"
-            android:padding="24dp">
+            android:padding="26dp">
 
             <!-- Left: Texto e botão -->
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingEnd="10dp">
 
@@ -116,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/badge_background"
-                    android:backgroundTint="#33FFFFFF"
+                    android:backgroundTint="@color/hero_badge"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
                     android:text="SUA JORNADA"
@@ -150,6 +151,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
+                    android:minHeight="0dp"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="10dp"
                     android:text="Ver Detalhes"
@@ -161,9 +163,9 @@
 
             <!-- Right: Porcentagem circular -->
             <LinearLayout
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/bg_glass_card"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:background="@drawable/bg_panel_frost"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -287,7 +289,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lessonsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="236dp"
             android:layout_marginBottom="32dp"
             android:clipToPadding="false"
             android:orientation="horizontal"
@@ -331,11 +333,11 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardWordle"
                     android:layout_width="200dp"
-                    android:layout_height="180dp"
+                    android:layout_height="188dp"
                     android:layout_marginEnd="16dp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardBackgroundColor="#FF8B5CF6"
+                    app:cardBackgroundColor="@android:color/transparent"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp">
@@ -343,6 +345,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@drawable/bg_wordle_promo"
                         android:orientation="vertical"
                         android:padding="18dp">
 
@@ -411,10 +414,10 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardWordsearch"
                     android:layout_width="200dp"
-                    android:layout_height="180dp"
+                    android:layout_height="188dp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardBackgroundColor="#FF10B981"
+                    app:cardBackgroundColor="@android:color/transparent"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp">
@@ -422,6 +425,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@drawable/bg_wordsearch_promo"
                         android:orientation="vertical"
                         android:padding="18dp">
 
@@ -526,9 +530,9 @@
                 <LinearLayout
                     android:id="@+id/cardAnpd"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="188dp"
                     android:layout_marginEnd="14dp"
-                    android:background="@drawable/bg_glass_card"
+                    android:background="@drawable/bg_panel_frost"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
@@ -577,9 +581,9 @@
                 <LinearLayout
                     android:id="@+id/cardGdpr"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="188dp"
                     android:layout_marginEnd="14dp"
-                    android:background="@drawable/bg_glass_card"
+                    android:background="@drawable/bg_panel_frost"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
@@ -628,9 +632,9 @@
                 <LinearLayout
                     android:id="@+id/cardResumo"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="188dp"
                     android:layout_marginEnd="14dp"
-                    android:background="@drawable/bg_glass_card"
+                    android:background="@drawable/bg_panel_frost"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
@@ -679,8 +683,8 @@
                 <LinearLayout
                     android:id="@+id/cardDicionario"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_glass_card"
+                    android:layout_height="188dp"
+                    android:background="@drawable/bg_panel_frost"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
@@ -752,7 +756,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/quizzesRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="236dp"
             android:clipToPadding="false"
             android:orientation="horizontal"
             android:paddingHorizontal="20dp"

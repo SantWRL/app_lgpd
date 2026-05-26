@@ -9,9 +9,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import br.ufpi.lgpd.educacional.R
+import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentWordleBinding
-import br.ufpi.lgpd.educacional.util.UserPreferences
+import br.ufpi.lgpd.educacional.util.PointsConstants
+import br.ufpi.lgpd.educacional.util.WordleConstants
+import br.ufpi.lgpd.educacional.util.getUserRepository
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 class WordleFragment : Fragment() {
@@ -19,20 +24,21 @@ class WordleFragment : Fragment() {
     private var _binding: FragmentWordleBinding? = null
     private val binding get() = _binding!!
 
-    // ── Game State ─────────────────────────────────────────────────────────
     private var dictionary: Map<String, String> = emptyMap()
     private var targetWord = ""
     private var targetDefinition = ""
     private var currentRow = 0
     private var currentCol = 0
-    private val guessLetters = Array(6) { CharArray(5) { ' ' } }
+    private var isGameOver = false
+    private val guessLetters = Array(WordleConstants.GRID_ROWS) { CharArray(WordleConstants.GRID_COLS) { ' ' } }
 
-    // ── All cells and key buttons ───────────────────────────────────────────
-    private lateinit var cells: Array<Array<TextView>>
-    private val keyMap = mutableMapOf<Char, Button>()
+    private lateinit var wordleCellGrid: Array<Array<TextView>>
+    private val keyboardLetterButtons = mutableMapOf<Char, Button>()
+    private lateinit var repository: UserRepository
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWordleBinding.inflate(inflater, container, false)
@@ -41,35 +47,33 @@ class WordleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        repository = getUserRepository()
         loadDictionary()
         initCells()
         initKeyboard()
         startNewGame()
     }
 
-    // ── Load Dictionary from assets/wordle_dictionary.json ─────────────────
     private fun loadDictionary() {
         try {
             val json = requireContext().assets.open("wordle_dictionary.json")
                 .bufferedReader().use { it.readText() }
             val obj = JSONObject(json).getJSONObject("words")
             dictionary = obj.keys().asSequence().associateWith { obj.getString(it) }
-        } catch (e: Exception) {
-            // fallback hardcoded
+        } catch (_: Exception) {
             dictionary = mapOf(
-                "DADOS" to "Informação sobre pessoa identificada ou identificável.",
-                "BASES" to "Hipóteses legais que autorizam o tratamento de dados.",
-                "RISCO" to "Probabilidade de eventos negativos à privacidade.",
-                "MULTA" to "Penalidade pecuniária que pode chegar a 50 milhões.",
-                "LEGAL" to "Em conformidade com o ordenamento jurídico vigente.",
-                "FINAL" to "Princípio da Finalidade: uso com propósito legítimo.",
+                "DADOS" to "Informacao sobre pessoa identificada ou identificavel.",
+                "BASES" to "Hipoteses legais que autorizam o tratamento de dados.",
+                "RISCO" to "Probabilidade de eventos negativos a privacidade.",
+                "MULTA" to "Penalidade pecuniaria que pode chegar a 50 milhoes.",
+                "LEGAL" to "Em conformidade com o ordenamento juridico vigente.",
+                "FINAL" to "Principio da finalidade: uso com proposito legitimo.",
                 "CHAVE" to "Recurso de criptografia para a segurança dos dados.",
-                "TERMO" to "Instrumento de manifestação de vontade ou uso."
+                "TERMO" to "Instrumento de manifestacao de vontade ou uso."
             )
         }
     }
 
-    // ── Map cell IDs ────────────────────────────────────────────────────────
     private fun initCells() {
         val ids = arrayOf(
             arrayOf(R.id.cell_0_0, R.id.cell_0_1, R.id.cell_0_2, R.id.cell_0_3, R.id.cell_0_4),
@@ -79,10 +83,13 @@ class WordleFragment : Fragment() {
             arrayOf(R.id.cell_4_0, R.id.cell_4_1, R.id.cell_4_2, R.id.cell_4_3, R.id.cell_4_4),
             arrayOf(R.id.cell_5_0, R.id.cell_5_1, R.id.cell_5_2, R.id.cell_5_3, R.id.cell_5_4)
         )
-        cells = Array(6) { row -> Array(5) { col -> binding.root.findViewById(ids[row][col]) } }
+        wordleCellGrid = Array(WordleConstants.GRID_ROWS) { row ->
+            Array(WordleConstants.GRID_COLS) { col ->
+                binding.root.findViewById(ids[row][col])
+            }
+        }
     }
 
-    // ── Map keyboard buttons ─────────────────────────────────────────────────
     private fun initKeyboard() {
         val letterIds = mapOf(
             'Q' to R.id.key_Q, 'W' to R.id.key_W, 'E' to R.id.key_E, 'R' to R.id.key_R,
@@ -95,7 +102,7 @@ class WordleFragment : Fragment() {
         )
         letterIds.forEach { (char, id) ->
             val btn = binding.root.findViewById<Button>(id)
-            keyMap[char] = btn
+            keyboardLetterButtons[char] = btn
             btn.setOnClickListener { onLetterTyped(char) }
         }
         binding.keyENTER.setOnClickListener { onEnter() }
@@ -104,91 +111,85 @@ class WordleFragment : Fragment() {
         binding.btnHint.setOnClickListener { showHint() }
     }
 
-    // ── Start / Reset ────────────────────────────────────────────────────────
     fun startNewGame() {
         val entry = dictionary.entries.random()
         targetWord = entry.key.uppercase()
         targetDefinition = entry.value
         currentRow = 0
         currentCol = 0
+        isGameOver = false
         guessLetters.forEach { it.fill(' ') }
 
-        // Reset cells — use drawable for rounded corners
-        cells.forEach { row ->
+        wordleCellGrid.forEach { row ->
             row.forEach { cell ->
                 cell.text = ""
                 cell.setBackgroundResource(R.drawable.bg_wordle_cell_empty)
                 cell.setTextColor(ContextCompat.getColor(requireContext(), R.color.wordle_text_light))
             }
         }
-        // Reset keys — use drawable for rounded corners
-        keyMap.values.forEach { btn ->
+
+        keyboardLetterButtons.values.forEach { btn ->
             btn.setBackgroundResource(R.drawable.bg_wordle_key)
             btn.setTextColor(ContextCompat.getColor(requireContext(), R.color.wordle_text_light))
         }
-        // Reset action keys
+
         binding.keyENTER.setBackgroundResource(R.drawable.bg_wordle_key_action)
         binding.keyENTER.setTextColor(ContextCompat.getColor(requireContext(), R.color.wordle_text_dark))
         binding.keyDEL.setBackgroundResource(R.drawable.bg_wordle_key_action)
         binding.keyDEL.setTextColor(ContextCompat.getColor(requireContext(), R.color.wordle_text_dark))
-
-        // Reset UI state
         binding.definitionCard.visibility = View.GONE
-        binding.tvAttemptsLeft.text = "6"
+        binding.tvAttemptsLeft.text = WordleConstants.GRID_ROWS.toString()
         binding.btnHint.visibility = View.VISIBLE
         binding.tvHint.visibility = View.GONE
     }
 
-    // ── Sistema de Dicas ──────────────────────────────────────────────────────
     private fun showHint() {
-        val hint = "Dica: ${targetDefinition.take(60)}..."
-        binding.tvHint.text = hint
+        binding.tvHint.text = "Dica: ${targetDefinition.take(WordleConstants.HINT_PREVIEW_LENGTH)}..."
         binding.tvHint.visibility = View.VISIBLE
         binding.btnHint.visibility = View.GONE
     }
 
-    // ── Input Handlers ───────────────────────────────────────────────────────
     private fun onLetterTyped(char: Char) {
-        if (currentCol >= 5 || currentRow >= 6) return
+        if (isGameOver) return
+        if (currentCol >= WordleConstants.GRID_COLS || currentRow >= WordleConstants.GRID_ROWS) return
         guessLetters[currentRow][currentCol] = char
-        cells[currentRow][currentCol].text = char.toString()
+        wordleCellGrid[currentRow][currentCol].text = char.toString()
         currentCol++
     }
 
     private fun onDelete() {
+        if (isGameOver) return
         if (currentCol <= 0) return
         currentCol--
         guessLetters[currentRow][currentCol] = ' '
-        cells[currentRow][currentCol].text = ""
+        wordleCellGrid[currentRow][currentCol].text = ""
     }
 
     private fun onEnter() {
-        if (currentCol < 5) {
-            Toast.makeText(requireContext(), "Complete as 5 letras!", Toast.LENGTH_SHORT).show()
+        if (isGameOver) return
+        if (currentCol < WordleConstants.GRID_COLS) {
+            Toast.makeText(requireContext(), "Complete as ${WordleConstants.GRID_COLS} letras!", Toast.LENGTH_SHORT).show()
             return
         }
-        val guess = String(guessLetters[currentRow]).uppercase()
-        evaluateGuess(guess)
+        evaluateGuess(String(guessLetters[currentRow]).uppercase())
     }
 
-    // ── Wordle Evaluation Logic (Green / Yellow / Grey) ──────────────────────
     private fun evaluateGuess(guess: String) {
-        val result = IntArray(5) { 0 }  // 0=absent, 1=present, 2=correct
+        val result = IntArray(WordleConstants.GRID_COLS)
         val targetChars = targetWord.toCharArray()
         val guessChars = guess.toCharArray()
+        val usedTarget = BooleanArray(WordleConstants.GRID_COLS)
 
-        // Pass 1: correct positions (green)
-        val usedTarget = BooleanArray(5)
-        for (i in 0..4) {
+        for (i in 0 until WordleConstants.GRID_COLS) {
             if (guessChars[i] == targetChars[i]) {
                 result[i] = 2
                 usedTarget[i] = true
             }
         }
-        // Pass 2: present but wrong position (yellow)
-        for (i in 0..4) {
+
+        for (i in 0 until WordleConstants.GRID_COLS) {
             if (result[i] == 2) continue
-            for (j in 0..4) {
+            for (j in 0 until WordleConstants.GRID_COLS) {
                 if (!usedTarget[j] && guessChars[i] == targetChars[j]) {
                     result[i] = 1
                     usedTarget[j] = true
@@ -200,10 +201,9 @@ class WordleFragment : Fragment() {
         val colorTextDark = ContextCompat.getColor(requireContext(), R.color.wordle_text_dark)
         val colorTextLight = ContextCompat.getColor(requireContext(), R.color.wordle_text_light)
 
-        // Apply drawable backgrounds to cells and keyboard (preserves rounded corners)
-        for (i in 0..4) {
-            val cell = cells[currentRow][i]
-            val keyBtn = keyMap[guessChars[i]]
+        for (i in 0 until WordleConstants.GRID_COLS) {
+            val cell = wordleCellGrid[currentRow][i]
+            val keyBtn = keyboardLetterButtons[guessChars[i]]
             when (result[i]) {
                 2 -> {
                     cell.setBackgroundResource(R.drawable.bg_wordle_cell_correct)
@@ -214,9 +214,9 @@ class WordleFragment : Fragment() {
                 1 -> {
                     cell.setBackgroundResource(R.drawable.bg_wordle_cell_present)
                     cell.setTextColor(colorTextDark)
-                    // Only upgrade key color if not already correct (green)
                     if (keyBtn?.background?.constantState !=
-                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_wordle_key_correct)?.constantState) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_wordle_key_correct)?.constantState
+                    ) {
                         keyBtn?.setBackgroundResource(R.drawable.bg_wordle_key_present)
                         keyBtn?.setTextColor(colorTextDark)
                     }
@@ -224,9 +224,9 @@ class WordleFragment : Fragment() {
                 else -> {
                     cell.setBackgroundResource(R.drawable.bg_wordle_cell_absent)
                     cell.setTextColor(colorTextLight)
-                    // Only downgrade key color if still default
                     if (keyBtn?.background?.constantState ==
-                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_wordle_key)?.constantState) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_wordle_key)?.constantState
+                    ) {
                         keyBtn?.setBackgroundResource(R.drawable.bg_wordle_key_absent)
                         keyBtn?.setTextColor(colorTextLight)
                     }
@@ -237,22 +237,31 @@ class WordleFragment : Fragment() {
         val won = result.all { it == 2 }
         currentRow++
         currentCol = 0
-        binding.tvAttemptsLeft.text = (6 - currentRow).toString()
+        binding.tvAttemptsLeft.text = (WordleConstants.GRID_ROWS - currentRow).toString()
 
         when {
             won -> showResult(true)
-            currentRow >= 6 -> showResult(false)
+            currentRow >= WordleConstants.GRID_ROWS -> showResult(false)
         }
     }
 
     private fun showResult(won: Boolean) {
-        binding.tvDefinitionTitle.text = if (won) "✅ Correto! A palavra era: $targetWord" else "❌ A palavra era: $targetWord"
+        isGameOver = true
+        binding.tvDefinitionTitle.text =
+            if (won) "Correto! A palavra era: $targetWord" else "A palavra era: $targetWord"
         binding.tvDefinition.text = targetDefinition
         binding.definitionCard.visibility = View.VISIBLE
 
         if (won) {
-            UserPreferences(requireContext()).addPoints(UserPreferences.POINTS_PER_WORDLE_WIN)
-            Toast.makeText(requireContext(), "+${UserPreferences.POINTS_PER_WORDLE_WIN} pontos!", Toast.LENGTH_SHORT).show()
+            viewLifecycleOwner.lifecycleScope.launch {
+                repository.ensureUserExists()
+                repository.addBonusPoints(PointsConstants.WORDLE_WIN)
+            }
+            Toast.makeText(
+                requireContext(),
+                "+${PointsConstants.WORDLE_WIN} pontos!",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -261,3 +270,4 @@ class WordleFragment : Fragment() {
         _binding = null
     }
 }
+ 

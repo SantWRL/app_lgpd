@@ -21,33 +21,27 @@ import br.ufpi.lgpd.educacional.ui.adapter.LessonCardAdapter
 import br.ufpi.lgpd.educacional.ui.adapter.QuizCardAdapter
 import br.ufpi.lgpd.educacional.ui.lessons.LessonDetailFragment
 import br.ufpi.lgpd.educacional.ui.quizzes.QuizDetailFragment
-import br.ufpi.lgpd.educacional.util.UserPreferences
 import kotlinx.coroutines.launch
 
-/**
- * HomeFragment - Tela inicial do app
- * Espelha a Home do React app-lei com hero banner, categorias, cursos, gamificação e recursos.
- */
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: HomeViewModel by viewModels()
-    private lateinit var userPreferences: UserPreferences
 
     private lateinit var lessonAdapter: LessonCardAdapter
     private lateinit var quizAdapter: QuizCardAdapter
 
-    // Category pills
-    private val categoryPills get() = listOf(
-        binding.catAll,
-        binding.catFundamentos,
-        binding.catConformidade,
-        binding.catDireitos,
-        binding.catAtores,
-        binding.catSeguranca
-    )
+    private val categoryPills
+        get() = listOf(
+            binding.catAll,
+            binding.catFundamentos,
+            binding.catConformidade,
+            binding.catDireitos,
+            binding.catAtores,
+            binding.catSeguranca
+        )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,31 +54,14 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        userPreferences = UserPreferences(requireContext())
         setupRecyclerViews()
         setupCategories()
         setupGameCards()
         setupResourceCards()
-        setupGovLink()
         observeData()
         loadContent()
-        updateGreeting()
     }
 
-    private fun setupGovLink() {
-        // ID btnGovLink might be missing in some versions of the XML, let's be safe
-        // In my premium fragment_home.xml, I don't have btnGovLink but I have cardAnpd.
-        // Actually, let's keep it if it exists.
-        // binding.btnGovLink.setOnClickListener { ... }
-    }
-
-    private fun updateGreeting() {
-        val firstName = userPreferences.userName.split(" ").firstOrNull() ?: "Usuário"
-        binding.homeGreeting.text = "Olá, $firstName!"
-    }
-
-    // ── RecyclerViews ─────────────────────────────────────────────────────────
     private fun setupRecyclerViews() {
         lessonAdapter = LessonCardAdapter { lesson ->
             viewModel.selectLesson(lesson)
@@ -113,7 +90,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // ── Category Pill Logic ───────────────────────────────────────────────────
     private fun setupCategories() {
         val categoryMap = mapOf(
             binding.catAll to "Todos",
@@ -123,6 +99,7 @@ class HomeFragment : Fragment() {
             binding.catAtores to "Atores",
             binding.catSeguranca to "Segurança"
         )
+
         categoryMap.forEach { (pill, category) ->
             pill.setOnClickListener {
                 setActiveCategory(pill)
@@ -145,7 +122,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // ── Game Cards ────────────────────────────────────────────────────────────
     private fun setupGameCards() {
         binding.cardWordle.setOnClickListener {
             findNavController().navigate(R.id.wordleFragment)
@@ -155,64 +131,53 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // ── Resource Cards (Portal ANPD, GDPR, etc.) ─────────────────────────────
     private fun setupResourceCards() {
         binding.cardAnpd.setOnClickListener {
             try {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.gov.br/anpd/pt-br")))
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 showInfo("Portal ANPD", "Acesse: https://www.gov.br/anpd/pt-br")
             }
         }
+
         binding.cardGdpr.setOnClickListener {
             showInfo(
-                "LGPD × GDPR",
-                "Principais Diferenças:\n\n" +
-                "• Bases Legais: A LGPD possui 10 bases legais para tratar dados, enquanto a GDPR possui apenas 6.\n\n" +
-                "• Vazamentos: Na GDPR, notificação em até 72 horas. Na LGPD, o prazo é 3 dias úteis.\n\n" +
-                "• Multas: GDPR = 20M Euros. LGPD = 50M Reais."
+                "LGPD x GDPR",
+                "Bases legais: a LGPD trabalha com 10 bases e a GDPR com 6.\n\n" +
+                    "Incidentes: a GDPR fala em até 72 horas; na LGPD o prazo depende da regulamentação aplicável.\n\n" +
+                    "Multas: os limites e critérios são diferentes entre os regimes."
             )
         }
+
         binding.cardResumo.setOnClickListener {
             showInfo(
-                "Resumo Legal",
-                "A LGPD (Lei nº 13.709/2018) estabelece regras estritas sobre coleta, armazenamento, " +
-                "tratamento e compartilhamento de dados pessoais em solo brasileiro. Seu principal objetivo " +
-                "é proteger os direitos fundamentais de liberdade e de privacidade do cidadão."
+                "Resumo legal",
+                "A LGPD define regras para coleta, armazenamento, tratamento e compartilhamento de dados pessoais no Brasil."
             )
         }
+
         binding.cardDicionario.setOnClickListener {
             showInfo(
-                "Dicionário Jurídico",
+                "Dicionário jurídico",
                 "Titular: pessoa a quem os dados se referem.\n\n" +
-                "Controlador: decide sobre o tratamento de dados.\n\n" +
-                "Operador: realiza o tratamento em nome do controlador.\n\n" +
-                "Encarregado (DPO): canal de comunicação entre titular, controlador e ANPD.\n\n" +
-                "ANPD: Autoridade Nacional de Proteção de Dados.\n\n" +
-                "Dados Sensíveis: origem racial, saúde, biometria, religião, vida sexual, etc."
+                    "Controlador: decide sobre o tratamento.\n\n" +
+                    "Operador: trata os dados em nome do controlador.\n\n" +
+                    "Encarregado: canal entre titular, controlador e ANPD."
             )
         }
+
         binding.btnVerDetalhes.setOnClickListener {
             val stats = viewModel.userProgress.value
             showInfo(
-                "Seu Desempenho",
-                "📚 Módulos concluídos: ${stats.lessonsCompleted}/${stats.totalLessons}\n\n" +
-                "⭐ XP Total: ${stats.totalPoints} pontos\n\n" +
-                "🎯 Nível: ${stats.currentLevel}\n\n" +
-                "📊 Conclusão: ${stats.completionPercentage}%"
+                "Seu desempenho",
+                "Módulos concluídos: ${stats.lessonsCompleted}/${stats.totalLessons}\n\n" +
+                    "XP total: ${stats.totalPoints}\n\n" +
+                    "Nível: ${stats.currentLevel}\n\n" +
+                    "Conclusão: ${stats.completionPercentage}%"
             )
         }
     }
 
-    private fun showInfo(title: String, message: String) {
-        AlertDialog.Builder(requireContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton("Entendido", null)
-            .show()
-    }
-
-    // ── Observe ViewModel Data ────────────────────────────────────────────────
     private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -228,6 +193,7 @@ class HomeFragment : Fragment() {
                 }
                 launch {
                     viewModel.userProgress.collect { stats ->
+                        updateGreeting(stats.userName)
                         updateProgressUI(stats)
                     }
                 }
@@ -235,34 +201,33 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun updateGreeting(name: String) {
+        val firstName = name.split(" ").firstOrNull()?.ifBlank { "Usuário" } ?: "Usuário"
+        binding.homeGreeting.text = "Olá, $firstName!"
+    }
+
     private fun updateProgressUI(stats: UserProgressStats) {
-        binding.apply {
-            progressPercentage.text = "${stats.completionPercentage}%"
-            progressBar.progress = stats.completionPercentage
-            homeDescription.text = "Você já completou ${stats.completionPercentage}% do conteúdo essencial."
-        }
+        binding.progressPercentage.text = "${stats.completionPercentage}%"
+        binding.progressBar.progress = stats.completionPercentage
+        binding.homeDescription.text =
+            "Você já completou ${stats.completionPercentage}% do conteúdo essencial."
+    }
+
+    private fun showInfo(title: String, message: String) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Entendido", null)
+            .show()
     }
 
     private fun loadContent() {
-        val completedLessons = userPreferences.getLessonsCompleted()
-        viewModel.loadLessons(completedLessons)
-        viewModel.loadQuizzes()
-        
-        viewModel.loadUserProgress(
-            lessonsCompleted = completedLessons.size,
-            totalLessons = 10,
-            completionPercentage = userPreferences.getCompletionPercentage(10),
-            totalPoints = userPreferences.totalPoints,
-            currentLevel = userPreferences.level
-        )
+        viewModel.refreshContent()
     }
 
     override fun onResume() {
         super.onResume()
-        if (::userPreferences.isInitialized) {
-            updateGreeting()
-            loadContent()
-        }
+        loadContent()
     }
 
     override fun onDestroyView() {

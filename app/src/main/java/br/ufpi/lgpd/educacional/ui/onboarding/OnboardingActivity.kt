@@ -11,7 +11,7 @@ import br.ufpi.lgpd.educacional.util.UserPreferences
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
- * OnboardingActivity - Tela de apresentação e orientação inicial
+ * OnboardingActivity - Tela de apresentação e orientação inicial.
  */
 class OnboardingActivity : AppCompatActivity() {
 
@@ -20,7 +20,7 @@ class OnboardingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         userPreferences = UserPreferences(this)
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -63,9 +63,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun goToHome() {
-        // Marca que o usuário já viu o onboarding para não mostrar novamente
         userPreferences.hasSeenOnboarding = true
-        
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

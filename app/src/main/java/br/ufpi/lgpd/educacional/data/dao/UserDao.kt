@@ -31,6 +31,9 @@ interface UserDao {
     @Query("SELECT * FROM lesson_progress WHERE userId = :userId AND lessonId = :lessonId LIMIT 1")
     suspend fun getLessonProgress(userId: String, lessonId: Int): LessonProgress?
 
+    @Query("SELECT lessonId FROM lesson_progress WHERE userId = :userId AND isCompleted = 1")
+    suspend fun getCompletedLessonIds(userId: String): List<Int>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertLessonProgress(progress: LessonProgress)
 
@@ -44,6 +47,9 @@ interface UserDao {
 
     @Query("SELECT * FROM quiz_results WHERE userId = :userId AND quizId = :quizId ORDER BY completedAt DESC LIMIT 1")
     suspend fun getLastQuizResult(userId: String, quizId: Int): QuizResultRecord?
+
+    @Query("SELECT MAX(score) FROM quiz_results WHERE userId = :userId AND quizId = :quizId")
+    suspend fun getBestQuizScore(userId: String, quizId: Int): Int?
 
     @Insert
     suspend fun insertQuizResult(result: QuizResultRecord)

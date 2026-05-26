@@ -18,29 +18,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.databinding.FragmentProfileBinding
 import br.ufpi.lgpd.educacional.ui.adapter.AchievementAdapter
-import br.ufpi.lgpd.educacional.util.UserPreferences
+import br.ufpi.lgpd.educacional.util.AvatarConstants
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-/**
- * ProfileFragment — tela de perfil, progresso e conquistas do usuário.
- */
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: ProfileViewModel by viewModels()
-    private lateinit var userPreferences: UserPreferences
     private lateinit var achievementAdapter: AchievementAdapter
 
-    private val avatarColors = listOf(
-        "#89B4FA", "#89DCEB", "#A6E3A1", "#F9E2AF",
-        "#F38BA8", "#CBA6F7", "#F5C2E7", "#FAB387"
-    )
-
-    private val avatarEmojis = listOf("🦊", "🐱", "🐶", "🐼", "🦁", "🐸", "🦉", "🐺")
+    private val avatarEmojis = AvatarConstants.EMOJIS
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +45,6 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userPreferences = UserPreferences(requireContext())
         setupAchievements()
         setupButtons()
         setupColorSelector()
@@ -74,7 +64,10 @@ class ProfileFragment : Fragment() {
             val profile = viewModel.userProfile.value
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "Estou aprendendo sobre a LGPD e já conquistei ${profile.totalPoints} pontos com uma ofensiva de ${profile.streakDays} dias! Junte-se a mim!")
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "Estou aprendendo sobre a LGPD e já conquistei ${profile.totalPoints} pontos com uma ofensiva de ${profile.streakDays} dias! Junte-se a mim!"
+                )
                 type = "text/plain"
             }
             startActivity(Intent.createChooser(sendIntent, "Compartilhar Progresso"))
@@ -86,10 +79,12 @@ class ProfileFragment : Fragment() {
         binding.btnPrivacyPolicy.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Privacidade & LGPD")
-                .setMessage("Seus dados são tratados com total segurança, seguindo as diretrizes da LGPD (Lei nº 13.709/2018).\n\n" +
-                        "• Progresso salvo localmente\n" +
-                        "• Sem rastreamento externo\n" +
-                        "• Transparência total")
+                .setMessage(
+                    "Seus dados são tratados com total segurança, seguindo as diretrizes da LGPD (Lei nº 13.709/2018).\n\n" +
+                        "- Progresso salvo localmente\n" +
+                        "- Sem rastreamento externo\n" +
+                        "- Transparência total"
+                )
                 .setPositiveButton("Entendido", null)
                 .show()
         }
@@ -121,10 +116,10 @@ class ProfileFragment : Fragment() {
 
     private fun showEditNameDialog() {
         val input = EditText(requireContext())
-        input.setText(userPreferences.userName)
+        input.setText(viewModel.userProfile.value.name)
         val padding = (16 * resources.displayMetrics.density).toInt()
         input.setPadding(padding, padding, padding, padding)
-        
+
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Editar Perfil")
             .setMessage("Digite seu nome de exibição:")
@@ -171,22 +166,19 @@ class ProfileFragment : Fragment() {
             quizzesCompleted.text = profile.quizzesCompleted.toString()
             averageScore.text = "%.1f%%".format(profile.averageScore)
             streakDays.text = profile.streakDays.toString()
-            
-            // Avatar: exibe o emoji do animal selecionado
-            val emoji = avatarEmojis.getOrElse(profile.avatarColorIndex) { "🦊" }
+
+            val emoji = avatarEmojis.getOrElse(profile.avatarColorIndex) { avatarEmojis.first() }
             avatarInitials.text = emoji
             avatarInitials.textSize = 42f
-            
-            // Cor do avatar
+
             try {
                 val color = Color.parseColor(profile.avatarColor)
                 avatarColorContainer.backgroundTintList = ColorStateList.valueOf(color)
-            } catch (_: Exception) { }
+            } catch (_: Exception) {
+            }
 
-            // Destaca a cor selecionada
             highlightSelectedColor(profile.avatarColorIndex)
 
-            // Barra de progresso de aulas
             val pct = ((profile.lessonsCompleted / 10.0) * 100).toInt().coerceIn(0, 100)
             lessonsProgressBar.progress = pct
             lessonsProgressText.text = "${profile.lessonsCompleted}/10 aulas"

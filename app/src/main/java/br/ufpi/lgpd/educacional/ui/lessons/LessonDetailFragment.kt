@@ -10,10 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import br.ufpi.lgpd.educacional.data.LgpdContent
-import br.ufpi.lgpd.educacional.data.database.AppDatabase
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentLessonDetailBinding
-import br.ufpi.lgpd.educacional.util.UserPreferences
+import br.ufpi.lgpd.educacional.util.getUserRepository
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import kotlinx.coroutines.launch
@@ -25,7 +24,6 @@ class LessonDetailFragment : Fragment() {
 
     private var lessonId: Int = 0
     private lateinit var repository: UserRepository
-    private lateinit var userPreferences: UserPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +43,8 @@ class LessonDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        repository = UserRepository(AppDatabase.getInstance(requireContext()).userDao())
-        userPreferences = UserPreferences(requireContext())
-        
+        repository = getUserRepository()
+
         setupUI()
         loadLesson()
     }
@@ -59,8 +56,8 @@ class LessonDetailFragment : Fragment() {
 
         binding.btnMarkCompleted.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
+                repository.ensureUserExists()
                 repository.markLessonCompleted(lessonId)
-                userPreferences.completeLesson(lessonId) // Sync with prefs for now
                 Toast.makeText(requireContext(), "Lição concluída! +10 XP", Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
             }
@@ -69,37 +66,37 @@ class LessonDetailFragment : Fragment() {
 
     private fun loadLesson() {
         val lesson = LgpdContent.lessons.find { it.id == lessonId }
-        if (lesson != null) {
-            binding.apply {
-                tvLessonCategory.text = lesson.category.uppercase()
-                tvLessonTitle.text = lesson.title
-                tvLessonDescription.text = lesson.description
-                
-                // Formatar Markdown simples para Negrito e Quebras de linha
-                val textWithHtml = lesson.content
-                    .replace(Regex("\\*\\*(.*?)\\*\\*"), "<b>$1</b>")
-                    .replace("\n", "<br>")
-                
-                tvLessonContent.text = HtmlCompat.fromHtml(textWithHtml, HtmlCompat.FROM_HTML_MODE_COMPACT)
-
-                // Carrega vídeo do YouTube se existir
-                if (lesson.videoId != null) {
-                    videoCard.visibility = View.VISIBLE
-                    setupYoutubePlayer(lesson.videoId)
-                } else {
-                    videoCard.visibility = View.GONE
-                }
-
-                // Check completion
-                if (userPreferences.isLessonCompleted(lessonId)) {
-                    btnMarkCompleted.text = "Lição Concluída"
-                    btnMarkCompleted.isEnabled = false
-                    btnMarkCompleted.alpha = 0.5f
-                }
-            }
-        } else {
+        if (lesson == null) {
             Toast.makeText(requireContext(), "Lição não encontrada", Toast.LENGTH_SHORT).show()
             findNavController().navigateUp()
+            return
+        }
+
+        binding.apply {
+            tvLessonCategory.text = lesson.category.uppercase()
+            tvLessonTitle.text = lesson.title
+            tvLessonDescription.text = lesson.description
+
+            val textWithHtml = lesson.content
+                .replace(Regex("\\*\\*(.*?)\\*\\*"), "<b>$1</b>")
+                .replace("\n", "<br>")
+            tvLessonContent.text = HtmlCompat.fromHtml(textWithHtml, HtmlCompat.FROM_HTML_MODE_COMPACT)
+
+            if (lesson.videoId != null) {
+                videoCard.visibility = View.VISIBLE
+                setupYoutubePlayer(lesson.videoId)
+            } else {
+                videoCard.visibility = View.GONE
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.ensureUserExists()
+            if (repository.isLessonCompleted(lessonId)) {
+                binding.btnMarkCompleted.text = "Lição concluída"
+                binding.btnMarkCompleted.isEnabled = false
+                binding.btnMarkCompleted.alpha = 0.5f
+            }
         }
     }
 

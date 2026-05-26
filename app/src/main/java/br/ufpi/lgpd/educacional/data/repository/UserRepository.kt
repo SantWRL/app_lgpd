@@ -5,6 +5,9 @@ import br.ufpi.lgpd.educacional.data.model.LessonProgress
 import br.ufpi.lgpd.educacional.data.model.QuizResultRecord
 import br.ufpi.lgpd.educacional.data.model.User
 import br.ufpi.lgpd.educacional.data.model.UserStats
+import br.ufpi.lgpd.educacional.util.LevelConstants
+import br.ufpi.lgpd.educacional.util.PointsConstants
+import br.ufpi.lgpd.educacional.util.StreakConstants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.Calendar
@@ -17,8 +20,11 @@ class UserRepository(private val dao: UserDao) {
 
     companion object {
         const val DEFAULT_USER_ID = "default_user"
-        private const val POINTS_PER_QUIZ_POINT = 5   // cada % de acerto vale 5 pts
-        private const val LESSON_COMPLETION_POINTS = 50
+        const val LESSON_COMPLETION_POINTS = PointsConstants.LESSON_COMPLETION
+        const val POINTS_FIRST_QUIZ = PointsConstants.FIRST_QUIZ_ATTEMPT
+        const val POINTS_IMPROVED_QUIZ = PointsConstants.QUIZ_SCORE_IMPROVEMENT
+        const val POINTS_PER_WORDLE_WIN = PointsConstants.WORDLE_WIN
+        const val POINTS_PER_WORDSEARCH_WIN = PointsConstants.WORDSEARCH_WIN
     }
 
     // ─── Fluxos observáveis ────────────────────────────────────────────────────
@@ -76,10 +82,10 @@ class UserRepository(private val dao: UserDao) {
         val lastDate = startOfDay(user.lastStreakDate)
 
         val newStreak = when {
-            lastDate == 0L -> 1                           // primeiro acesso
-            today - lastDate == 86_400_000L -> user.streakDays + 1  // ontem
-            today == lastDate -> user.streakDays          // mesmo dia
-            else -> 1                                     // quebrou o streak
+            lastDate == 0L -> 1                                    // primeiro acesso
+            today - lastDate == StreakConstants.MS_PER_DAY -> user.streakDays + 1  // ontem
+            today == lastDate -> user.streakDays                   // mesmo dia
+            else -> 1                                              // quebrou o streak
         }
 
         dao.upsertUser(
@@ -119,10 +125,21 @@ class UserRepository(private val dao: UserDao) {
         )
     }
 
+    suspend fun getCompletedLessonIds(userId: String = DEFAULT_USER_ID): Set<Int> =
+        dao.getCompletedLessonIds(userId).toSet()
+
+    suspend fun isLessonCompleted(lessonId: Int, userId: String = DEFAULT_USER_ID): Boolean =
+        dao.getLessonProgress(userId, lessonId)?.isCompleted == true
+
     // ─── Resultados de Quiz ───────────────────────────────────────────────────
 
-    suspend fun saveQuizResult(quizId: Int, score: Int, userId: String = DEFAULT_USER_ID) {
-        val pointsEarned = score * POINTS_PER_QUIZ_POINT
+    suspend fun saveQuizResult(quizId: Int, score: Int, userId: String = DEFAULT_USER_ID): Int {
+        val previousBest = dao.getBestQuizScore(userId, quizId)
+        val pointsEarned = when {
+            previousBest == null -> POINTS_FIRST_QUIZ
+            score > previousBest -> POINTS_IMPROVED_QUIZ
+            else -> 0
+        }
         dao.insertQuizResult(
             QuizResultRecord(
                 userId = userId,
@@ -132,17 +149,29 @@ class UserRepository(private val dao: UserDao) {
             )
         )
 
-        // Recalcula estatísticas agregadas no usuário
         val avgScore = dao.getAverageScore(userId) ?: 0.0
-        val totalPoints = (dao.getTotalPoints(userId) ?: 0) +
-                (dao.countCompletedLessons(userId) * LESSON_COMPLETION_POINTS)
         val quizzesCompleted = dao.countDistinctQuizzesCompleted(userId)
-
         val user = dao.getUser(userId) ?: User(id = userId)
+        val totalPoints = user.totalPoints + pointsEarned
+
         dao.upsertUser(
             user.copy(
                 quizzesCompleted = quizzesCompleted,
                 averageScore = avgScore,
+                totalPoints = totalPoints,
+                level = calculateLevel(totalPoints)
+            )
+        )
+
+        return pointsEarned
+    }
+
+    suspend fun addBonusPoints(points: Int, userId: String = DEFAULT_USER_ID) {
+        if (points <= 0) return
+        val user = dao.getUser(userId) ?: User(id = userId)
+        val totalPoints = user.totalPoints + points
+        dao.upsertUser(
+            user.copy(
                 totalPoints = totalPoints,
                 level = calculateLevel(totalPoints)
             )
@@ -172,11 +201,11 @@ class UserRepository(private val dao: UserDao) {
     // ─── Auxiliares ───────────────────────────────────────────────────────────
 
     private fun calculateLevel(totalPoints: Int): Int = when {
-        totalPoints >= 1500 -> 5
-        totalPoints >= 1000 -> 4
-        totalPoints >= 500  -> 3
-        totalPoints >= 150  -> 2
-        else                -> 1
+        totalPoints >= LevelConstants.LEVEL_5_THRESHOLD -> 5
+        totalPoints >= LevelConstants.LEVEL_4_THRESHOLD -> 4
+        totalPoints >= LevelConstants.LEVEL_3_THRESHOLD -> 3
+        totalPoints >= LevelConstants.LEVEL_2_THRESHOLD -> 2
+        else                                            -> 1
     }
 
     private fun startOfDay(millis: Long): Long {
