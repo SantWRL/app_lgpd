@@ -85,7 +85,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/bg_glass_card"
         android:paddingTop="8dp"
         android:paddingHorizontal="8dp"
         android:paddingBottom="88dp"

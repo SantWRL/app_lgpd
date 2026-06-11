@@ -13,8 +13,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.model.Quiz
+import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentQuizzesBinding
 import br.ufpi.lgpd.educacional.ui.adapter.QuizzesListAdapter
+import br.ufpi.lgpd.educacional.util.getUserRepository
 import kotlinx.coroutines.launch
 
 /**
@@ -26,6 +28,7 @@ class QuizzesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: QuizzesViewModel by viewModels()
+    private lateinit var repository: UserRepository
 
     private lateinit var adapter: QuizzesListAdapter
     private var allQuizzes: List<Quiz> = emptyList()
@@ -42,10 +45,18 @@ class QuizzesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        repository = getUserRepository()
         setupRecyclerView()
         setupFilters()
         observeData()
-        viewModel.loadQuizzes()
+        loadContent()
+    }
+
+    private fun loadContent() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.ensureUserExists()
+            viewModel.loadQuizzes(repository.getCompletedQuizIds())
+        }
     }
 
     private fun setupRecyclerView() {
@@ -83,6 +94,11 @@ class QuizzesFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadContent()
     }
 
     override fun onDestroyView() {

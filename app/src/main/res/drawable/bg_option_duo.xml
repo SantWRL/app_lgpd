@@ -3,24 +3,24 @@
     <!-- Selecionado -->
     <item android:state_checked="true">
         <shape>
-            <solid android:color="#E0F2FE" />
-            <stroke android:width="2dp" android:color="@color/duo_blue" />
+            <solid android:color="@color/primary" android:alpha="0.15" />
+            <stroke android:width="2dp" android:color="@color/primary" />
             <corners android:radius="16dp" />
         </shape>
     </item>
     <!-- Pressionado -->
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="#F1F5F9" />
-            <stroke android:width="2dp" android:color="@color/gray_300" />
+            <solid android:color="@color/surface_variant" />
+            <stroke android:width="1dp" android:color="@color/border" />
             <corners android:radius="16dp" />
         </shape>
     </item>
     <!-- Normal -->
     <item>
         <shape>
-            <solid android:color="@color/white" />
-            <stroke android:width="2dp" android:color="@color/gray_200" />
+            <solid android:color="@color/surface" />
+            <stroke android:width="1dp" android:color="@color/border_light" />
             <corners android:radius="16dp" />
         </shape>
     </item>

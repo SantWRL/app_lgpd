@@ -3,6 +3,7 @@ package br.ufpi.lgpd.educacional.ui.adapter
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -49,6 +50,8 @@ class QuizCardAdapter(
                 }
                 quizCategoryChip.backgroundTintList = ColorStateList.valueOf(difficultyColor)
                 quizCategoryChip.text = difficultyLabel
+
+                completedBadge.visibility = if (quiz.isCompleted) View.VISIBLE else View.GONE
                 
                 root.setOnClickListener {
                     onQuizClick(quiz)

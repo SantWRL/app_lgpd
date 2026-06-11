@@ -109,6 +109,8 @@ class QuizzesListAdapter(
                 }
                 difficultyBadge.backgroundTintList = ColorStateList.valueOf(difficultyColor)
                 difficultyBadge.text = difficultyLabel
+
+                completedIcon.visibility = if (quiz.isCompleted) View.VISIBLE else View.GONE
                 
                 root.setOnClickListener {
                     onQuizClick(quiz)

@@ -131,6 +131,9 @@ class UserRepository(private val dao: UserDao) {
     suspend fun isLessonCompleted(lessonId: Int, userId: String = DEFAULT_USER_ID): Boolean =
         dao.getLessonProgress(userId, lessonId)?.isCompleted == true
 
+    suspend fun getCompletedQuizIds(userId: String = DEFAULT_USER_ID): Set<Int> =
+        dao.getCompletedQuizIds(userId).toSet()
+
     // ─── Resultados de Quiz ───────────────────────────────────────────────────
 
     suspend fun saveQuizResult(quizId: Int, score: Int, userId: String = DEFAULT_USER_ID): Int {

@@ -17,6 +17,8 @@ import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentLessonsBinding
 import br.ufpi.lgpd.educacional.ui.adapter.LessonsListAdapter
 import br.ufpi.lgpd.educacional.util.getUserRepository
+import androidx.recyclerview.widget.RecyclerView
+import br.ufpi.lgpd.educacional.util.AnimationUtils
 import kotlinx.coroutines.launch
 
 /**
@@ -32,6 +34,7 @@ class LessonsFragment : Fragment() {
 
     private lateinit var adapter: LessonsListAdapter
     private var allLessons: List<Lesson> = emptyList()
+    private var hasAnimated = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +66,7 @@ class LessonsFragment : Fragment() {
         binding.lessonsRecyclerView.apply {
             adapter = this@LessonsFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
+            setItemViewCacheSize(12)
         }
     }
 
@@ -83,6 +87,11 @@ class LessonsFragment : Fragment() {
                 viewModel.lessons.collect { lessons ->
                     allLessons = lessons
                     adapter.submitList(lessons)
+                    // Stagger animation on first load
+                    if (!hasAnimated && lessons.isNotEmpty()) {
+                        hasAnimated = true
+                        AnimationUtils.attachStaggerAnimation(binding.lessonsRecyclerView, maxItems = 10)
+                    }
                 }
             }
         }

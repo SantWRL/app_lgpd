@@ -61,7 +61,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             }
             allLessons = lessons
             _lessons.value = lessons
-            _quizzes.value = LgpdContent.quizzes
+
+            val completedQuizIds = repository.getCompletedQuizIds()
+            _quizzes.value = LgpdContent.quizzes.map { quiz ->
+                quiz.copy(isCompleted = completedQuizIds.contains(quiz.id))
+            }
             val user = repository.getUser()
 
             _userProgress.value = UserProgressStats(

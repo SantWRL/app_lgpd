@@ -22,7 +22,9 @@
             android:id="@+id/btnBack"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/bg_glass_card"
+            android:background="@drawable/badge_background"
+            android:backgroundTint="@color/surface_variant"
+            android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true">
             <ImageView
@@ -31,7 +33,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/ic_arrow_right"
                 android:rotation="180"
-                app:tint="@color/white" />
+                app:tint="@color/text_primary" />
         </FrameLayout>
 
         <TextView

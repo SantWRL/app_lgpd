@@ -60,6 +60,9 @@ interface UserDao {
     @Query("SELECT SUM(pointsEarned) FROM quiz_results WHERE userId = :userId")
     suspend fun getTotalPoints(userId: String): Int?
 
+    @Query("SELECT DISTINCT quizId FROM quiz_results WHERE userId = :userId")
+    suspend fun getCompletedQuizIds(userId: String): List<Int>
+
     @Query("SELECT COUNT(DISTINCT quizId) FROM quiz_results WHERE userId = :userId")
     suspend fun countDistinctQuizzesCompleted(userId: String): Int
 }

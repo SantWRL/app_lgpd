@@ -1,5 +1,7 @@
 package br.ufpi.lgpd.educacional.ui.lessons
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +11,12 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.LgpdContent
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentLessonDetailBinding
+import br.ufpi.lgpd.educacional.ui.feed.LessonContentScraper
+import br.ufpi.lgpd.educacional.util.AnimationUtils
 import br.ufpi.lgpd.educacional.util.getUserRepository
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -82,12 +87,20 @@ class LessonDetailFragment : Fragment() {
                 .replace("\n", "<br>")
             tvLessonContent.text = HtmlCompat.fromHtml(textWithHtml, HtmlCompat.FROM_HTML_MODE_COMPACT)
 
-            if (lesson.videoId != null) {
-                videoCard.visibility = View.VISIBLE
-                setupYoutubePlayer(lesson.videoId)
-            } else {
-                videoCard.visibility = View.GONE
-            }
+            // Animate content entrance
+            AnimationUtils.slideUpFadeIn(tvLessonCategory, delay = 0L)
+            AnimationUtils.slideUpFadeIn(tvLessonTitle, delay = 80L)
+            AnimationUtils.slideUpFadeIn(tvLessonDescription, delay = 160L)
+            AnimationUtils.slideUpFadeIn(tvLessonContent, delay = 240L)
+        }
+
+        if (lesson.videoId != null) {
+            binding.videoCard.visibility = View.VISIBLE
+            setupYoutubePlayer(lesson.videoId)
+        } else {
+            binding.videoCard.visibility = View.GONE
+            // Try to fetch supplementary content from the scraper as fallback
+            fetchSupplementaryContent(lesson)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -100,13 +113,53 @@ class LessonDetailFragment : Fragment() {
         }
     }
 
+    private fun fetchSupplementaryContent(lesson: br.ufpi.lgpd.educacional.data.model.Lesson) {
+        LessonContentScraper.fetchLessonContent(
+            topics = listOf(lesson.title, lesson.category),
+            onSuccess = { results ->
+                val content = results.firstOrNull()
+                if (content?.supplementaryUrl != null && isAdded) {
+                    activity?.runOnUiThread {
+                        // Show supplementary content card with summary
+                        binding.videoCard.visibility = View.VISIBLE
+                        binding.youtubePlayerView.visibility = View.GONE
+                        binding.youtubePlayerView.removeAllViews()
+
+                        // Insert summary text into the YouTube player container
+                        if (content.summary != null) {
+                            val summaryView = android.widget.TextView(requireContext()).apply {
+                                text = content.summary
+                                setTextColor(requireContext().getColor(R.color.text_primary))
+                                textSize = 14f
+                                setPadding(16, 12, 16, 8)
+                            }
+                            binding.youtubePlayerView.addView(summaryView)
+                        }
+
+                        binding.videoCard.setOnClickListener {
+                            try {
+                                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(content.supplementaryUrl)))
+                            } catch (_: Exception) {
+                                Toast.makeText(requireContext(), "Link indisponível", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        AnimationUtils.slideUpFadeIn(binding.videoCard, delay = 300L)
+                    }
+                }
+            }
+        )
+    }
+
     private fun setupYoutubePlayer(videoId: String) {
+        if (!isAdded) return
         val youtubePlayerView = binding.youtubePlayerView
         viewLifecycleOwner.lifecycle.addObserver(youtubePlayerView)
 
         youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
-                youTubePlayer.cueVideo(videoId, 0f)
+                if (isAdded) {
+                    youTubePlayer.cueVideo(videoId, 0f)
+                }
             }
         })
     }

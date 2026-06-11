@@ -15,6 +15,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.ufpi.lgpd.educacional.ui.feed.FeedCompactAdapter
+import br.ufpi.lgpd.educacional.ui.feed.NewsScraper
+import br.ufpi.lgpd.educacional.ui.feed.FeedPost
+import br.ufpi.lgpd.educacional.util.AnimationUtils
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.databinding.FragmentHomeBinding
 import br.ufpi.lgpd.educacional.ui.adapter.LessonCardAdapter
@@ -32,6 +36,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var lessonAdapter: LessonCardAdapter
     private lateinit var quizAdapter: QuizCardAdapter
+    private lateinit var newsAdapter: FeedCompactAdapter
+    private var hasAnimated = false
 
     private val categoryPills
         get() = listOf(
@@ -82,11 +88,37 @@ class HomeFragment : Fragment() {
         binding.lessonsRecyclerView.apply {
             adapter = lessonAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            setItemViewCacheSize(10)
         }
 
         binding.quizzesRecyclerView.apply {
             adapter = quizAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            setItemViewCacheSize(10)
+        }
+
+        // news recycler (horizontal carousel)
+        newsAdapter = FeedCompactAdapter()
+        binding.homeNewsRecyclerView.apply {
+            adapter = newsAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+        }
+        // Animate news section entrance (once)
+        if (!hasAnimated) {
+            hasAnimated = true
+            AnimationUtils.slideUpFadeIn(binding.newsSection, delay = 400L)
+        }
+
+        // Wire up "Ver todas" news button
+        binding.btnVerNoticias.setOnClickListener {
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.gov.br/anpd/pt-br/assuntos/noticias")))
+            } catch (_: Exception) {
+                showInfo("Notícias", "Acesse: https://www.gov.br/anpd/pt-br/assuntos/noticias")
+            }
         }
     }
 
@@ -223,6 +255,41 @@ class HomeFragment : Fragment() {
 
     private fun loadContent() {
         viewModel.refreshContent()
+        loadNews()
+    }
+
+    private fun loadNews() {
+        // mostra mock inicial enquanto carrega
+        val mockData = listOf(
+            FeedPost(
+                id = 1,
+                authorName = "Carregando Notícias...",
+                authorUsername = "@anpd_gov",
+                authorInitials = "A",
+                timeAgo = "Agora",
+                content = "Conectando ao portal Gov.br para buscar as atualizações mais recentes sobre a LGPD...",
+                linkTitle = null,
+                linkUrl = null,
+                commentsCount = 0,
+                repostsCount = 0,
+                likesCount = 0
+            )
+        )
+        newsAdapter.submitList(mockData)
+
+        NewsScraper.fetchNews(
+            onSuccess = { posts ->
+                activity?.runOnUiThread {
+                    newsAdapter.submitList(posts)
+                }
+            },
+            onError = { _ ->
+                activity?.runOnUiThread {
+                    // fallback: manter mock (ou poderia adicionar posts estáticos)
+                    newsAdapter.submitList(mockData)
+                }
+            }
+        )
     }
 
     override fun onResume() {

@@ -3,6 +3,8 @@ package br.ufpi.lgpd.educacional.ui.profile
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import androidx.core.content.ContextCompat
+import android.widget.TextView
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -76,18 +78,36 @@ class ProfileFragment : Fragment() {
         binding.btnEditAvatar.setOnClickListener { showEditNameDialog() }
         binding.btnAccountData.setOnClickListener { showEditNameDialog() }
 
-        binding.btnPrivacyPolicy.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Privacidade & LGPD")
-                .setMessage(
-                    "Seus dados são tratados com total segurança, seguindo as diretrizes da LGPD (Lei nº 13.709/2018).\n\n" +
-                        "- Progresso salvo localmente\n" +
-                        "- Sem rastreamento externo\n" +
-                        "- Transparência total"
-                )
-                .setPositiveButton("Entendido", null)
-                .show()
-        }
+        // Garantir que os botões tenham o background escuro (visível no tema escuro)
+        binding.btnAccountData.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_glass_card)
+        binding.btnPrivacyPolicy.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_glass_card)
+
+            binding.btnPrivacyPolicy.setOnClickListener {
+                val builder = MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Privacidade & LGPD")
+                    .setMessage(
+                        "Seus dados são tratados com total segurança, seguindo as diretrizes da LGPD (Lei nº 13.709/2018).\n\n" +
+                            "- Progresso salvo localmente\n" +
+                            "- Sem rastreamento externo\n" +
+                            "- Transparência total"
+                    )
+                    .setPositiveButton("Entendido", null)
+
+                val dialog = builder.create()
+                dialog.setOnShowListener {
+                    try {
+                        dialog.window?.setBackgroundDrawableResource(R.drawable.bg_glass_card)
+                        val titleView = dialog.findViewById<TextView>(com.google.android.material.R.id.alertTitle)
+                        val msgView = dialog.findViewById<TextView>(android.R.id.message)
+                        titleView?.setTextColor(requireContext().getColor(R.color.text_primary))
+                        msgView?.setTextColor(requireContext().getColor(R.color.text_tertiary))
+                        dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                            ?.setTextColor(requireContext().getColor(R.color.primary))
+                    } catch (_: Exception) {
+                    }
+                }
+                dialog.show()
+            }
 
         binding.logoutButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
@@ -119,20 +139,45 @@ class ProfileFragment : Fragment() {
         input.setText(viewModel.userProfile.value.name)
         val padding = (16 * resources.displayMetrics.density).toInt()
         input.setPadding(padding, padding, padding, padding)
+        // Estilizar input para tema escuro: texto claro e fundo transparente
+        try {
+            input.setTextColor(requireContext().getColor(R.color.text_primary))
+            input.setHintTextColor(requireContext().getColor(R.color.text_tertiary))
+            input.setBackgroundColor(Color.TRANSPARENT)
+        } catch (_: Exception) {
+        }
 
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Editar Perfil")
-            .setMessage("Digite seu nome de exibição:")
-            .setView(input)
-            .setPositiveButton("Salvar") { _, _ ->
-                val newName = input.text.toString().trim()
-                if (newName.isNotBlank()) {
-                    viewModel.saveName(newName)
-                    Snackbar.make(binding.root, "Perfil salvo!", Snackbar.LENGTH_SHORT).show()
+            val builder = MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Editar Perfil")
+                .setMessage("Digite seu nome de exibição:")
+                .setView(input)
+                .setPositiveButton("Salvar") { _, _ ->
+                    val newName = input.text.toString().trim()
+                    if (newName.isNotBlank()) {
+                        viewModel.saveName(newName)
+                        Snackbar.make(binding.root, "Perfil salvo!", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Cancelar", null)
+
+            val dialog = builder.create()
+            dialog.setOnShowListener {
+                try {
+                    dialog.window?.setBackgroundDrawableResource(R.drawable.bg_glass_card)
+                    val titleView = dialog.findViewById<TextView>(com.google.android.material.R.id.alertTitle)
+                    val msgView = dialog.findViewById<TextView>(android.R.id.message)
+                    titleView?.setTextColor(requireContext().getColor(R.color.text_primary))
+                    msgView?.setTextColor(requireContext().getColor(R.color.text_tertiary))
+
+                    // Botões (texto branco/primário)
+                    dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                        ?.setTextColor(requireContext().getColor(R.color.primary))
+                    dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+                        ?.setTextColor(requireContext().getColor(R.color.text_tertiary))
+                } catch (_: Exception) {
                 }
             }
-            .setNegativeButton("Cancelar", null)
-            .show()
+            dialog.show()
     }
 
     private fun observeData() {
@@ -161,11 +206,20 @@ class ProfileFragment : Fragment() {
         binding.apply {
             userName.text = profile.name
             userLevel.text = "Nível ${profile.level}"
-            userPoints.text = "${profile.totalPoints} pontos"
+            userPoints.text = profile.totalPoints.toString()
             lessonsCompleted.text = profile.lessonsCompleted.toString()
             quizzesCompleted.text = profile.quizzesCompleted.toString()
             averageScore.text = "%.1f%%".format(profile.averageScore)
             streakDays.text = profile.streakDays.toString()
+
+            // Uniformizar cor dos números para visual consistente
+            try {
+                val numColor = requireContext().getColor(R.color.text_primary)
+                lessonsCompleted.setTextColor(numColor)
+                userPoints.setTextColor(numColor)
+                streakDays.setTextColor(numColor)
+            } catch (_: Exception) {
+            }
 
             val emoji = avatarEmojis.getOrElse(profile.avatarColorIndex) { avatarEmojis.first() }
             avatarInitials.text = emoji

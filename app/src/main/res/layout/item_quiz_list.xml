@@ -6,31 +6,37 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="6dp"
-    app:cardBackgroundColor="#33FFFFFF"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/surface"
     app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="0dp">
+    app:cardElevation="2dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/panel_stroke">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:duplicateParentState="true">
 
         <FrameLayout
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/badge_background"
-            android:backgroundTint="#33FFFFFF">
+            android:backgroundTint="@color/surface_variant">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:duplicateParentState="true"
                 android:src="@drawable/ic_quiz"
                 android:contentDescription="Quiz"
-                app:tint="@color/white"
+                app:tint="@color/primary"
                 android:layout_gravity="center" />
 
         </FrameLayout>
@@ -40,25 +46,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:duplicateParentState="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="4dp">
+                android:layout_marginBottom="4dp"
+                android:duplicateParentState="true">
 
                 <TextView
                     android:id="@+id/quizTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textSize="16sp"
+                    android:duplicateParentState="true"
                     android:text="Título do teste" />
 
                 <TextView
@@ -80,48 +89,70 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:duplicateParentState="true">
 
                 <TextView
                     android:id="@+id/quizCategory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="#E2E8F0"
+                    android:textColor="@color/text_secondary"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textSize="13sp"
+                    android:duplicateParentState="true"
                     android:text="Categoria" />
 
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@drawable/ic_question"
-                    app:tint="#E2E8F0"
+                    app:tint="@color/text_secondary"
                     android:layout_marginStart="8dp"
-                    android:layout_marginEnd="4dp" />
+                    android:layout_marginEnd="4dp"
+                    android:duplicateParentState="true" />
 
                 <TextView
                     android:id="@+id/quizQuestions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#E2E8F0"
+                    android:textColor="@color/text_secondary"
                     android:textSize="13sp"
+                    android:duplicateParentState="true"
                     android:text="5" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Seta -->
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_arrow_right"
-            android:contentDescription="Ir para quiz"
-            app:tint="@color/white"
-            android:layout_marginStart="12dp" />
+        <!-- Conclusão e Seta -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginStart="12dp"
+            android:duplicateParentState="true">
+
+            <ImageView
+                android:id="@+id/completedIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_check"
+                app:tint="@color/success"
+                android:visibility="gone"
+                android:duplicateParentState="true" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_right"
+                android:contentDescription="Ir para quiz"
+                app:tint="@color/text_secondary"
+                android:duplicateParentState="true" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

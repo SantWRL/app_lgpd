@@ -1,128 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="220dp"
     android:layout_height="match_parent"
     android:layout_marginEnd="16dp"
     android:layout_marginVertical="6dp"
-    android:background="@drawable/bg_panel_frost"
-    android:orientation="vertical"
-    android:padding="22dp"
-    android:elevation="4dp"
-    android:translationZ="2dp"
-    android:stateListAnimator="@null">
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/panel_stroke">
 
-    <!-- Ícone de topo e Chip de Categoria -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:duplicateParentState="true">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="22dp"
+        android:duplicateParentState="true">
 
-        <FrameLayout
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_avatar_circle"
-            android:backgroundTint="@color/primary_light">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_quiz"
-                app:tint="@color/primary_dark" />
-        </FrameLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/quizCategoryChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/badge_background"
-            android:backgroundTint="@color/surface_variant"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="4dp"
-            android:text="Conceitos"
-            android:textColor="@color/text_primary"
-            android:textSize="11sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/quizTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:minLines="2"
-        android:text="Fundamentos LGPD"
-        android:textColor="@color/text_primary"
-        android:textSize="19sp"
-        android:textStyle="bold"
-        android:lineSpacingExtra="2dp" />
-
-    <TextView
-        android:id="@+id/quizDescription"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="6dp"
-        android:layout_weight="1"
-        android:text="Teste seus conhecimentos sobre o que é a lei."
-        android:textColor="@color/text_secondary"
-        android:textSize="14sp"
-        android:maxLines="3"
-        android:ellipsize="end" />
-
-    <!-- Metadata e Botão -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
+        <!-- Ícone de topo e Chip de Categoria -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_book"
-                app:tint="@color/primary" />
+            android:orientation="horizontal"
+            android:duplicateParentState="true">
+
+            <FrameLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_avatar_circle"
+                android:backgroundTint="@color/surface_variant">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_quiz"
+                    android:tint="@color/primary" />
+            </FrameLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
             <TextView
-                android:id="@+id/quizQuestionsCount"
+                android:id="@+id/quizCategoryChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="10 Questões"
-                android:textColor="@color/primary"
-                android:textSize="13sp"
+                android:background="@drawable/badge_background"
+                android:backgroundTint="@color/surface_variant"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:text="Conceitos"
+                android:textColor="@color/text_primary"
+                android:textSize="11sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/quizTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:minLines="2"
+            android:text="Fundamentos LGPD"
+            android:textColor="@color/text_primary"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:lineSpacingExtra="2dp"
+            android:duplicateParentState="true" />
 
-        <!-- Botão Iniciar Redondo -->
-        <FrameLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <TextView
+            android:id="@+id/quizDescription"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="6dp"
+            android:layout_weight="1"
+            android:text="Teste seus conhecimentos sobre o que é a lei."
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:duplicateParentState="true" />
+
+        <!-- Metadata e Botão -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:duplicateParentState="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:duplicateParentState="true">
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_book"
+                    android:tint="@color/primary"
+                    android:duplicateParentState="true" />
+                <TextView
+                    android:id="@+id/quizQuestionsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="10 Questões"
+                    android:textColor="@color/primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:duplicateParentState="true" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Botão Iniciar Redondo -->
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_avatar_circle"
+                android:backgroundTint="@color/primary">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="2dp"
+                    android:src="@android:drawable/ic_media_play"
+                    android:tint="@color/text_on_primary" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Badge de conclusão -->
+        <ImageView
+            android:id="@+id/completedBadge"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_check"
             android:background="@drawable/bg_avatar_circle"
-            android:backgroundTint="@color/primary">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="2dp"
-                android:src="@android:drawable/ic_media_play"
-                app:tint="@color/text_on_primary" />
-        </FrameLayout>
+            android:backgroundTint="@color/success"
+            android:padding="4dp"
+            android:visibility="gone"
+                android:tint="@color/text_on_primary" />
+
     </LinearLayout>
-</LinearLayout>
+
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>

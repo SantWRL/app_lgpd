@@ -23,11 +23,13 @@ class QuizzesViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    fun loadQuizzes() {
+    fun loadQuizzes(completedIds: Set<Int> = emptySet()) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                _quizzes.value = getMockQuizzes()
+                _quizzes.value = LgpdContent.quizzes.map { quiz ->
+                    quiz.copy(isCompleted = completedIds.contains(quiz.id))
+                }
             } finally {
                 _isLoading.value = false
             }
@@ -36,9 +38,5 @@ class QuizzesViewModel : ViewModel() {
 
     fun selectQuiz(quiz: Quiz) {
         _selectedQuiz.value = quiz
-    }
-
-    private fun getMockQuizzes(): List<Quiz> {
-        return LgpdContent.quizzes
     }
 }

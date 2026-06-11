@@ -15,7 +15,8 @@ data class Quiz(
     val difficulty: String,
     val totalQuestions: Int,
     val passingScore: Int = 70,
-    val timeLimit: Int = 0 // em segundos, 0 = sem limite
+    val timeLimit: Int = 0, // em segundos, 0 = sem limite
+    var isCompleted: Boolean = false
 )
 
 /**
