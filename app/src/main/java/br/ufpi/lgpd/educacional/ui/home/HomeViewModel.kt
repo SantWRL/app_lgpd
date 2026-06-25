@@ -41,7 +41,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val selectedQuiz: StateFlow<Quiz?> = _selectedQuiz.asStateFlow()
 
     fun filterByCategory(category: String) {
-        _lessons.value = if (category == "Todos") allLessons
+        _lessons.value = if (category == br.ufpi.lgpd.educacional.util.CategoryConstants.ALL) allLessons
         else allLessons.filter { it.category == category }
     }
 

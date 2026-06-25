@@ -136,12 +136,12 @@ class HomeFragment : Fragment() {
 
     private fun setupCategories() {
         val categoryMap = mapOf(
-            binding.catAll to "Todos",
-            binding.catFundamentos to "Fundamentos",
-            binding.catConformidade to "Conformidade",
-            binding.catDireitos to "Direitos",
-            binding.catAtores to "Atores",
-            binding.catSeguranca to "Segurança"
+            binding.catAll to br.ufpi.lgpd.educacional.util.CategoryConstants.ALL,
+            binding.catFundamentos to br.ufpi.lgpd.educacional.util.CategoryConstants.FUNDAMENTOS,
+            binding.catConformidade to br.ufpi.lgpd.educacional.util.CategoryConstants.CONFORMIDADE,
+            binding.catDireitos to br.ufpi.lgpd.educacional.util.CategoryConstants.DIREITOS,
+            binding.catAtores to br.ufpi.lgpd.educacional.util.CategoryConstants.ATORES,
+            binding.catSeguranca to br.ufpi.lgpd.educacional.util.CategoryConstants.SEGURANCA
         )
 
         categoryMap.forEach { (pill, category) ->

@@ -11,11 +11,8 @@ import androidx.core.text.HtmlCompat
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.LgpdContent
 import br.ufpi.lgpd.educacional.data.QuizQuestionContent
-import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentQuizDetailBinding
-import androidx.lifecycle.lifecycleScope
-import br.ufpi.lgpd.educacional.util.getUserRepository
-import kotlinx.coroutines.launch
+import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 
 class QuizDetailFragment : Fragment() {
@@ -23,7 +20,7 @@ class QuizDetailFragment : Fragment() {
     private var _binding: FragmentQuizDetailBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var repository: UserRepository
+    private val viewModel: QuizDetailViewModel by viewModels()
     private lateinit var questions: List<QuizQuestionContent>
 
     private var quizId: Int = 1
@@ -45,8 +42,6 @@ class QuizDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        repository = getUserRepository()
         
         quizId = arguments?.getInt(ARG_QUIZ_ID) ?: 1
         questions = LgpdContent.questionsForQuiz(quizId)
@@ -152,9 +147,7 @@ class QuizDetailFragment : Fragment() {
         val score = ((correctAnswers.toDouble() / questions.size) * 100).toInt()
         
         // Salva no banco de dados via repositório (Fonte de Verdade)
-        viewLifecycleOwner.lifecycleScope.launch {
-            repository.saveQuizResult(quizId, score)
-        }
+        viewModel.saveResult(quizId, score)
         
         binding.questionCard.visibility = View.GONE
         binding.explanationCard.visibility = View.GONE

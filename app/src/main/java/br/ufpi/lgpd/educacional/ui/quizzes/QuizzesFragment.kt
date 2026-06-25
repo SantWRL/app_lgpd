@@ -82,8 +82,8 @@ class QuizzesFragment : Fragment() {
 
     private fun setupFilters() {
         binding.filterAll.setOnClickListener { adapter.submitList(prioritizeEcad(allQuizzes)) }
-        binding.filterFundamentos.setOnClickListener { filterByCategory("Fundamentos") }
-        binding.filterDireitos.setOnClickListener { filterByCategory("Direitos") }
+        binding.filterFundamentos.setOnClickListener { filterByCategory(br.ufpi.lgpd.educacional.util.CategoryConstants.FUNDAMENTOS) }
+        binding.filterDireitos.setOnClickListener { filterByCategory(br.ufpi.lgpd.educacional.util.CategoryConstants.DIREITOS) }
         binding.filterAplicacao.setOnClickListener { filterByCategory("Aplicação") }
         binding.filterEcad.setOnClickListener { filterOnlyEcad() }
     }

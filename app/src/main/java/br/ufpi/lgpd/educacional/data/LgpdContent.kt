@@ -12,7 +12,7 @@ object LgpdContent {
             "A Lei Geral de Proteção de Dados (Lei nº 13.709/2018) surgiu para regulamentar o tratamento de dados pessoais no Brasil, tanto em meios físicos quanto digitais.\n\n" +
                 "O principal objetivo da lei não é impedir o uso dos dados, mas sim criar um ambiente de segurança jurídica, promovendo o desenvolvimento econômico e tecnológico ao mesmo tempo em que protege os direitos fundamentais de liberdade e de privacidade dos cidadãos.\n\n" +
                 "Ela se aplica a qualquer operação de tratamento realizada por pessoa natural ou jurídica, seja de direito público ou privado, independentemente de onde o titular esteja localizado, desde que os dados tenham sido coletados no Brasil ou o tratamento seja realizado no país.",
-            "Fundamentos",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.FUNDAMENTOS,
             1,
             12,
             "BEGINNER",
@@ -27,7 +27,7 @@ object LgpdContent {
                 "**Dado Pessoal Sensível:** É uma categoria especial de dados pessoais que pode gerar discriminação se vazada ou mal utilizada. Engloba origem racial ou étnica, convicção religiosa, opinião política, filiação a sindicato, dados referentes à saúde ou à vida sexual, dado genético ou biométrico.\n\n" +
                 "**Dado Anonimizado:** É um dado relativo a titular que não possa ser identificado, considerando a utilização de meios técnicos razoáveis disponíveis na época. Dados anonimizados não são considerados dados pessoais para os fins da LGPD.\n\n" +
                 "**Dado Pseudonimizado:** É o dado que perde a possibilidade de associação direta a um indivíduo, a não ser pelo uso de informação adicional mantida separadamente em ambiente seguro. Diferentemente do dado anonimizado, a pseudonimização ainda é considerada tratamento de dados sujeito à LGPD.",
-            "Fundamentos",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.FUNDAMENTOS,
             2,
             18,
             "BEGINNER",
@@ -48,7 +48,7 @@ object LgpdContent {
                 "8. **Prevenção:** Adoção de medidas preventivas contra danos.\n" +
                 "9. **Não Discriminação:** Impossibilidade de tratamento para fins discriminatórios ilícitos ou abusivos.\n" +
                 "10. **Responsabilização e Prestação de Contas:** Demonstração da adoção de medidas eficazes para cumprir a lei.",
-            "Fundamentos",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.FUNDAMENTOS,
             3,
             22,
             "BEGINNER",
@@ -66,7 +66,7 @@ object LgpdContent {
                 "- **Legítimo Interesse:** quando há apoio a atividades do controlador, de forma balanceada e sem violar direitos do titular.\n" +
                 "- **Proteção da Vida:** proteção da vida ou da integridade física.\n" +
                 "- **Exercício Regular de Direitos:** em processos judiciais, administrativos ou arbitrais.",
-            "Conformidade",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.CONFORMIDADE,
             4,
             24,
             "INTERMEDIATE",
@@ -85,7 +85,7 @@ object LgpdContent {
                 "- Informação sobre as entidades com as quais os dados foram compartilhados.\n" +
                 "- Informação sobre a possibilidade de não fornecer consentimento e sobre as consequências da negativa.\n" +
                 "- Revogação do consentimento.",
-            "Direitos",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.DIREITOS,
             5,
             24,
             "INTERMEDIATE",
@@ -101,7 +101,7 @@ object LgpdContent {
                 "**3. Operador:** quem realiza o tratamento em nome do controlador. Exemplo: o provedor de nuvem contratado pela universidade.\n" +
                 "**4. Encarregado (DPO):** pessoa indicada para atuar como canal de comunicação entre controlador, titulares e ANPD.\n" +
                 "**5. ANPD:** Autoridade Nacional de Proteção de Dados, órgão responsável por zelar, fiscalizar, orientar e aplicar sanções relacionadas à LGPD no Brasil.",
-            "Atores",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.ATORES,
             6,
             18,
             "INTERMEDIATE",
@@ -115,7 +115,7 @@ object LgpdContent {
                 "Boas práticas de segurança da informação incluem:\n" +
                 "- **Medidas técnicas:** criptografia de discos, bancos de dados e tráfego; backups regulares e testados; antivírus; firewall e autenticação multifator.\n" +
                 "- **Medidas administrativas:** políticas de senhas; controles de acesso restritos pelo princípio do menor privilégio; acordos de confidencialidade; e treinamento contínuo dos colaboradores.",
-            "Segurança",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.SEGURANCA,
             7,
             28,
             "INTERMEDIATE",
@@ -130,7 +130,7 @@ object LgpdContent {
                 "- Um e-mail enviado incorretamente, com destinatários em cópia aberta.\n" +
                 "- Um colaborador que apagou um banco de dados por acidente, sem backup.\n\n" +
                 "A LGPD determina que o controlador deve comunicar a ANPD e os titulares quando ocorrer incidente que possa acarretar risco ou dano relevante, em prazo razoável conforme a regulamentação aplicável.",
-            "Segurança",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.SEGURANCA,
             8,
             22,
             "ADVANCED",
@@ -184,7 +184,7 @@ object LgpdContent {
                 "- Cria uma autoridade administrativa autônoma para fiscalizar o cumprimento da lei.\n\n" +
                 "**Relação com a LGPD:**\n" +
                 "O e-CAD complementa a LGPD (Lei nº 13.709/2018) ao tratar especificamente da proteção de dados de crianças e adolescentes, reforçando o tratamento de dados pessoais como medida de segurança e privacidade.",
-            "Direitos",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.DIREITOS,
             11,
             20,
             "INTERMEDIATE",
@@ -218,7 +218,7 @@ object LgpdContent {
                 "- Avaliação e tratamento de riscos.\n" +
                 "- Controles de segurança e melhoria contínua.\n\n" +
                 "No contexto da LGPD, a ISO 27001 ajuda a estruturar governança e evidências de conformidade em segurança.",
-            "Conformidade",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.CONFORMIDADE,
             13,
             22,
             "INTERMEDIATE",
@@ -235,7 +235,7 @@ object LgpdContent {
                 "- Gestão de solicitações de titulares.\n" +
                 "- Evidências para auditoria de privacidade.\n\n" +
                 "É uma ponte prática entre governança de segurança e obrigações de privacidade da LGPD.",
-            "Conformidade",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.CONFORMIDADE,
             14,
             20,
             "INTERMEDIATE",
@@ -252,7 +252,7 @@ object LgpdContent {
                 "- Segurança em desenvolvimento e fornecedores.\n" +
                 "- Monitoramento e resposta a incidentes.\n\n" +
                 "Na prática, ela orienta como implementar medidas que sustentam princípios de segurança e prevenção da LGPD.",
-            "Segurança",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.SEGURANCA,
             15,
             24,
             "ADVANCED",
@@ -269,7 +269,7 @@ object LgpdContent {
                 "- Avaliação e priorização de riscos.\n" +
                 "- Definição de tratamento e aceitação de risco residual.\n\n" +
                 "Ela fortalece decisões de compliance e continuidade operacional, alinhando segurança com risco de negócio.",
-            "Segurança",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.SEGURANCA,
             16,
             18,
             "ADVANCED",
@@ -286,7 +286,7 @@ object LgpdContent {
                 "- Uso, retenção e descarte adequados.\n" +
                 "- Transparência, responsabilização e segurança.\n\n" +
                 "É útil para design de soluções digitais com privacidade desde a concepção.",
-            "Direitos",
+            br.ufpi.lgpd.educacional.util.CategoryConstants.DIREITOS,
             17,
             16,
             "INTERMEDIATE",
@@ -295,16 +295,16 @@ object LgpdContent {
     )
 
     val quizzes = listOf(
-        Quiz(1, "Fundamentos da LGPD", "Conceitos essenciais, objetivo da lei e tipos de dados.", "Fundamentos", "BEGINNER", 8),
-        Quiz(2, "Princípios e bases legais", "Finalidade, necessidade, transparência e hipóteses de tratamento.", "Conformidade", "BEGINNER", 10),
-        Quiz(3, "Direitos dos titulares", "Pedidos de acesso, correção, eliminação, portabilidade e revisão.", "Direitos", "INTERMEDIATE", 10),
-        Quiz(4, "Atores e responsabilidades", "Titular, controlador, operador, encarregado e ANPD.", "Atores", "INTERMEDIATE", 8),
-        Quiz(5, "Segurança e incidentes", "Boas práticas, prevenção, resposta e comunicação de incidentes.", "Segurança", "INTERMEDIATE", 12),
+        Quiz(1, "Fundamentos da LGPD", "Conceitos essenciais, objetivo da lei e tipos de dados.", br.ufpi.lgpd.educacional.util.CategoryConstants.FUNDAMENTOS, "BEGINNER", 8),
+        Quiz(2, "Princípios e bases legais", "Finalidade, necessidade, transparência e hipóteses de tratamento.", br.ufpi.lgpd.educacional.util.CategoryConstants.CONFORMIDADE, "BEGINNER", 10),
+        Quiz(3, "Direitos dos titulares", "Pedidos de acesso, correção, eliminação, portabilidade e revisão.", br.ufpi.lgpd.educacional.util.CategoryConstants.DIREITOS, "INTERMEDIATE", 10),
+        Quiz(4, "Atores e responsabilidades", "Titular, controlador, operador, encarregado e ANPD.", br.ufpi.lgpd.educacional.util.CategoryConstants.ATORES, "INTERMEDIATE", 8),
+        Quiz(5, "Segurança e incidentes", "Boas práticas, prevenção, resposta e comunicação de incidentes.", br.ufpi.lgpd.educacional.util.CategoryConstants.SEGURANCA, "INTERMEDIATE", 12),
         Quiz(6, "LGPD na universidade", "Situações acadêmicas, pesquisa, matrícula e eventos.", "Aplicação", "ADVANCED", 12),
         Quiz(7, "Revisão geral", "Um simulado com temas essenciais para fixação.", "Revisão", "ADVANCED", 20),
-        Quiz(8, "Estatuto Digital (e-CAD)", "Proteção de crianças e adolescentes em ambientes digitais - Lei 15.211/2025.", "Direitos", "INTERMEDIATE", 10),
+        Quiz(8, "Estatuto Digital (e-CAD)", "Proteção de crianças e adolescentes em ambientes digitais - Lei 15.211/2025.", br.ufpi.lgpd.educacional.util.CategoryConstants.DIREITOS, "INTERMEDIATE", 10),
         Quiz(9, "e-CAD na prática", "Cenários reais de aplicação da Lei 15.211/2025 em escola e plataformas.", "Aplicação", "ADVANCED", 10),
-        Quiz(10, "ISO na prática", "Questões sobre ISO 27001, 27701, 27002, 27005 e 29100.", "Conformidade", "ADVANCED", 10)
+        Quiz(10, "ISO na prática", "Questões sobre ISO 27001, 27701, 27002, 27005 e 29100.", br.ufpi.lgpd.educacional.util.CategoryConstants.CONFORMIDADE, "ADVANCED", 10)
     )
 
     val quizQuestions = mapOf(
