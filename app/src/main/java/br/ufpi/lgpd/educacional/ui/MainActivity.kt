@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.ActivityMainBinding
@@ -60,14 +59,16 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
-
+        // Configura ícone selecionado na troca de destino
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
+
             binding.toolbar.title = when (destination.id) {
                 R.id.homeFragment -> getString(R.string.home_title)
                 R.id.lessonsFragment -> "Lições"
                 R.id.quizzesFragment -> "Testes"
                 R.id.profileFragment -> "Perfil"
+                R.id.feedFragment -> "Notícias"
                 R.id.quizDetailFragment -> "Responder Teste"
                 R.id.wordleFragment -> "Termo"
                 R.id.wordsearchFragment -> "Caça-Palavras"
@@ -87,6 +88,22 @@ class MainActivity : AppCompatActivity() {
             } else {
                 View.VISIBLE
             }
+        }
+
+        // Troca de aba sempre limpa a back stack para evitar o bug
+        // de voltar para a aba anterior ao tocar na bottom nav
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            val currentId = navController.currentDestination?.id
+            if (currentId == item.itemId) return@setOnItemSelectedListener true
+
+            navController.navigate(
+                item.itemId, null,
+                androidx.navigation.NavOptions.Builder()
+                    .setPopUpTo(R.id.homeFragment, inclusive = false, saveState = false)
+                    .setLaunchSingleTop(true)
+                    .build()
+            )
+            true
         }
     }
 

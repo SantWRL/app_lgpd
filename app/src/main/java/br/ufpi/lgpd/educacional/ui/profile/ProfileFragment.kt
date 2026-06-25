@@ -139,23 +139,26 @@ class ProfileFragment : Fragment() {
         } catch (_: Exception) {
         }
 
-            val builder = MaterialAlertDialogBuilder(requireContext())
+            val builder = MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_App_MaterialAlertDialog)
                 .setTitle("Editar Perfil")
                 .setMessage("Digite seu nome de exibição:")
                 .setView(input)
-                .setPositiveButton("Salvar") { _, _ ->
-                    val newName = input.text.toString().trim()
-                    if (newName.isNotBlank()) {
-                        viewModel.saveName(newName)
-                        Snackbar.make(binding.root, "Perfil salvo!", Snackbar.LENGTH_SHORT).show()
-                    }
-                }
+                .setPositiveButton("Salvar", null)
                 .setNegativeButton("Cancelar", null)
 
             val dialog = builder.create()
             dialog.setOnShowListener {
+                dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                    val newName = input.text?.toString()?.trim().orEmpty()
+                    if (newName.isNotBlank()) {
+                        viewModel.saveName(newName)
+                        Snackbar.make(binding.root, "Perfil salvo!", Snackbar.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    } else {
+                        input.error = "Nome não pode ser vazio"
+                    }
+                }
                 try {
-                    dialog.window?.setBackgroundDrawableResource(R.drawable.bg_glass_card)
                     val titleView = dialog.findViewById<TextView>(com.google.android.material.R.id.alertTitle)
                     val msgView = dialog.findViewById<TextView>(android.R.id.message)
                     titleView?.setTextColor(requireContext().getColor(R.color.text_primary))
@@ -170,6 +173,9 @@ class ProfileFragment : Fragment() {
                 }
             }
             dialog.show()
+            input.requestFocus()
+            val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+            imm.showSoftInput(input, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun observeData() {

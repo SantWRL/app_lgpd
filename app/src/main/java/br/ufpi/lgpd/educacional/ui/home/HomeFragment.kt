@@ -1,6 +1,5 @@
 package br.ufpi.lgpd.educacional.ui.home
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -26,6 +25,7 @@ import br.ufpi.lgpd.educacional.ui.adapter.LessonCardAdapter
 import br.ufpi.lgpd.educacional.ui.adapter.QuizCardAdapter
 import br.ufpi.lgpd.educacional.ui.lessons.LessonDetailFragment
 import br.ufpi.lgpd.educacional.ui.quizzes.QuizDetailFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -296,7 +296,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showInfo(title: String, message: String) {
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_App_MaterialAlertDialog)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("Entendido", null)

@@ -13,6 +13,10 @@ class QuizDetailViewModel(application: Application) : AndroidViewModel(applicati
         application.getUserRepository()
     }
 
+    var currentQuestionIndex = 0
+    var correctAnswers = 0
+    var hasAnsweredCurrentQuestion = false
+
     fun saveResult(quizId: Int, score: Int) {
         viewModelScope.launch {
             repository.saveQuizResult(quizId, score)

@@ -41,7 +41,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     init {
         viewModelScope.launch {
             repository.ensureUserExists()
-            repository.updateStreak()
             loadFromDatabase()
         }
     }

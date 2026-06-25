@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.core.content.ContextCompat
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentSettingsBinding
@@ -24,6 +25,18 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment() {
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            scheduleNotification()
+        } else {
+            binding.notificationSwitch.isChecked = false
+            userPreferences.reminderEnabled = false
+            Snackbar.make(binding.root, "Permissão necessária para lembretes.", Snackbar.LENGTH_SHORT).show()
+        }
+    }
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
@@ -60,7 +73,7 @@ class SettingsFragment : Fragment() {
         // GitHub
         binding.settingsGithub.setOnClickListener {
             try {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/patrickluizdev/app_lgpd"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SantWRL/app_lgpd"))
                 startActivity(intent)
             } catch (_: Exception) {
                 Snackbar.make(binding.root, "Não foi possível abrir o link.", Snackbar.LENGTH_SHORT).show()
@@ -70,19 +83,18 @@ class SettingsFragment : Fragment() {
         // Notifications toggle (lembrete de estudo)
         binding.notificationSwitch.isChecked = userPreferences.reminderEnabled
         binding.notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
-            userPreferences.reminderEnabled = isChecked
             if (isChecked) {
-                StudyReminderReceiver.schedule(
-                    requireContext(),
-                    userPreferences.reminderHour,
-                    userPreferences.reminderMinute
-                )
-                Snackbar.make(
-                    binding.root,
-                    "Lembrete agendado para às ${userPreferences.reminderHour}:${String.format("%02d", userPreferences.reminderMinute)}",
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                        scheduleNotification()
+                    } else {
+                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                } else {
+                    scheduleNotification()
+                }
             } else {
+                userPreferences.reminderEnabled = false
                 StudyReminderReceiver.cancel(requireContext())
                 Snackbar.make(binding.root, "Lembrete cancelado.", Snackbar.LENGTH_SHORT).show()
             }
@@ -93,7 +105,7 @@ class SettingsFragment : Fragment() {
 
         // Política de privacidade: mostrar resumo (não abrir link externo)
         binding.settingsPrivacy.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
+            MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_App_MaterialAlertDialog)
                 .setTitle("Privacidade & LGPD")
                 .setMessage(
                     "Resumo: Seus dados são tratados com segurança no dispositivo. " +
@@ -105,7 +117,7 @@ class SettingsFragment : Fragment() {
 
         // Clear data
         binding.settingsClearData.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
+            MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_App_MaterialAlertDialog)
                 .setTitle("Limpar Progresso")
                 .setMessage("Tem certeza? Todos os seus pontos e aulas concluídas serão apagados.")
                 .setPositiveButton("Sim, limpar") { _, _ ->
@@ -118,6 +130,20 @@ class SettingsFragment : Fragment() {
                 .setNegativeButton("Cancelar", null)
                 .show()
         }
+    }
+
+    private fun scheduleNotification() {
+        userPreferences.reminderEnabled = true
+        StudyReminderReceiver.schedule(
+            requireContext(),
+            userPreferences.reminderHour,
+            userPreferences.reminderMinute
+        )
+        Snackbar.make(
+            binding.root,
+            "Lembrete agendado para às ${userPreferences.reminderHour}:${String.format("%02d", userPreferences.reminderMinute)}",
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     private fun showAccountDataDialog() {
@@ -139,25 +165,28 @@ class SettingsFragment : Fragment() {
                 "Pontos: $points\n\n" +
                 "Digite um novo nome:"
 
-            val dialog = MaterialAlertDialogBuilder(requireContext())
+            val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_App_MaterialAlertDialog)
                 .setTitle("Dados da Conta")
                 .setMessage(message)
                 .setView(input)
-                .setPositiveButton("Salvar") { _, _ ->
-                    val newName = input.text.toString().trim()
-                    if (newName.isNotBlank()) {
-                        launch {
-                            repository.updateUserName(newName)
-                            Snackbar.make(binding.root, "Nome atualizado!", Snackbar.LENGTH_SHORT).show()
-                        }
-                    }
-                }
+                .setPositiveButton("Salvar", null)
                 .setNegativeButton("Cancelar", null)
                 .create()
 
             dialog.setOnShowListener {
+                dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                    val newName = input.text?.toString()?.trim().orEmpty()
+                    if (newName.isNotBlank()) {
+                        lifecycleScope.launch {
+                            repository.updateUserName(newName)
+                            Snackbar.make(binding.root, "Nome atualizado!", Snackbar.LENGTH_SHORT).show()
+                        }
+                        dialog.dismiss()
+                    } else {
+                        input.error = "Nome não pode ser vazio"
+                    }
+                }
                 try {
-                    dialog.window?.setBackgroundDrawableResource(R.drawable.bg_glass_card)
                     val titleView = dialog.findViewById<TextView>(com.google.android.material.R.id.alertTitle)
                     val msgView = dialog.findViewById<TextView>(android.R.id.message)
                     titleView?.setTextColor(requireContext().getColor(R.color.text_primary))
@@ -169,6 +198,9 @@ class SettingsFragment : Fragment() {
                 } catch (_: Exception) { }
             }
             dialog.show()
+            input.requestFocus()
+            val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+            imm.showSoftInput(input, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
         }
     }
 

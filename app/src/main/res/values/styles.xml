@@ -25,6 +25,7 @@
         <item name="android:textColorSecondary">@color/text_secondary</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
     </style>
 
     <style name="TextAppearance.LGPD.ToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
@@ -156,6 +157,39 @@
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textColor">@color/primary</item>
         <item name="android:elevation">2dp</item>
+    </style>
+
+
+    <!-- ─── Dialog Theme ──────────────────────────────────────────────────── -->
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurface">#1C2E4A</item>
+        <item name="android:colorBackground">#1C2E4A</item>
+        <item name="colorOnSurface">#E8F0FE</item>
+        <item name="android:textColorPrimary">#E8F0FE</item>
+        <item name="android:textColorSecondary">#A8C4E8</item>
+        <item name="shapeAppearanceMediumComponent">@style/DialogShape</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/DialogTitleStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogPositiveButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogNegativeButton</item>
+    </style>
+
+    <style name="DialogShape" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <style name="DialogTitleStyle" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:textColor">#89C4FF</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DialogPositiveButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">#89C4FF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DialogNegativeButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">#A8C4E8</item>
     </style>
 
 </resources>

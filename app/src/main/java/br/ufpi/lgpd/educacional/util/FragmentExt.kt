@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.database.AppDatabase
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -32,7 +33,7 @@ fun Fragment.showInfoDialog(
     positiveText: String = "Entendido",
     onPositive: () -> Unit = {}
 ) {
-    MaterialAlertDialogBuilder(requireContext())
+    MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_App_MaterialAlertDialog)
         .setTitle(title)
         .setMessage(message)
         .setPositiveButton(positiveText) { _, _ -> onPositive() }
@@ -47,7 +48,7 @@ fun Fragment.showConfirmDialog(
     onPositive: () -> Unit = {},
     onNegative: () -> Unit = {}
 ) {
-    MaterialAlertDialogBuilder(requireContext())
+    MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_App_MaterialAlertDialog)
         .setTitle(title)
         .setMessage(message)
         .setPositiveButton(positiveText) { _, _ -> onPositive() }
