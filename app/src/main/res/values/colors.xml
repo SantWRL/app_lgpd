@@ -39,6 +39,19 @@
     <color name="promo_wordle_end">#C084FC</color>
     <color name="promo_search_start">#059669</color>
     <color name="promo_search_end">#34D399</color>
+    <color name="promo_ecad_start">#0EA5E9</color>
+    <color name="promo_ecad_end">#38BDF8</color>
+    <color name="promo_quiz_start">#D97706</color>
+    <color name="promo_quiz_end">#FBBF24</color>
+
+    <color name="card_anpd_start">#1E3A5F</color>
+    <color name="card_anpd_end">#3B82F6</color>
+    <color name="card_gdpr_start">#5B21B6</color>
+    <color name="card_gdpr_end">#8B5CF6</color>
+    <color name="card_resumo_start">#065F46</color>
+    <color name="card_resumo_end">#34D399</color>
+    <color name="card_dicionario_start">#831843</color>
+    <color name="card_dicionario_end">#F472B6</color>
 
     <!-- ── Botões / Navegação ── -->
     <color name="btn_bg">#45475A</color>

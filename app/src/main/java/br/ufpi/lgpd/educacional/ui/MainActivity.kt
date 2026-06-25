@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.wordleFragment -> "Termo"
                 R.id.wordsearchFragment -> "Caça-Palavras"
                 R.id.lessonDetailFragment -> "Estudo"
+                R.id.settingsFragment -> "Configurações"
                 else -> getString(R.string.app_name)
             }
 

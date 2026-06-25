@@ -16,6 +16,7 @@ import br.ufpi.lgpd.educacional.data.model.Quiz
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentQuizzesBinding
 import br.ufpi.lgpd.educacional.ui.adapter.QuizzesListAdapter
+import br.ufpi.lgpd.educacional.util.AnimationUtils
 import br.ufpi.lgpd.educacional.util.getUserRepository
 import kotlinx.coroutines.launch
 
@@ -23,6 +24,10 @@ import kotlinx.coroutines.launch
  * QuizzesFragment - Tela listando todos os quizzes disponíveis
  */
 class QuizzesFragment : Fragment() {
+
+    companion object {
+        private const val ECAD_QUIZ_ID = 9
+    }
 
     private var _binding: FragmentQuizzesBinding? = null
     private val binding get() = _binding!!
@@ -32,6 +37,7 @@ class QuizzesFragment : Fragment() {
 
     private lateinit var adapter: QuizzesListAdapter
     private var allQuizzes: List<Quiz> = emptyList()
+    private var hasAnimatedQuizzes = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,14 +81,34 @@ class QuizzesFragment : Fragment() {
     }
 
     private fun setupFilters() {
-        binding.filterAll.setOnClickListener { adapter.submitList(allQuizzes) }
+        binding.filterAll.setOnClickListener { adapter.submitList(prioritizeEcad(allQuizzes)) }
         binding.filterFundamentos.setOnClickListener { filterByCategory("Fundamentos") }
         binding.filterDireitos.setOnClickListener { filterByCategory("Direitos") }
-        binding.filterSeguranca.setOnClickListener { filterByCategory("Segurança") }
+        binding.filterAplicacao.setOnClickListener { filterByCategory("Aplicação") }
+        binding.filterEcad.setOnClickListener { filterOnlyEcad() }
     }
 
     private fun filterByCategory(category: String) {
-        adapter.submitList(allQuizzes.filter { it.category == category })
+        adapter.submitList(prioritizeEcad(allQuizzes.filter { it.category == category }))
+    }
+
+    private fun filterOnlyEcad() {
+        adapter.submitList(prioritizeEcad(allQuizzes.filter { isEcadQuiz(it) }))
+    }
+
+    private fun prioritizeEcad(quizzes: List<Quiz>): List<Quiz> {
+        return quizzes.sortedWith(
+            compareByDescending<Quiz> { isEcadQuiz(it) }
+                .thenBy { it.id }
+        )
+    }
+
+    private fun isEcadQuiz(quiz: Quiz): Boolean {
+        val content = "${quiz.title} ${quiz.description}".lowercase()
+        return quiz.id == ECAD_QUIZ_ID ||
+            content.contains("e-cad") ||
+            content.contains("estatuto digital") ||
+            content.contains("15.211")
     }
 
     private fun observeData() {
@@ -90,7 +116,12 @@ class QuizzesFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.quizzes.collect { quizzes ->
                     allQuizzes = quizzes
-                    adapter.submitList(quizzes)
+                    adapter.submitList(prioritizeEcad(quizzes))
+                    // Stagger animation on first load
+                    if (!hasAnimatedQuizzes && quizzes.isNotEmpty()) {
+                        hasAnimatedQuizzes = true
+                        AnimationUtils.attachStaggerAnimation(binding.quizzesRecyclerView, maxItems = 10)
+                    }
                 }
             }
         }

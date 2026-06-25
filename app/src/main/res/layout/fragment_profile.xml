@@ -35,6 +35,23 @@
                 android:letterSpacing="-0.03" />
 
             <FrameLayout
+                android:id="@+id/btnSettings"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_panel_frost"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_shield_lock"
+                    app:tint="@color/text_secondary" />
+            </FrameLayout>
+
+            <FrameLayout
                 android:id="@+id/btnShare"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -275,7 +292,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
-            android:layout_marginBottom="40dp">
+            android:layout_marginBottom="24dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -326,6 +343,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="12dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Testes LGPD"
+                        android:textColor="@color/text_primary"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/quizProgressText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0/7 testes"
+                        android:textColor="@color/secondary"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/quizProgressBar"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:progressDrawable="@drawable/progress_bar"
+                    android:progress="0" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="12dp">
                     <TextView
@@ -344,14 +391,106 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/quizzesCompleted"
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="18dp"
+                    android:background="@color/surface_variant" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:text="0" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tempo Total de Estudo"
+                        android:textColor="@color/text_primary"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/totalStudyTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 min"
+                        android:textColor="@color/accent"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Desde"
+                        android:textColor="@color/text_primary"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/sinceDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/text_tertiary"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
             </LinearLayout>
+        </LinearLayout>
+
+        <!-- ── Aulas (cards horizontais compactos, como conquistas) ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:layout_marginBottom="32dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Minhas Aulas"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="14dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lessonProgressRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_lesson_progress" />
+        </LinearLayout>
+
+        <!-- ── Testes (cards horizontais compactos, como conquistas) ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:layout_marginBottom="40dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Meus Testes"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="14dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/quizProgressRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_quiz_progress" />
         </LinearLayout>
 
         <!-- ── Seletor de Avatar (Animais + Cores Pastéis) ── -->
@@ -679,139 +818,6 @@
 
             </LinearLayout>
         </LinearLayout>
-
-        <!-- ── Preferências ── -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:layout_marginBottom="40dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Preferências"
-                android:textColor="@color/text_primary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="18dp" />
-
-            <!-- Item: Dados da Conta -->
-            <LinearLayout
-                android:id="@+id/btnAccountData"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_glass_card"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="18dp">
-
-                <FrameLayout
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/badge_background"
-                    android:backgroundTint="@color/primary_light">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_check"
-                        app:tint="@color/primary" />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Dados da Conta"
-                    android:textColor="@color/text_primary"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_arrow_right"
-                    app:tint="@color/text_tertiary" />
-            </LinearLayout>
-
-            <!-- Item: Privacidade & LGPD -->
-            <LinearLayout
-                android:id="@+id/btnPrivacyPolicy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_glass_card"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="18dp">
-
-                <FrameLayout
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/badge_background"
-                    android:backgroundTint="@color/success_light">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_check"
-                        app:tint="@color/success" />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Privacidade &amp; LGPD"
-                    android:textColor="@color/text_primary"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_arrow_right"
-                    app:tint="@color/text_tertiary" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- ── Logout / Reset ── -->
-        <LinearLayout
-            android:id="@+id/logoutButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:background="@drawable/bg_panel_frost"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingVertical="18dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Resetar Todo o Progresso"
-                android:textColor="@color/error"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-
 
         <!-- Progress Indicator Overlay (from ViewModel) -->
         <ProgressBar

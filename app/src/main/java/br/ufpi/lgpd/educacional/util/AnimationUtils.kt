@@ -2,6 +2,7 @@ package br.ufpi.lgpd.educacional.util
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.util.SparseBooleanArray
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
@@ -54,6 +55,8 @@ object AnimationUtils {
 
     /** Attach a staggered animation to a RecyclerView's children when they appear */
     fun attachStaggerAnimation(recyclerView: RecyclerView, maxItems: Int = 8) {
+        val animatedPositions = SparseBooleanArray()
+
         recyclerView.itemAnimator?.apply {
             addDuration = 300L
             removeDuration = 200L
@@ -65,12 +68,29 @@ object AnimationUtils {
             RecyclerView.OnChildAttachStateChangeListener {
             override fun onChildViewAttachedToWindow(view: View) {
                 val pos = recyclerView.getChildAdapterPosition(view)
-                if (pos in 0 until maxItems) {
+                if (pos == RecyclerView.NO_POSITION) {
+                    view.alpha = 1f
+                    view.translationY = 0f
+                    return
+                }
+
+                val shouldAnimate = pos in 0 until maxItems && !animatedPositions.get(pos, false)
+                if (shouldAnimate) {
+                    animatedPositions.put(pos, true)
+                    view.animate().cancel()
                     slideUpFadeIn(view, delay = pos * 60L, duration = 350L)
+                } else {
+                    // Garante estado visível quando a célula é reciclada ao rolar rápido.
+                    view.alpha = 1f
+                    view.translationY = 0f
                 }
             }
 
-            override fun onChildViewDetachedFromWindow(view: View) {}
+            override fun onChildViewDetachedFromWindow(view: View) {
+                view.animate().cancel()
+                view.alpha = 1f
+                view.translationY = 0f
+            }
         })
     }
 }

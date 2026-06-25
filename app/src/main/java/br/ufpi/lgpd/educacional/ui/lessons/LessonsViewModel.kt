@@ -28,6 +28,7 @@ class LessonsViewModel : ViewModel() {
 
     fun loadLessons(completedIds: Set<Int>) {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
                 _lessons.value = LgpdContent.lessons.map { lesson ->
                     lesson.copy(isCompleted = completedIds.contains(lesson.id))

@@ -99,17 +99,52 @@
                 android:id="@+id/videoCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="200dp"
                 android:layout_marginBottom="24dp"
                 android:visibility="gone"
-                app:cardBackgroundColor="@android:color/black"
+                app:cardBackgroundColor="@color/surface"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:strokeWidth="0dp">
 
-                <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-                    android:id="@+id/youtubePlayerView"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                        android:id="@+id/youtubePlayerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Fallback: shown when video cannot play due to restriction -->
+                    <LinearLayout
+                        android:id="@+id/videoErrorFallback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Este vídeo não pode ser reproduzido no player embutido devido a restrições do YouTube."
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp"
+                            android:gravity="center" />
+
+                        <Button
+                            android:id="@+id/btnOpenOnYoutube"
+                            style="@style/Button.Primary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Abrir no YouTube" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 

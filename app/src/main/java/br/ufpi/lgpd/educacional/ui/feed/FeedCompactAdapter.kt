@@ -13,19 +13,35 @@ import br.ufpi.lgpd.educacional.databinding.ItemFeedPostCompactBinding
 
 /**
  * Compact adapter for horizontal news carousel on Home screen.
+ * Suporta um callback de retry para recarregar notícias em caso de erro.
  */
-class FeedCompactAdapter : ListAdapter<FeedPost, FeedCompactAdapter.FeedViewHolder>(FeedDiffCallback()) {
+class FeedCompactAdapter(
+    private val onRetryClick: (() -> Unit)? = null
+) : ListAdapter<FeedPost, FeedCompactAdapter.FeedViewHolder>(FeedDiffCallback()) {
+
+    private fun openUrlSafely(view: View, url: String?) {
+        val fallback = "https://www.gov.br/anpd/pt-br/assuntos/noticias"
+        val target = url ?: fallback
+        runCatching {
+            view.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(target)))
+        }.onFailure {
+            view.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(fallback)))
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
         val binding = ItemFeedPostCompactBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FeedViewHolder(binding)
+        return FeedViewHolder(binding, onRetryClick)
     }
 
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class FeedViewHolder(private val binding: ItemFeedPostCompactBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class FeedViewHolder(
+        private val binding: ItemFeedPostCompactBinding,
+        private val onRetryClick: (() -> Unit)?
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(post: FeedPost) {
             binding.apply {
                 postAuthorName.text = post.authorName
@@ -39,12 +55,28 @@ class FeedCompactAdapter : ListAdapter<FeedPost, FeedCompactAdapter.FeedViewHold
                 if (post.linkTitle != null) {
                     postLinkCard.visibility = View.VISIBLE
                     postLinkTitle.text = post.linkTitle
-                    postLinkCard.setOnClickListener {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.linkUrl ?: "https://gov.br/anpd"))
-                        it.context.startActivity(intent)
+
+                    // Se o post for de erro (id == -2), o link dispara retry
+                    if (post.id == -2 && onRetryClick != null) {
+                        postLinkCard.setOnClickListener { onRetryClick.invoke() }
+                        root.setOnClickListener { onRetryClick.invoke() }
+                        postContent.setOnClickListener { onRetryClick.invoke() }
+                    } else {
+                        val openLink = {
+                            openUrlSafely(root, post.linkUrl)
+                        }
+                        postLinkCard.setOnClickListener { openLink() }
+                        root.setOnClickListener { openLink() }
+                        postContent.setOnClickListener { openLink() }
                     }
                 } else {
                     postLinkCard.visibility = View.GONE
+                    root.setOnClickListener {
+                        openUrlSafely(it, post.linkUrl)
+                    }
+                    postContent.setOnClickListener {
+                        openUrlSafely(it, post.linkUrl)
+                    }
                 }
 
                 updateLikeUi(post)

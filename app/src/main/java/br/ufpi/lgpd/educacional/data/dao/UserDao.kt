@@ -57,6 +57,9 @@ interface UserDao {
     @Query("SELECT AVG(score) FROM quiz_results WHERE userId = :userId")
     suspend fun getAverageScore(userId: String): Double?
 
+    @Query("SELECT MAX(score) FROM quiz_results WHERE userId = :userId")
+    suspend fun getHighestScore(userId: String): Int?
+
     @Query("SELECT SUM(pointsEarned) FROM quiz_results WHERE userId = :userId")
     suspend fun getTotalPoints(userId: String): Int?
 
@@ -65,4 +68,21 @@ interface UserDao {
 
     @Query("SELECT COUNT(DISTINCT quizId) FROM quiz_results WHERE userId = :userId")
     suspend fun countDistinctQuizzesCompleted(userId: String): Int
+
+    // ─── Limpeza de dados ───────────────────────────────────────────────────
+
+    @Query("DELETE FROM lesson_progress WHERE userId = :userId")
+    suspend fun deleteLessonProgress(userId: String)
+
+    @Query("DELETE FROM quiz_results WHERE userId = :userId")
+    suspend fun deleteQuizResults(userId: String)
+
+    @Query("DELETE FROM user_achievements WHERE userId = :userId")
+    suspend fun deleteUserAchievements(userId: String)
+
+    @Query("DELETE FROM users WHERE id = :userId")
+    suspend fun deleteUser(userId: String)
+
+    @Query("DELETE FROM user_answers")
+    suspend fun deleteAllUserAnswers()
 }

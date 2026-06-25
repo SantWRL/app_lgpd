@@ -17,9 +17,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.ufpi.lgpd.educacional.ui.feed.FeedCompactAdapter
 import br.ufpi.lgpd.educacional.ui.feed.NewsScraper
-import br.ufpi.lgpd.educacional.ui.feed.FeedPost
 import br.ufpi.lgpd.educacional.util.AnimationUtils
+import br.ufpi.lgpd.educacional.util.UserPreferences
 import br.ufpi.lgpd.educacional.R
+import br.ufpi.lgpd.educacional.data.LgpdContent
 import br.ufpi.lgpd.educacional.databinding.FragmentHomeBinding
 import br.ufpi.lgpd.educacional.ui.adapter.LessonCardAdapter
 import br.ufpi.lgpd.educacional.ui.adapter.QuizCardAdapter
@@ -28,6 +29,11 @@ import br.ufpi.lgpd.educacional.ui.quizzes.QuizDetailFragment
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
+
+    companion object {
+        private const val HOME_NEWS_LIMIT = 4
+        private const val ISO_QUIZ_ID = 10
+    }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -66,6 +72,12 @@ class HomeFragment : Fragment() {
         setupResourceCards()
         observeData()
         loadContent()
+        updateReminderBadge()
+    }
+
+    private fun updateReminderBadge() {
+        val prefs = UserPreferences(requireContext())
+        binding.reminderBadge.visibility = if (prefs.reminderEnabled) View.VISIBLE else View.GONE
     }
 
     private fun setupRecyclerViews() {
@@ -100,7 +112,7 @@ class HomeFragment : Fragment() {
         }
 
         // news recycler (horizontal carousel)
-        newsAdapter = FeedCompactAdapter()
+        newsAdapter = FeedCompactAdapter(onRetryClick = { loadNews() })
         binding.homeNewsRecyclerView.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -112,12 +124,12 @@ class HomeFragment : Fragment() {
             AnimationUtils.slideUpFadeIn(binding.newsSection, delay = 400L)
         }
 
-        // Wire up "Ver todas" news button
+        // Abre a tela completa de notícias do app
         binding.btnVerNoticias.setOnClickListener {
             try {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.gov.br/anpd/pt-br/assuntos/noticias")))
+                findNavController().navigate(R.id.feedFragment)
             } catch (_: Exception) {
-                showInfo("Notícias", "Acesse: https://www.gov.br/anpd/pt-br/assuntos/noticias")
+                showInfo("Notícias", "Não foi possível abrir a tela de notícias agora.")
             }
         }
     }
@@ -149,7 +161,7 @@ class HomeFragment : Fragment() {
             } else {
                 pill.setBackgroundResource(R.drawable.bg_glass_card)
                 pill.backgroundTintList = null
-                pill.setTextColor(0xFFE2E8F0.toInt())
+                pill.setTextColor(requireContext().getColor(R.color.text_secondary))
             }
         }
     }
@@ -161,9 +173,31 @@ class HomeFragment : Fragment() {
         binding.cardWordsearch.setOnClickListener {
             findNavController().navigate(R.id.wordsearchFragment)
         }
+        binding.cardQuizRelampago.setOnClickListener {
+            val quizzes = LgpdContent.quizzes
+            val isoQuiz = quizzes.firstOrNull { it.id == ISO_QUIZ_ID }
+            val targetQuiz = isoQuiz ?: quizzes.random()
+            val args = Bundle().apply {
+                putInt(QuizDetailFragment.ARG_QUIZ_ID, targetQuiz.id)
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_quizDetailFragment, args)
+        }
+        // Botão de notificação — mostra desempenho rápido
+        binding.notificationBtn.setOnClickListener {
+            val stats = viewModel.userProgress.value
+            showInfo(
+                "Status",
+                "Módulos: ${stats.lessonsCompleted}/${stats.totalLessons}\n" +
+                    "XP: ${stats.totalPoints} | Nível: ${stats.currentLevel}\n" +
+                    "Conclusão: ${stats.completionPercentage}%"
+            )
+        }
     }
 
     private fun setupResourceCards() {
+        // Conteúdo do e-CAD foi priorizado em Aulas e Quizzes.
+        binding.cardECad.visibility = View.GONE
+
         binding.cardAnpd.setOnClickListener {
             try {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.gov.br/anpd/pt-br")))
@@ -195,6 +229,14 @@ class HomeFragment : Fragment() {
                     "Controlador: decide sobre o tratamento.\n\n" +
                     "Operador: trata os dados em nome do controlador.\n\n" +
                     "Encarregado: canal entre titular, controlador e ANPD."
+            )
+        }
+
+        binding.cardECad.setOnClickListener {
+            showInfo(
+                "Estatuto Digital (e-CAD)",
+                "Resumo: A Lei nº 15.211/2025 protege crianças e adolescentes em ambientes digitais. " +
+                    "Nosso app respeita essas regras e não compartilha dados sem o seu consentimento."
             )
         }
 
@@ -243,6 +285,14 @@ class HomeFragment : Fragment() {
         binding.progressBar.progress = stats.completionPercentage
         binding.homeDescription.text =
             "Você já completou ${stats.completionPercentage}% do conteúdo essencial."
+
+        // Atualizar recorde do Quiz Relâmpago
+        val recorde = stats.bestQuizScore
+        if (recorde > 0) {
+            binding.quizRecordeBadge.text = "Recorde: ${recorde}%"
+        } else {
+            binding.quizRecordeBadge.text = "Recorde: --"
+        }
     }
 
     private fun showInfo(title: String, message: String) {
@@ -259,42 +309,21 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadNews() {
-        // mostra mock inicial enquanto carrega
-        val mockData = listOf(
-            FeedPost(
-                id = 1,
-                authorName = "Carregando Notícias...",
-                authorUsername = "@anpd_gov",
-                authorInitials = "A",
-                timeAgo = "Agora",
-                content = "Conectando ao portal Gov.br para buscar as atualizações mais recentes sobre a LGPD...",
-                linkTitle = null,
-                linkUrl = null,
-                commentsCount = 0,
-                repostsCount = 0,
-                likesCount = 0
-            )
-        )
-        newsAdapter.submitList(mockData)
-
         NewsScraper.fetchNews(
             onSuccess = { posts ->
-                activity?.runOnUiThread {
-                    newsAdapter.submitList(posts)
-                }
+                newsAdapter.submitList(posts.take(HOME_NEWS_LIMIT))
             },
             onError = { _ ->
-                activity?.runOnUiThread {
-                    // fallback: manter mock (ou poderia adicionar posts estáticos)
-                    newsAdapter.submitList(mockData)
-                }
+                // Nunca ocorre com dados estáticos
             }
         )
     }
 
     override fun onResume() {
         super.onResume()
-        loadContent()
+        updateReminderBadge()
+        loadNews()
+        viewModel.refreshContent()
     }
 
     override fun onDestroyView() {

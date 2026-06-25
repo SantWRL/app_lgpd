@@ -115,12 +115,11 @@ class QuizDetailFragment : Fragment() {
         hasAnsweredCurrentQuestion = true
         optionButtons.forEach { it.isEnabled = false }
         
-        val statusColor = requireContext().getColor(if (isCorrect) R.color.duo_green else R.color.duo_red)
-        val statusBg = if (isCorrect) "#E5F9D1" else "#FFDFE0"
+        val statusColor = requireContext().getColor(if (isCorrect) R.color.success else R.color.error)
         
-        binding.answerStatus.text = if (isCorrect) "EXCELENTE!" else "OPS, FOI QUASE..."
+        binding.answerStatus.text = if (isCorrect) "✓ EXCELENTE!" else "✗ FOI QUASE..."
         binding.answerStatus.setTextColor(statusColor)
-        binding.bottomActionArea.setBackgroundColor(android.graphics.Color.parseColor(statusBg))
+        binding.bottomActionArea.setBackgroundColor(requireContext().getColor(if (isCorrect) R.color.background else R.color.background))
         
         // Formatar Markdown para explicação
         val explanationHtml = question.explanation

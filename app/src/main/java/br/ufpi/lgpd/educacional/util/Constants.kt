@@ -66,4 +66,6 @@ object QuizConstants {
 object NetworkConstants {
     const val SCRAPER_TIMEOUT_MS = 20_000
     const val MAX_NEWS_ITEMS = 20
+    const val SCRAPER_RETRY_MAX_ATTEMPTS = 3
+    const val SCRAPER_RETRY_DELAY_MS = 2_000L
 }

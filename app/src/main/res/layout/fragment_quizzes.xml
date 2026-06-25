@@ -67,13 +67,23 @@
                 android:text="Direitos" />
 
             <Button
-                android:id="@+id/filterSeguranca"
+                android:id="@+id/filterAplicacao"
+                style="@style/Button.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#80FFFFFF"
+                android:textColor="@color/white"
+                android:text="Aplicação" />
+
+            <Button
+                android:id="@+id/filterEcad"
                 style="@style/Button.Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#80FFFFFF"
                 android:textColor="@color/white"
-                android:text="Segurança" />
+                android:text="e-CAD" />
 
         </LinearLayout>
 

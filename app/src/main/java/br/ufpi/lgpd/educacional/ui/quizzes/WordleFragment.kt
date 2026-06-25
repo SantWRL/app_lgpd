@@ -1,6 +1,7 @@
 package br.ufpi.lgpd.educacional.ui.quizzes
 
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -247,12 +248,14 @@ class WordleFragment : Fragment() {
 
     private fun showResult(won: Boolean) {
         isGameOver = true
+        binding.root.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         binding.tvDefinitionTitle.text =
             if (won) "Correto! A palavra era: $targetWord" else "A palavra era: $targetWord"
         binding.tvDefinition.text = targetDefinition
         binding.definitionCard.visibility = View.VISIBLE
 
         if (won) {
+            binding.root.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
             viewLifecycleOwner.lifecycleScope.launch {
                 repository.ensureUserExists()
                 repository.addBonusPoints(PointsConstants.WORDLE_WIN)

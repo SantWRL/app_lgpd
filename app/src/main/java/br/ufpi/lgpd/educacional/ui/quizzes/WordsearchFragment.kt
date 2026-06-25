@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -233,6 +234,7 @@ class WordsearchFragment : Fragment() {
         }
 
         matched?.let {
+            binding.root.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
             foundWords.add(it)
             highlightFoundWord()
             markChipFound(it)
@@ -274,6 +276,7 @@ class WordsearchFragment : Fragment() {
     }
 
     private fun onAllWordsFound() {
+        binding.root.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
         binding.btnNewWordSearch.visibility = View.VISIBLE
         viewLifecycleOwner.lifecycleScope.launch {
             repository.ensureUserExists()

@@ -52,7 +52,17 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="br.ufpi.lgpd.educacional.ui.profile.ProfileFragment"
-        android:label="Perfil" />
+        android:label="Perfil">
+        <action
+            android:id="@+id/action_profileFragment_to_lessonDetailFragment"
+            app:destination="@id/lessonDetailFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_quizDetailFragment"
+            app:destination="@id/quizDetailFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/lessonDetailFragment"
@@ -72,9 +82,15 @@
         android:id="@+id/wordsearchFragment"
         android:name="br.ufpi.lgpd.educacional.ui.quizzes.WordsearchFragment"
         android:label="Caça-Palavras" />
+
     <fragment
         android:id="@+id/feedFragment"
         android:name="br.ufpi.lgpd.educacional.ui.feed.FeedFragment"
-        android:label="Feed de Notícias" />
+        android:label="Notícias" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="br.ufpi.lgpd.educacional.ui.settings.SettingsFragment"
+        android:label="Configurações" />
 
 </navigation>

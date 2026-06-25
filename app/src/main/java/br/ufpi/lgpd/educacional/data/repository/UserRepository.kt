@@ -1,6 +1,7 @@
 package br.ufpi.lgpd.educacional.data.repository
 
 import br.ufpi.lgpd.educacional.data.dao.UserDao
+import br.ufpi.lgpd.educacional.data.LgpdContent
 import br.ufpi.lgpd.educacional.data.model.LessonProgress
 import br.ufpi.lgpd.educacional.data.model.QuizResultRecord
 import br.ufpi.lgpd.educacional.data.model.User
@@ -134,6 +135,9 @@ class UserRepository(private val dao: UserDao) {
     suspend fun getCompletedQuizIds(userId: String = DEFAULT_USER_ID): Set<Int> =
         dao.getCompletedQuizIds(userId).toSet()
 
+    suspend fun getHighestQuizScore(userId: String = DEFAULT_USER_ID): Int? =
+        dao.getHighestScore(userId)
+
     // ─── Resultados de Quiz ───────────────────────────────────────────────────
 
     suspend fun saveQuizResult(quizId: Int, score: Int, userId: String = DEFAULT_USER_ID): Int {
@@ -181,7 +185,7 @@ class UserRepository(private val dao: UserDao) {
         )
     }
 
-    suspend fun getUserStats(userId: String = DEFAULT_USER_ID, totalLessonsAvailable: Int = 10): UserStats {
+    suspend fun getUserStats(userId: String = DEFAULT_USER_ID, totalLessonsAvailable: Int = LgpdContent.lessons.size): UserStats {
         val user = dao.getUser(userId) ?: User(id = userId)
         val completed = dao.countCompletedLessons(userId)
         val quizResults = dao.observeQuizResults(userId).firstOrNull() ?: emptyList()
@@ -199,6 +203,20 @@ class UserRepository(private val dao: UserDao) {
             streakDays = user.streakDays,
             totalPoints = user.totalPoints
         )
+    }
+
+    // ─── Limpeza de Progresso ─────────────────────────────────────────────
+
+    /**
+     * Remove TODO o progresso do usuário (aulas, quizzes, achievements, respostas)
+     * e o próprio registro do usuário, forçando um recomeço.
+     */
+    suspend fun clearAllProgress(userId: String = DEFAULT_USER_ID) {
+        dao.deleteLessonProgress(userId)
+        dao.deleteQuizResults(userId)
+        dao.deleteUserAchievements(userId)
+        dao.deleteAllUserAnswers()
+        dao.deleteUser(userId)
     }
 
     // ─── Auxiliares ───────────────────────────────────────────────────────────

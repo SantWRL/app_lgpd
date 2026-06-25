@@ -30,7 +30,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val quizzes: StateFlow<List<Quiz>> = _quizzes.asStateFlow()
 
     private val _userProgress = MutableStateFlow(
-        UserProgressStats("Usuário", 0, 0, 0, 0, 1)
+        UserProgressStats("Usuário", 0, 0, 0, 0, 1, 0)
     )
     val userProgress: StateFlow<UserProgressStats> = _userProgress.asStateFlow()
 
@@ -68,13 +68,15 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             }
             val user = repository.getUser()
 
+            val highestQuizScore = repository.getHighestQuizScore() ?: 0
             _userProgress.value = UserProgressStats(
                 userName = user?.name ?: "Usuário",
                 lessonsCompleted = completedIds.size,
                 totalLessons = totalLessons,
                 completionPercentage = if (totalLessons == 0) 0 else (completedIds.size * 100) / totalLessons,
                 totalPoints = user?.totalPoints ?: 0,
-                currentLevel = user?.level ?: 1
+                currentLevel = user?.level ?: 1,
+                bestQuizScore = highestQuizScore
             )
         }
     }
@@ -94,5 +96,6 @@ data class UserProgressStats(
     val totalLessons: Int,
     val completionPercentage: Int,
     val totalPoints: Int,
-    val currentLevel: Int
+    val currentLevel: Int,
+    val bestQuizScore: Int = 0
 )

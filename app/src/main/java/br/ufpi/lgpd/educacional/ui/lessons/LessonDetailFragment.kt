@@ -15,7 +15,6 @@ import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.LgpdContent
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentLessonDetailBinding
-import br.ufpi.lgpd.educacional.ui.feed.LessonContentScraper
 import br.ufpi.lgpd.educacional.util.AnimationUtils
 import br.ufpi.lgpd.educacional.util.getUserRepository
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -28,6 +27,7 @@ class LessonDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var lessonId: Int = 0
+    private var currentVideoId: String? = null
     private lateinit var repository: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +67,11 @@ class LessonDetailFragment : Fragment() {
                 findNavController().navigateUp()
             }
         }
+
+        // Botao para abrir o video diretamente no YouTube quando o player falhar
+        binding.btnOpenOnYoutube.setOnClickListener {
+            openCurrentVideoInBrowser()
+        }
     }
 
     private fun loadLesson() {
@@ -76,6 +81,8 @@ class LessonDetailFragment : Fragment() {
             findNavController().navigateUp()
             return
         }
+
+        currentVideoId = lesson.videoId
 
         binding.apply {
             tvLessonCategory.text = lesson.category.uppercase()
@@ -99,8 +106,6 @@ class LessonDetailFragment : Fragment() {
             setupYoutubePlayer(lesson.videoId)
         } else {
             binding.videoCard.visibility = View.GONE
-            // Try to fetch supplementary content from the scraper as fallback
-            fetchSupplementaryContent(lesson)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -113,43 +118,6 @@ class LessonDetailFragment : Fragment() {
         }
     }
 
-    private fun fetchSupplementaryContent(lesson: br.ufpi.lgpd.educacional.data.model.Lesson) {
-        LessonContentScraper.fetchLessonContent(
-            topics = listOf(lesson.title, lesson.category),
-            onSuccess = { results ->
-                val content = results.firstOrNull()
-                if (content?.supplementaryUrl != null && isAdded) {
-                    activity?.runOnUiThread {
-                        // Show supplementary content card with summary
-                        binding.videoCard.visibility = View.VISIBLE
-                        binding.youtubePlayerView.visibility = View.GONE
-                        binding.youtubePlayerView.removeAllViews()
-
-                        // Insert summary text into the YouTube player container
-                        if (content.summary != null) {
-                            val summaryView = android.widget.TextView(requireContext()).apply {
-                                text = content.summary
-                                setTextColor(requireContext().getColor(R.color.text_primary))
-                                textSize = 14f
-                                setPadding(16, 12, 16, 8)
-                            }
-                            binding.youtubePlayerView.addView(summaryView)
-                        }
-
-                        binding.videoCard.setOnClickListener {
-                            try {
-                                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(content.supplementaryUrl)))
-                            } catch (_: Exception) {
-                                Toast.makeText(requireContext(), "Link indisponível", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                        AnimationUtils.slideUpFadeIn(binding.videoCard, delay = 300L)
-                    }
-                }
-            }
-        )
-    }
-
     private fun setupYoutubePlayer(videoId: String) {
         if (!isAdded) return
         val youtubePlayerView = binding.youtubePlayerView
@@ -158,10 +126,37 @@ class LessonDetailFragment : Fragment() {
         youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 if (isAdded) {
+                    // Tenta carregar o video
                     youTubePlayer.cueVideo(videoId, 0f)
                 }
             }
+
+            override fun onError(youTubePlayer: YouTubePlayer, error: com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants.PlayerError) {
+                // Erro 152-4 = restricao de incorporacao do conteudo
+                // Quando ocorre, mostra fallback para abrir no YouTube
+                if (isAdded) {
+                    binding.youtubePlayerView.visibility = View.GONE
+                    binding.videoErrorFallback.visibility = View.VISIBLE
+                }
+            }
         })
+    }
+
+    private fun openCurrentVideoInBrowser() {
+        val videoId = currentVideoId ?: return
+        try {
+            // Tenta abrir no app do YouTube primeiro
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$videoId"))
+            startActivity(intent)
+        } catch (_: Exception) {
+            // Fallback: abrir no navegador
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=$videoId"))
+                startActivity(intent)
+            } catch (_: Exception) {
+                Toast.makeText(requireContext(), "Não foi possível abrir o vídeo.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onDestroyView() {

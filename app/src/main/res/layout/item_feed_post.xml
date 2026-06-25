@@ -1,198 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_glass_card"
-    android:layout_marginHorizontal="12dp"
+    android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="6dp"
-    android:padding="16dp"
-    android:orientation="horizontal">
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/panel_stroke">
 
-    <!-- Avatar do perfil -->
-    <FrameLayout
-        android:id="@+id/postAvatarContainer"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@drawable/bg_avatar_circle"
-        android:backgroundTint="@color/primary">
-        <TextView
-            android:id="@+id/postAvatarInitial"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="A"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </FrameLayout>
-
-    <!-- Conteúdo do Post -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="12dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <!-- Header: Nome, Username e Tempo -->
+        <!-- Top Row: Avatar + Author + Time + Category Badge -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
+            <!-- Avatar -->
+            <FrameLayout
+                android:id="@+id/postAvatarContainer"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_avatar_circle"
+                android:backgroundTint="@color/primary">
+
+                <TextView
+                    android:id="@+id/postAvatarInitial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="A"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </FrameLayout>
+
+            <!-- Author info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/postAuthorName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ANPD Oficial"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/postAuthorUsername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="@anpd_gov"
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/postTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:text="Atualizado"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!-- Category Badge -->
             <TextView
-                android:id="@+id/postAuthorName"
+                android:id="@+id/postCategoryBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ANPD Oficial"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:background="@drawable/badge_background"
+                android:backgroundTint="@color/primary"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:text="Geral"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.06" />
 
-            <TextView
-                android:id="@+id/postAuthorUsername"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="@anpd_gov"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="·"
-                android:textColor="@color/text_secondary" />
-
-            <TextView
-                android:id="@+id/postTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="2h"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Texto principal do post -->
+        <!-- Content Text -->
         <TextView
             android:id="@+id/postContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Proteção de Dados é tema de Fórum com Educadores Físicos e ANPD. Evento promovido teve por objetivo estreitar o diálogo."
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="3dp"
+            android:text="Notícia da ANPD sobre proteção de dados pessoais e as atualizações da LGPD no Brasil."
             android:textColor="@color/text_primary"
-            android:textSize="15sp"
-            android:lineSpacingExtra="2dp" />
+            android:textSize="14sp" />
 
-        <!-- Link Preview Card (opcional, estilo Twitter) -->
+        <!-- Link Card -->
         <LinearLayout
             android:id="@+id/postLinkCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/badge_background"
-            android:backgroundTint="#1A0288D1"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:backgroundTint="#1A89B4FA"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="12dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_arrow_right"
+                app:tint="@color/primary" />
 
             <TextView
                 android:id="@+id/postLinkTitle"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
                 android:text="Leia a notícia completa no gov.br"
                 android:textColor="@color/primary"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_share"
+                android:visibility="gone"
+                app:tint="@color/primary" />
+
         </LinearLayout>
 
-        <!-- Ações do post (Curtir, Comentar, Compartilhar) -->
+        <!-- Action Bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <!-- Comentários -->
+            <!-- Comments -->
             <LinearLayout
+                android:id="@+id/actionComments"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="horizontal">
+
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_comment"
-                    app:tint="@color/text_secondary" />
+                    app:tint="@color/text_tertiary" />
+
                 <TextView
                     android:id="@+id/postCommentsCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="12"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
+                    android:layout_marginStart="5dp"
+                    android:text="0"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
-            <!-- Repost -->
+            <!-- Divider -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="@color/panel_stroke" />
+
+            <!-- Reposts -->
             <LinearLayout
+                android:id="@+id/actionReposts"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="horizontal">
+
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_book"
-                    app:tint="@color/text_secondary" />
+                    app:tint="@color/text_tertiary" />
+
                 <TextView
                     android:id="@+id/postRepostsCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="5"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
+                    android:layout_marginStart="5dp"
+                    android:text="0"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
-            <!-- Like -->
+            <!-- Divider -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="@color/panel_stroke" />
+
+            <!-- Likes -->
             <LinearLayout
+                android:id="@+id/actionLikes"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="horizontal">
+
                 <ImageView
                     android:id="@+id/postLikeIcon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_heart"
-                    app:tint="@color/text_secondary" />
+                    app:tint="@color/text_tertiary" />
+
                 <TextView
                     android:id="@+id/postLikesCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="48"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
+                    android:layout_marginStart="5dp"
+                    android:text="0"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
+            <!-- Divider -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="@color/panel_stroke" />
+
             <!-- Share -->
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_share"
-                app:tint="@color/text_secondary" />
+            <LinearLayout
+                android:id="@+id/actionShare"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_share"
+                    app:tint="@color/text_tertiary" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

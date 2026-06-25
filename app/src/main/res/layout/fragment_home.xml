@@ -87,6 +87,18 @@
                     android:src="@drawable/ic_shield_lock"
                     app:tint="@color/white" />
 
+                <!-- Badge indicando que o lembrete está ativo -->
+                <View
+                    android:id="@+id/reminderBadge"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/bg_avatar_circle"
+                    android:backgroundTint="@color/success"
+                    android:visibility="gone" />
+
             </FrameLayout>
 
         </LinearLayout>
@@ -329,16 +341,16 @@
                 android:orientation="horizontal"
                 android:paddingHorizontal="20dp">
 
-                <!-- Card Wordle -->
+                <!-- Card Wordle / Termo da Privacidade -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardWordle"
-                    android:layout_width="200dp"
-                    android:layout_height="188dp"
+                    android:layout_width="240dp"
+                    android:layout_height="208dp"
                     android:layout_marginEnd="16dp"
                     android:clickable="true"
                     android:focusable="true"
                     app:cardBackgroundColor="@android:color/transparent"
-                    app:cardCornerRadius="24dp"
+                    app:cardCornerRadius="28dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp">
 
@@ -347,14 +359,14 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_wordle_promo"
                         android:orientation="vertical"
-                        android:padding="18dp">
+                        android:padding="20dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:layout_marginBottom="12dp">
+                            android:layout_marginBottom="10dp">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -368,57 +380,95 @@
                                 android:textAllCaps="true"
                                 android:textColor="@color/white"
                                 android:textSize="9sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.08" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/badge_background"
+                                android:backgroundTint="#40FFFFFF"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="3dp"
+                                android:text="+10 XP"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
 
                         <FrameLayout
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@drawable/badge_background"
                             android:backgroundTint="#40FFFFFF">
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:contentDescription="Wordle"
-                                android:src="@drawable/ic_question"
-                                app:tint="@color/white" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="\uD83D\uDD0D"
+                                android:textSize="24sp" />
 
                         </FrameLayout>
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:text="Termo da Privacidade"
                             android:textColor="@color/white"
-                            android:textSize="16sp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Jogar →"
-                            android:textColor="#E2E8F0"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="6dp"
+                            android:text="Adivinhe a palavra secreta sobre privacidade de dados"
+                            android:textColor="#CCE2E8F0"
+                            android:textSize="11sp"
+                            android:lineSpacingExtra="2dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/badge_background"
+                                android:backgroundTint="#40FFFFFF"
+                                android:paddingHorizontal="16dp"
+                                android:paddingVertical="6dp"
+                                android:text="Jogar  →"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Card Caça-Palavras -->
+                <!-- Card Caça-Palavras Legal -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardWordsearch"
-                    android:layout_width="200dp"
-                    android:layout_height="188dp"
+                    android:layout_width="240dp"
+                    android:layout_height="208dp"
                     android:clickable="true"
                     android:focusable="true"
                     app:cardBackgroundColor="@android:color/transparent"
-                    app:cardCornerRadius="24dp"
+                    app:cardCornerRadius="28dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp">
 
@@ -427,14 +477,14 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_wordsearch_promo"
                         android:orientation="vertical"
-                        android:padding="18dp">
+                        android:padding="20dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:layout_marginBottom="12dp">
+                            android:layout_marginBottom="10dp">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -448,43 +498,214 @@
                                 android:textAllCaps="true"
                                 android:textColor="@color/white"
                                 android:textSize="9sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.08" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/badge_background"
+                                android:backgroundTint="#40FFFFFF"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="3dp"
+                                android:text="+10 XP"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
 
                         <FrameLayout
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@drawable/badge_background"
                             android:backgroundTint="#40FFFFFF">
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:contentDescription="Caça Palavras"
-                                android:src="@drawable/ic_book"
-                                app:tint="@color/white" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="\uD83D\uDD0E"
+                                android:textSize="24sp" />
 
                         </FrameLayout>
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:text="Caça-Palavras Legal"
                             android:textColor="@color/white"
-                            android:textSize="16sp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="6dp"
+                            android:text="Encontre os termos da LGPD escondidos no grid"
+                            android:textColor="#CCE2E8F0"
+                            android:textSize="11sp"
+                            android:lineSpacingExtra="2dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/badge_background"
+                                android:backgroundTint="#40FFFFFF"
+                                android:paddingHorizontal="16dp"
+                                android:paddingVertical="6dp"
+                                android:text="Jogar  →"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card Quiz Relâmpago -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardQuizRelampago"
+                    android:layout_width="240dp"
+                    android:layout_height="208dp"
+                    android:layout_marginStart="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_card_quizpromo"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/badge_background"
+                                android:backgroundTint="#33000000"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="4dp"
+                                android:text="RELÂMPAGO"
+                                android:textAllCaps="true"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.08" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/badge_background"
+                                android:backgroundTint="#40FFFFFF"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="3dp"
+                                android:text="+5 XP"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/quizRecordeBadge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Jogar →"
-                            android:textColor="#E2E8F0"
-                            android:textSize="13sp"
+                            android:layout_marginBottom="6dp"
+                            android:background="@drawable/badge_background"
+                            android:backgroundTint="#40FFFFFF"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="3dp"
+                            android:text="Recorde: --"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
+
+                        <FrameLayout
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/badge_background"
+                            android:backgroundTint="#40FFFFFF">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="\u26A1"
+                                android:textSize="28sp" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Quiz Relâmpago"
+                            android:textColor="@color/white"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="6dp"
+                            android:text="Responda perguntas aleatórias contra o tempo"
+                            android:textColor="#CCE2E8F0"
+                            android:textSize="11sp"
+                            android:lineSpacingExtra="2dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/badge_background"
+                                android:backgroundTint="#40FFFFFF"
+                                android:paddingHorizontal="16dp"
+                                android:paddingVertical="6dp"
+                                android:text="Jogar  →"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -532,7 +753,7 @@
                     android:layout_width="150dp"
                     android:layout_height="188dp"
                     android:layout_marginEnd="14dp"
-                    android:background="@drawable/bg_panel_frost"
+                    android:background="@drawable/bg_card_anpd"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
@@ -544,7 +765,7 @@
                         android:layout_height="56dp"
                         android:layout_marginBottom="12dp"
                         android:background="@drawable/badge_background"
-                        android:backgroundTint="#1A0A2472">
+                        android:backgroundTint="#40FFFFFF">
 
                         <ImageView
                             android:layout_width="26dp"
@@ -552,7 +773,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="Portal ANPD"
                             android:src="@drawable/ic_shield_lock"
-                            app:tint="#FF0A2472" />
+                            app:tint="@color/white" />
 
                     </FrameLayout>
 
@@ -583,7 +804,7 @@
                     android:layout_width="150dp"
                     android:layout_height="188dp"
                     android:layout_marginEnd="14dp"
-                    android:background="@drawable/bg_panel_frost"
+                    android:background="@drawable/bg_card_gdpr"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
@@ -595,7 +816,7 @@
                         android:layout_height="56dp"
                         android:layout_marginBottom="12dp"
                         android:background="@drawable/badge_background"
-                        android:backgroundTint="#1A8A3FFC">
+                        android:backgroundTint="#40FFFFFF">
 
                         <ImageView
                             android:layout_width="26dp"
@@ -603,7 +824,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="GDPR"
                             android:src="@drawable/ic_book"
-                            app:tint="#FF8A3FFC" />
+                            app:tint="@color/white" />
 
                     </FrameLayout>
 
@@ -634,7 +855,7 @@
                     android:layout_width="150dp"
                     android:layout_height="188dp"
                     android:layout_marginEnd="14dp"
-                    android:background="@drawable/bg_panel_frost"
+                    android:background="@drawable/bg_card_resumo"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
@@ -646,7 +867,7 @@
                         android:layout_height="56dp"
                         android:layout_marginBottom="12dp"
                         android:background="@drawable/badge_background"
-                        android:backgroundTint="#1A198038">
+                        android:backgroundTint="#40FFFFFF">
 
                         <ImageView
                             android:layout_width="26dp"
@@ -654,7 +875,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="Resumo"
                             android:src="@drawable/ic_check"
-                            app:tint="#FF198038" />
+                            app:tint="@color/white" />
 
                     </FrameLayout>
 
@@ -684,7 +905,7 @@
                     android:id="@+id/cardDicionario"
                     android:layout_width="150dp"
                     android:layout_height="188dp"
-                    android:background="@drawable/bg_panel_frost"
+                    android:background="@drawable/bg_card_dicionario"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
@@ -696,7 +917,7 @@
                         android:layout_height="56dp"
                         android:layout_marginBottom="12dp"
                         android:background="@drawable/badge_background"
-                        android:backgroundTint="#1AD12771">
+                        android:backgroundTint="#40FFFFFF">
 
                         <ImageView
                             android:layout_width="26dp"
@@ -704,7 +925,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="Dicionário"
                             android:src="@drawable/ic_star"
-                            app:tint="#FFD12771" />
+                            app:tint="@color/white" />
 
                     </FrameLayout>
 
@@ -726,6 +947,71 @@
                         android:text="Conceitos fundamentais."
                         android:textColor="#E2E8F0"
                         android:textSize="11sp" />
+
+                </LinearLayout>
+
+                <!-- Card: e-CAD Digital (Lei 15.211/2025) -->
+                <LinearLayout
+                    android:id="@+id/cardECad"
+                    android:layout_width="150dp"
+                    android:layout_height="188dp"
+                    android:layout_marginStart="14dp"
+                    android:background="@drawable/bg_ecad_promo"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <!-- Badge "NOVA LEI" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/badge_background"
+                        android:backgroundTint="#33000000"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="3dp"
+                        android:text="NOVA LEI"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.08" />
+
+                    <FrameLayout
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/badge_background"
+                        android:backgroundTint="#40FFFFFF">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="\uD83D\uDEE1\uFE0F"
+                            android:textSize="22sp" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Estatuto Digital"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Proteção de crianças e adolescentes."
+                        android:textColor="#E2E8F0"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 

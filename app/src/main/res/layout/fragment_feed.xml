@@ -7,14 +7,156 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/feedRecyclerView"
+    <!-- ── Hero Header ── -->
+    <LinearLayout
+        android:id="@+id/heroHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="80dp"
-        android:paddingTop="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_feed_post" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_hero_banner"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:text="📰"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notícias ANPD"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:alpha="0.85"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="Atualizações da Autoridade Nacional de Proteção de Dados"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:lineSpacingExtra="3dp" />
+
+        <!-- Stats row -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/feedNewsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_background"
+                android:backgroundTint="#33FFFFFF"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:text="10 notícias"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/badge_background"
+                android:backgroundTint="#33FFFFFF"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:text="ANPD Oficial"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ── Search Bar ── -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/bg_panel_frost"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp">
+
+        <EditText
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawableStart="@drawable/ic_news"
+            android:drawablePadding="12dp"
+            android:hint="Buscar notícias..."
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingVertical="12dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_tertiary"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/clearSearchBtn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="end|center_vertical"
+            android:contentDescription="Limpar busca"
+            android:src="@drawable/ic_close"
+            android:visibility="gone"
+            app:tint="@color/text_tertiary" />
+
+    </FrameLayout>
+
+    <!-- ── Category Filter Chips ── -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/categoryChipsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp" />
+
+    </HorizontalScrollView>
+
+    <!-- ── News List with Pull-to-Refresh ── -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/feedRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp"
+            android:paddingTop="4dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_feed_post" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>
