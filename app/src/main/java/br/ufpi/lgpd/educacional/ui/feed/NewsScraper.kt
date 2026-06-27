@@ -168,7 +168,7 @@ object NewsScraper {
      */
     fun fetchNews(
         onSuccess: (List<FeedPost>) -> Unit,
-        onError: (Exception) -> Unit
+        @Suppress("UNUSED_PARAMETER") onError: (Exception) -> Unit
     ) {
         onSuccess(newsCatalog)
     }

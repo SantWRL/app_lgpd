@@ -20,6 +20,8 @@ import br.ufpi.lgpd.educacional.databinding.FragmentSettingsBinding
 import br.ufpi.lgpd.educacional.util.StudyReminderReceiver
 import br.ufpi.lgpd.educacional.util.UserPreferences
 import br.ufpi.lgpd.educacional.util.getUserRepository
+import br.ufpi.lgpd.educacional.util.showEditNameDialog
+import android.app.TimePickerDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
@@ -84,15 +86,7 @@ class SettingsFragment : Fragment() {
         binding.notificationSwitch.isChecked = userPreferences.reminderEnabled
         binding.notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                    if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                        scheduleNotification()
-                    } else {
-                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-                    }
-                } else {
-                    scheduleNotification()
-                }
+                showTimePickerForReminder()
             } else {
                 userPreferences.reminderEnabled = false
                 StudyReminderReceiver.cancel(requireContext())
@@ -146,6 +140,32 @@ class SettingsFragment : Fragment() {
         ).show()
     }
 
+    private fun showTimePickerForReminder() {
+        val picker = TimePickerDialog(
+            requireContext(),
+            { _, hourOfDay, minute ->
+                userPreferences.reminderHour = hourOfDay
+                userPreferences.reminderMinute = minute
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                        scheduleNotification()
+                    } else {
+                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                } else {
+                    scheduleNotification()
+                }
+            },
+            userPreferences.reminderHour,
+            userPreferences.reminderMinute,
+            true
+        )
+        picker.setOnCancelListener {
+            binding.notificationSwitch.isChecked = false
+        }
+        picker.show()
+    }
+
     private fun showAccountDataDialog() {
         lifecycleScope.launch {
             val user = repository.getUser()
@@ -153,55 +173,20 @@ class SettingsFragment : Fragment() {
             val level = user?.level ?: 1
             val points = user?.totalPoints ?: 0
 
-            val input = EditText(requireContext()).apply {
-                setText(name)
-                setTextColor(requireContext().getColor(R.color.text_primary))
-                setHintTextColor(requireContext().getColor(R.color.text_tertiary))
-                setBackgroundColor(Color.TRANSPARENT)
-            }
-
             val message = "Nome atual: $name\n" +
                 "Nível: $level\n" +
                 "Pontos: $points\n\n" +
                 "Digite um novo nome:"
 
-            val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_App_MaterialAlertDialog)
-                .setTitle("Dados da Conta")
-                .setMessage(message)
-                .setView(input)
-                .setPositiveButton("Salvar", null)
-                .setNegativeButton("Cancelar", null)
-                .create()
-
-            dialog.setOnShowListener {
-                dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    val newName = input.text?.toString()?.trim().orEmpty()
-                    if (newName.isNotBlank()) {
-                        lifecycleScope.launch {
-                            repository.updateUserName(newName)
-                            Snackbar.make(binding.root, "Nome atualizado!", Snackbar.LENGTH_SHORT).show()
-                        }
-                        dialog.dismiss()
-                    } else {
-                        input.error = "Nome não pode ser vazio"
-                    }
+            showEditNameDialog(
+                currentName = name,
+                message = message
+            ) { newName ->
+                lifecycleScope.launch {
+                    repository.updateUserName(newName)
+                    Snackbar.make(binding.root, "Nome atualizado!", Snackbar.LENGTH_SHORT).show()
                 }
-                try {
-                    val titleView = dialog.findViewById<TextView>(com.google.android.material.R.id.alertTitle)
-                    val msgView = dialog.findViewById<TextView>(android.R.id.message)
-                    titleView?.setTextColor(requireContext().getColor(R.color.text_primary))
-                    msgView?.setTextColor(requireContext().getColor(R.color.text_tertiary))
-                    dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-                        ?.setTextColor(requireContext().getColor(R.color.primary))
-                    dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-                        ?.setTextColor(requireContext().getColor(R.color.text_tertiary))
-                } catch (_: Exception) { }
-                // Abre o teclado após a view estar visível
-                input.requestFocus()
-                val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-                imm.showSoftInput(input, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
             }
-            dialog.show()
         }
     }
 

@@ -27,6 +27,7 @@ import br.ufpi.lgpd.educacional.ui.adapter.QuizProgressAdapter
 import br.ufpi.lgpd.educacional.ui.lessons.LessonDetailFragment
 import br.ufpi.lgpd.educacional.ui.quizzes.QuizDetailFragment
 import br.ufpi.lgpd.educacional.util.AvatarConstants
+import br.ufpi.lgpd.educacional.util.showEditNameDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
@@ -111,7 +112,7 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_settingsFragment)
         }
 
-        binding.btnEditAvatar.setOnClickListener { showEditNameDialog() }
+        binding.btnEditAvatar.setOnClickListener { showEditProfileNameDialog() }
     }
 
     private fun setupColorSelector() {
@@ -126,57 +127,13 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun showEditNameDialog() {
-        val input = EditText(requireContext())
-        input.setText(viewModel.userProfile.value.name)
-        val padding = (16 * resources.displayMetrics.density).toInt()
-        input.setPadding(padding, padding, padding, padding)
-        // Estilizar input para tema escuro: texto claro e fundo transparente
-        try {
-            input.setTextColor(requireContext().getColor(R.color.text_primary))
-            input.setHintTextColor(requireContext().getColor(R.color.text_tertiary))
-            input.setBackgroundColor(Color.TRANSPARENT)
-        } catch (_: Exception) {
+    private fun showEditProfileNameDialog() {
+        showEditNameDialog(
+            currentName = viewModel.userProfile.value.name
+        ) { newName ->
+            viewModel.saveName(newName)
+            Snackbar.make(binding.root, "Perfil salvo!", Snackbar.LENGTH_SHORT).show()
         }
-
-            val builder = MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_App_MaterialAlertDialog)
-                .setTitle("Editar Perfil")
-                .setMessage("Digite seu nome de exibição:")
-                .setView(input)
-                .setPositiveButton("Salvar", null)
-                .setNegativeButton("Cancelar", null)
-
-            val dialog = builder.create()
-            dialog.setOnShowListener {
-                dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    val newName = input.text?.toString()?.trim().orEmpty()
-                    if (newName.isNotBlank()) {
-                        viewModel.saveName(newName)
-                        Snackbar.make(binding.root, "Perfil salvo!", Snackbar.LENGTH_SHORT).show()
-                        dialog.dismiss()
-                    } else {
-                        input.error = "Nome não pode ser vazio"
-                    }
-                }
-                try {
-                    val titleView = dialog.findViewById<TextView>(com.google.android.material.R.id.alertTitle)
-                    val msgView = dialog.findViewById<TextView>(android.R.id.message)
-                    titleView?.setTextColor(requireContext().getColor(R.color.text_primary))
-                    msgView?.setTextColor(requireContext().getColor(R.color.text_tertiary))
-
-                    // Botões (texto branco/primário)
-                    dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-                        ?.setTextColor(requireContext().getColor(R.color.primary))
-                    dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-                        ?.setTextColor(requireContext().getColor(R.color.text_tertiary))
-                } catch (_: Exception) {
-                }
-                // Abre o teclado após a view estar visível
-                input.requestFocus()
-                val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-                imm.showSoftInput(input, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
-            }
-            dialog.show()
     }
 
     private fun observeData() {
