@@ -24,9 +24,6 @@ class QuizDetailFragment : Fragment() {
     private lateinit var questions: List<QuizQuestionContent>
 
     private var quizId: Int = 1
-    private var currentQuestionIndex = 0
-    private var correctAnswers = 0
-    private var hasAnsweredCurrentQuestion = false
 
     private val optionButtons: List<RadioButton>
         get() = listOf(binding.optionA, binding.optionB, binding.optionC, binding.optionD)
@@ -50,7 +47,7 @@ class QuizDetailFragment : Fragment() {
         binding.primaryActionButton.setOnClickListener {
             if (binding.resultCard.visibility == View.VISIBLE) {
                 findNavController().popBackStack()
-            } else if (hasAnsweredCurrentQuestion) {
+            } else if (viewModel.hasAnsweredCurrentQuestion) {
                 goToNextQuestion()
             } else {
                 submitAnswer()
@@ -65,16 +62,16 @@ class QuizDetailFragment : Fragment() {
     }
 
     private fun showQuestion() {
-        val question = questions[currentQuestionIndex]
-        hasAnsweredCurrentQuestion = false
+        val question = questions[viewModel.currentQuestionIndex]
+        viewModel.hasAnsweredCurrentQuestion = false
 
         binding.questionCounter.text = getString(
             R.string.quiz_question,
-            currentQuestionIndex + 1,
+            viewModel.currentQuestionIndex + 1,
             questions.size
         )
         binding.quizProgress.max = questions.size
-        binding.quizProgress.progress = currentQuestionIndex + 1
+        binding.quizProgress.progress = viewModel.currentQuestionIndex + 1
         
         // Formatar Markdown simples
         val questionHtml = question.question
@@ -103,11 +100,11 @@ class QuizDetailFragment : Fragment() {
             return
         }
 
-        val question = questions[currentQuestionIndex]
+        val question = questions[viewModel.currentQuestionIndex]
         val isCorrect = selectedIndex == question.correctAnswer
-        if (isCorrect) correctAnswers++
+        if (isCorrect) viewModel.correctAnswers++
 
-        hasAnsweredCurrentQuestion = true
+        viewModel.hasAnsweredCurrentQuestion = true
         optionButtons.forEach { it.isEnabled = false }
         
         val statusColor = requireContext().getColor(if (isCorrect) R.color.success else R.color.error)
@@ -123,7 +120,7 @@ class QuizDetailFragment : Fragment() {
         binding.explanationText.text = HtmlCompat.fromHtml(explanationHtml, HtmlCompat.FROM_HTML_MODE_COMPACT)
         
         binding.explanationCard.visibility = View.VISIBLE
-        binding.primaryActionButton.text = if (currentQuestionIndex == questions.lastIndex) "FINALIZAR" else "CONTINUAR"
+        binding.primaryActionButton.text = if (viewModel.currentQuestionIndex == questions.lastIndex) "FINALIZAR" else "CONTINUAR"
         
         // Troca cor do botão se estiver errado
         if (!isCorrect) {
@@ -134,17 +131,16 @@ class QuizDetailFragment : Fragment() {
     }
 
     private fun goToNextQuestion() {
-        if (currentQuestionIndex == questions.lastIndex) {
+        if (viewModel.currentQuestionIndex == questions.lastIndex) {
             showResult()
             return
         }
-
-        currentQuestionIndex++
+        viewModel.currentQuestionIndex++
         showQuestion()
     }
 
     private fun showResult() {
-        val score = ((correctAnswers.toDouble() / questions.size) * 100).toInt()
+        val score = ((viewModel.correctAnswers.toDouble() / questions.size) * 100).toInt()
         
         // Salva no banco de dados via repositório (Fonte de Verdade)
         viewModel.saveResult(quizId, score)

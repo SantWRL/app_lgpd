@@ -196,11 +196,12 @@ class SettingsFragment : Fragment() {
                     dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
                         ?.setTextColor(requireContext().getColor(R.color.text_tertiary))
                 } catch (_: Exception) { }
+                // Abre o teclado após a view estar visível
+                input.requestFocus()
+                val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                imm.showSoftInput(input, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
             }
             dialog.show()
-            input.requestFocus()
-            val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-            imm.showSoftInput(input, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
         }
     }
 

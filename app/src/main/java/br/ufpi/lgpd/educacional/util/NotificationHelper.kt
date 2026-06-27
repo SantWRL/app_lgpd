@@ -52,7 +52,7 @@ object NotificationHelper {
         )
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Hora de estudar LGPD!")
             .setContentText("Que tal revisar uma aula ou fazer um teste rápido?")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

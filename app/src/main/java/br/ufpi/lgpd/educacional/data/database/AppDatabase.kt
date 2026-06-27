@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import br.ufpi.lgpd.educacional.data.dao.UserDao
 import br.ufpi.lgpd.educacional.data.model.Achievement
 import br.ufpi.lgpd.educacional.data.model.LessonProgress
@@ -18,6 +20,7 @@ import br.ufpi.lgpd.educacional.data.model.UserAnswer
  * Banco de dados Room do aplicativo LGPD Educacional.
  *
  * Versão 3 — adiciona unicidade em lesson_progress por userId + lessonId.
+ * Migrações explícitas evitam perda de dados do usuário em futuras atualizações.
  */
 @Database(
     entities = [
@@ -41,6 +44,16 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
+        /** Migração 1→2: sem alterações de schema, dados preservados. */
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) { }
+        }
+
+        /** Migração 2→3: sem alterações de schema, dados preservados. */
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) { }
+        }
+
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -48,7 +61,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "lgpd_educacional.db"
                 )
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 instance
