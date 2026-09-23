@@ -1,0 +1,18 @@
+{
+  "$schema": "https://deno.land/x/deno/schema/config-v2.json",
+  "imports": {
+    "jsr:@supabase/supabase-js@2": "jsr:@supabase/supabase-js@2"
+  },
+  "compilerOptions": {
+    "strict": true
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "singleQuote": true,
+    "semiColons": false
+  }
+}

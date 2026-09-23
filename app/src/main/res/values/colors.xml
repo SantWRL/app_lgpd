@@ -35,10 +35,10 @@
     <color name="panel_stroke">#2E435E</color>
     <color name="panel_overlay">#223149</color>
     <color name="hero_badge">#2FFFFFFF</color>
-    <color name="promo_wordle_start">#7C3AED</color>
-    <color name="promo_wordle_end">#C084FC</color>
-    <color name="promo_search_start">#059669</color>
-    <color name="promo_search_end">#34D399</color>
+    <color name="promo_flashcards_start">#6366F1</color>
+    <color name="promo_flashcards_end">#8B5CF6</color>
+    <color name="promo_video_start">#0EA5E9</color>
+    <color name="promo_video_end">#38BDF8</color>
     <color name="promo_ecad_start">#0EA5E9</color>
     <color name="promo_ecad_end">#38BDF8</color>
     <color name="promo_quiz_start">#D97706</color>
@@ -57,14 +57,6 @@
     <color name="btn_bg">#45475A</color>
     <color name="btn_text">#CDD6F4</color>
 
-    <!-- ── Cores do Mini-game Wordle / Termo ── -->
-    <color name="wordle_correct">#A6E3A1</color>
-    <color name="wordle_present">#F9E2AF</color>
-    <color name="wordle_absent">#45475A</color>
-    <color name="wordle_empty">#313244</color>
-    <color name="wordle_text_dark">#11111B</color>
-    <color name="wordle_text_light">#CDD6F4</color>
-    <color name="wordle_border">#585B70</color>
 
     <color name="duo_green">#A6E3A1</color>
     <color name="duo_green_dark">#87C482</color>

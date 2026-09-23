@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.core.content.ContextCompat
 import br.ufpi.lgpd.educacional.R
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
+import br.ufpi.lgpd.educacional.data.remote.RankingService
 import br.ufpi.lgpd.educacional.databinding.FragmentSettingsBinding
 import br.ufpi.lgpd.educacional.util.StudyReminderReceiver
 import br.ufpi.lgpd.educacional.util.UserPreferences
@@ -91,6 +92,22 @@ class SettingsFragment : Fragment() {
                 userPreferences.reminderEnabled = false
                 StudyReminderReceiver.cancel(requireContext())
                 Snackbar.make(binding.root, "Lembrete cancelado.", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
+        // Ranking global: opt-out de participação pública (tema LGPD)
+        binding.leaderboardSwitch.isChecked = userPreferences.leaderboardParticipation
+        binding.leaderboardSwitch.setOnCheckedChangeListener { _, isChecked ->
+            userPreferences.leaderboardParticipation = isChecked
+            Snackbar.make(
+                binding.root,
+                if (isChecked) "Participação no ranking ativada."
+                else "Seu XP aparecerá como “Anônimo” no ranking.",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            // Reenvia o score imediatamente para refletir a escolha no placar
+            lifecycleScope.launch {
+                RankingService.syncMyScore(requireContext(), repository)
             }
         }
 

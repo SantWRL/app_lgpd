@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.ufpi.lgpd.educacional.R
+import br.ufpi.lgpd.educacional.data.remote.NewsRepository
 import br.ufpi.lgpd.educacional.databinding.FragmentFeedBinding
+import kotlinx.coroutines.launch
 
 class FeedFragment : Fragment() {
 
@@ -148,17 +151,29 @@ class FeedFragment : Fragment() {
     }
 
     private fun loadFeedData() {
-        NewsScraper.fetchNews(
-            onSuccess = { posts ->
-                allPosts = posts
-                binding.feedNewsCount.text = "${posts.size} notícias"
+        viewLifecycleOwner.lifecycleScope.launch {
+            // 1) Tenta o banco remoto (Supabase, populado pelo scrap agendado)
+            val remote = NewsRepository.fetchRemoteNews()
+            if (remote.isNotEmpty()) {
+                allPosts = remote
+                binding.feedNewsCount.text = "${remote.size} notícias"
                 applyFilters()
                 binding.swipeRefresh.isRefreshing = false
-            },
-            onError = { _ ->
-                binding.swipeRefresh.isRefreshing = false
+                return@launch
             }
-        )
+            // 2) Fallback: dataset estático offline
+            NewsScraper.fetchNews(
+                onSuccess = { posts ->
+                    allPosts = posts
+                    binding.feedNewsCount.text = "${posts.size} notícias"
+                    applyFilters()
+                    binding.swipeRefresh.isRefreshing = false
+                },
+                onError = { _ ->
+                    binding.swipeRefresh.isRefreshing = false
+                }
+            )
+        }
     }
 
     private fun applyFilters() {

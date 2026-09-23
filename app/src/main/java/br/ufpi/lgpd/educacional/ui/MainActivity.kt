@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import br.ufpi.lgpd.educacional.R
+import br.ufpi.lgpd.educacional.data.remote.RankingService
 import br.ufpi.lgpd.educacional.data.repository.UserRepository
 import br.ufpi.lgpd.educacional.databinding.ActivityMainBinding
 import br.ufpi.lgpd.educacional.ui.onboarding.OnboardingActivity
@@ -49,6 +50,8 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repository.ensureUserExists()
             repository.updateStreak()
+            // Sobe o XP local para o ranking global (best-effort, silencioso)
+            RankingService.syncMyScore(this@MainActivity, repository)
         }
 
         setupNavigation()
@@ -70,8 +73,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.profileFragment -> "Perfil"
                 R.id.feedFragment -> "Notícias"
                 R.id.quizDetailFragment -> "Responder Teste"
-                R.id.wordleFragment -> "Termo"
-                R.id.wordsearchFragment -> "Caça-Palavras"
+                R.id.flashcardsFragment -> "Flashcards"
+                R.id.videosFragment -> "Vídeos"
                 R.id.lessonDetailFragment -> "Estudo"
                 R.id.settingsFragment -> "Configurações"
                 else -> getString(R.string.app_name)
@@ -79,8 +82,8 @@ class MainActivity : AppCompatActivity() {
 
             val fullScreens = listOf(
                 R.id.quizDetailFragment,
-                R.id.wordleFragment,
-                R.id.wordsearchFragment,
+                R.id.flashcardsFragment,
+                R.id.videosFragment,
                 R.id.lessonDetailFragment
             )
             binding.bottomNavigation.visibility = if (destination.id in fullScreens) {

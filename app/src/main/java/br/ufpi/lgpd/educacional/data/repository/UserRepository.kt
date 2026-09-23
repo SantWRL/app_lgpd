@@ -24,8 +24,6 @@ class UserRepository(private val dao: UserDao) {
         const val LESSON_COMPLETION_POINTS = PointsConstants.LESSON_COMPLETION
         const val POINTS_FIRST_QUIZ = PointsConstants.FIRST_QUIZ_ATTEMPT
         const val POINTS_IMPROVED_QUIZ = PointsConstants.QUIZ_SCORE_IMPROVEMENT
-        const val POINTS_PER_WORDLE_WIN = PointsConstants.WORDLE_WIN
-        const val POINTS_PER_WORDSEARCH_WIN = PointsConstants.WORDSEARCH_WIN
     }
 
     // ─── Fluxos observáveis ────────────────────────────────────────────────────

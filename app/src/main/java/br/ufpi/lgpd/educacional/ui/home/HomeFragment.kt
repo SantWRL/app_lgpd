@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.ufpi.lgpd.educacional.data.remote.NewsRepository
 import br.ufpi.lgpd.educacional.ui.feed.FeedCompactAdapter
 import br.ufpi.lgpd.educacional.ui.feed.NewsScraper
 import br.ufpi.lgpd.educacional.util.AnimationUtils
@@ -167,11 +168,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupGameCards() {
-        binding.cardWordle.setOnClickListener {
-            findNavController().navigate(R.id.wordleFragment)
+        binding.cardFlashcards.setOnClickListener {
+            findNavController().navigate(R.id.flashcardsFragment)
         }
-        binding.cardWordsearch.setOnClickListener {
-            findNavController().navigate(R.id.wordsearchFragment)
+        binding.cardVideos.setOnClickListener {
+            findNavController().navigate(R.id.videosFragment)
         }
         binding.cardQuizRelampago.setOnClickListener {
             val quizzes = LgpdContent.quizzes
@@ -309,14 +310,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadNews() {
-        NewsScraper.fetchNews(
-            onSuccess = { posts ->
-                newsAdapter.submitList(posts.take(HOME_NEWS_LIMIT))
-            },
-            onError = { _ ->
-                // Nunca ocorre com dados estáticos
+        viewLifecycleOwner.lifecycleScope.launch {
+            // 1) Tenta o Supabase (scrap agendado); 2) fallback estático offline
+            val remote = NewsRepository.fetchRemoteNews()
+            if (remote.isNotEmpty()) {
+                newsAdapter.submitList(remote.take(HOME_NEWS_LIMIT))
+            } else {
+                NewsScraper.fetchNews(
+                    onSuccess = { posts ->
+                        newsAdapter.submitList(posts.take(HOME_NEWS_LIMIT))
+                    },
+                    onError = { _ ->
+                        // Nunca ocorre com dados estáticos
+                    }
+                )
             }
-        )
+        }
     }
 
     override fun onResume() {

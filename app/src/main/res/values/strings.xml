@@ -110,6 +110,38 @@
     <string name="button_retry">Tentar novamente</string>
     <string name="button_home">Voltar para início</string>
 
+    <!-- Flashcards -->
+    <string name="flashcards_title">Flashcards</string>
+    <string name="flashcards_subtitle">Revise os conceitos da LGPD virando os cartões</string>
+    <string name="flashcards_back">Voltar</string>
+    <string name="flashcards_icon">\uD83C\uDCCF</string>
+    <string name="flashcards_badge_back">DEFINIÇÃO</string>
+    <string name="flashcards_tap_to_definition">Toque no cartão para ver a definição</string>
+    <string name="flashcards_tap_to_term">Toque novamente para ver o termo</string>
+    <string name="flashcards_progress_label">Progresso do baralho</string>
+    <string name="flashcards_counter">%1$d / %2$d</string>
+    <string name="flashcards_arrow">→</string>
+    <string name="flashcards_restart">↻</string>
+    <string name="flashcards_footer">Complete o baralho inteiro para ganhar XP</string>
+    <string name="flashcards_cat_fundamentos">Fundamentos</string>
+    <string name="flashcards_cat_direitos">Direitos</string>
+    <string name="flashcards_cat_seguranca">Segurança</string>
+    <string name="flashcards_cat_conformidade">Conformidade</string>
+    <string name="flashcards_done_title">Baralho completo! 🎉</string>
+    <string name="flashcards_done_message">Você revisou todos os cartões e ganhou +%1$d XP!</string>
+    <string name="flashcards_review_again">Revisar de novo</string>
+    <string name="flashcards_keep_going">Continuar</string>
+
+    <!-- Vídeos -->
+    <string name="videos_title">Vídeos</string>
+    <string name="videos_subtitle">Aulas em vídeo sobre LGPD sincronizadas automaticamente</string>
+    <string name="videos_back">Voltar</string>
+    <string name="videos_icon">\uD83C\uDFAC</string>
+    <string name="videos_arrow">→</string>
+    <string name="videos_thumb_desc">Thumbnail do vídeo</string>
+    <string name="videos_offline">Sem conexão com o servidor de vídeos. Tente novamente mais tarde.</string>
+    <string name="videos_empty">Nenhum vídeo disponível no momento</string>
+
     <!-- Messages -->
     <string name="message_loading">Carregando...</string>
     <string name="message_no_connection">Sem conexão com a internet</string>

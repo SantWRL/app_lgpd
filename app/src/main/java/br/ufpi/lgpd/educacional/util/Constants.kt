@@ -3,22 +3,15 @@ package br.ufpi.lgpd.educacional.util
 /**
  * Constantes centralizadas do aplicativo para evitar magic numbers.
  */
-object WordleConstants {
-    const val GRID_ROWS = 6
-    const val GRID_COLS = 5
-    const val HINT_PREVIEW_LENGTH = 60
-}
-
-object WordsearchConstants {
-    const val GRID_SIZE = 10
+object FlashcardsConstants {
+    const val CAMERA_DISTANCE = 8000f
 }
 
 object PointsConstants {
     const val LESSON_COMPLETION = 10
     const val FIRST_QUIZ_ATTEMPT = 20
     const val QUIZ_SCORE_IMPROVEMENT = 5
-    const val WORDLE_WIN = 15
-    const val WORDSEARCH_WIN = 20
+    const val FLASHCARDS_COMPLETION = 10
 }
 
 object LevelConstants {

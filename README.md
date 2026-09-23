@@ -1,6 +1,6 @@
 # LGPD Educacional
 
-Aplicativo Android nativo em Kotlin para ensino da LGPD com aulas, quizzes e mini games.
+Aplicativo Android nativo em Kotlin para ensino da LGPD com aulas, quizzes e flashcards de estudo.
 
 ## Objetivo
 
@@ -11,7 +11,9 @@ O projeto foi desenvolvido como parte de um TCC da UFPI para apoiar a formacao d
 - Onboarding introdutorio.
 - Trilha de aulas sobre fundamentos da LGPD.
 - Quizzes com resultado salvo no perfil.
-- Mini games educativos como Wordle e caca-palavras.
+- Flashcards de estudo com categorias, animacao de virar cartao e recompensa de XP.
+- Videos educacionais com player do YouTube embutido.
+- Backend opcional no Supabase: scrap agendado de noticias da ANPD, sincronizacao de videos e ranking global de XP (veja supabase/README.md).
 - Perfil com pontos, nivel, streak e progresso.
 - Feed com noticias da ANPD via leitura da pagina oficial.
 
@@ -30,8 +32,15 @@ O projeto foi desenvolvido como parte de um TCC da UFPI para apoiar a formacao d
 - Aula concluida: +10 XP
 - Primeiro resultado em um quiz: +20 XP
 - Melhorar a melhor nota de um quiz: +5 XP
-- Vitoria no Wordle: +15 XP
-- Vitoria no caca-palavras: +20 XP
+- Revisao completa de um baralho de flashcards: +10 XP
+
+## Backend (Supabase)
+
+- Noticias da ANPD: scrap agendado no servidor (Edge Function `scrape-news`).
+- Videos: sincronizacao diaria via RSS do YouTube (Edge Function `sync-videos`).
+- Ranking global: tabela `leaderboard` atualizada pelo proprio app.
+- Sem configuracao, o app continua 100% funcional com o conteudo estatico offline.
+- Instrucoes completas em `supabase/README.md`.
 
 ## Executando o projeto
 

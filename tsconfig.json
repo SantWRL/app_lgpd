@@ -1,0 +1,12 @@
+{
+  // O projeto Android/Kotlin não tem código TypeScript na raiz.
+  // Este tsconfig existe apenas para o VS Code ignorar a pasta supabase/,
+  // cujas Edge Functions são checadas pelo language server do Deno
+  // (ver .vscode/settings.json -> deno.enablePaths).
+  "compilerOptions": {
+    "noEmit": true,
+    "allowJs": false,
+    "checkJs": false
+  },
+  "exclude": ["supabase", "**/node_modules"]
+}

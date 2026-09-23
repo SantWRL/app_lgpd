@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── Tema claro estilo "Online Learning App" (Figma) ── -->
+    <color name="bg_light">#F6F5FA</color>
+    <color name="bg_light_surface">#FFFFFF</color>
+    <color name="ink_primary">#1F1D47</color>
+    <color name="ink_secondary">#5A5A72</color>
+    <color name="ink_muted">#9C9BB0</color>
+    <color name="track_soft">#E9E7F2</color>
+</resources>

@@ -341,9 +341,9 @@
                 android:orientation="horizontal"
                 android:paddingHorizontal="20dp">
 
-                <!-- Card Wordle / Termo da Privacidade -->
+                <!-- Card Flashcards de Estudo -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardWordle"
+                    android:id="@+id/cardFlashcards"
                     android:layout_width="240dp"
                     android:layout_height="208dp"
                     android:layout_marginEnd="16dp"
@@ -357,7 +357,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/bg_wordle_promo"
+                        android:background="@drawable/bg_flashcards_promo"
                         android:orientation="vertical"
                         android:padding="20dp">
 
@@ -376,7 +376,7 @@
                                 android:backgroundTint="#33000000"
                                 android:paddingHorizontal="8dp"
                                 android:paddingVertical="4dp"
-                                android:text="MINI-GAME"
+                                android:text="ESTUDO"
                                 android:textAllCaps="true"
                                 android:textColor="@color/white"
                                 android:textSize="9sp"
@@ -408,7 +408,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:text="\uD83D\uDD0D"
+                                android:text="\uD83C\uDCCF"
                                 android:textSize="24sp" />
 
                         </FrameLayout>
@@ -416,7 +416,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Termo da Privacidade"
+                            android:text="Flashcards LGPD"
                             android:textColor="@color/white"
                             android:textSize="17sp"
                             android:textStyle="bold" />
@@ -426,7 +426,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:layout_marginBottom="6dp"
-                            android:text="Adivinhe a palavra secreta sobre privacidade de dados"
+                            android:text="Revise os conceitos da lei virando os cartões"
                             android:textColor="#CCE2E8F0"
                             android:textSize="11sp"
                             android:lineSpacingExtra="2dp" />
@@ -449,7 +449,7 @@
                                 android:backgroundTint="#40FFFFFF"
                                 android:paddingHorizontal="16dp"
                                 android:paddingVertical="6dp"
-                                android:text="Jogar  →"
+                                android:text="Estudar  →"
                                 android:textColor="@color/white"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
@@ -460,11 +460,12 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Card Caça-Palavras Legal -->
+                <!-- Card Vídeos Educacionais -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardWordsearch"
+                    android:id="@+id/cardVideos"
                     android:layout_width="240dp"
                     android:layout_height="208dp"
+                    android:layout_marginEnd="16dp"
                     android:clickable="true"
                     android:focusable="true"
                     app:cardBackgroundColor="@android:color/transparent"
@@ -475,7 +476,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/bg_wordsearch_promo"
+                        android:background="@drawable/bg_video_promo"
                         android:orientation="vertical"
                         android:padding="20dp">
 
@@ -494,7 +495,7 @@
                                 android:backgroundTint="#33000000"
                                 android:paddingHorizontal="8dp"
                                 android:paddingVertical="4dp"
-                                android:text="MINI-GAME"
+                                android:text="VIDEO AULA"
                                 android:textAllCaps="true"
                                 android:textColor="@color/white"
                                 android:textSize="9sp"
@@ -508,7 +509,7 @@
                                 android:backgroundTint="#40FFFFFF"
                                 android:paddingHorizontal="8dp"
                                 android:paddingVertical="3dp"
-                                android:text="+10 XP"
+                                android:text="NOVO"
                                 android:textColor="@color/white"
                                 android:textSize="9sp"
                                 android:textStyle="bold" />
@@ -526,7 +527,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:text="\uD83D\uDD0E"
+                                android:text="\uD83C\uDFAC"
                                 android:textSize="24sp" />
 
                         </FrameLayout>
@@ -534,7 +535,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Caça-Palavras Legal"
+                            android:text="Vídeos LGPD"
                             android:textColor="@color/white"
                             android:textSize="17sp"
                             android:textStyle="bold" />
@@ -544,7 +545,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:layout_marginBottom="6dp"
-                            android:text="Encontre os termos da LGPD escondidos no grid"
+                            android:text="Aulas em vídeo sincronizadas do YouTube"
                             android:textColor="#CCE2E8F0"
                             android:textSize="11sp"
                             android:lineSpacingExtra="2dp" />
@@ -567,7 +568,7 @@
                                 android:backgroundTint="#40FFFFFF"
                                 android:paddingHorizontal="16dp"
                                 android:paddingVertical="6dp"
-                                android:text="Jogar  →"
+                                android:text="Assistir  →"
                                 android:textColor="@color/white"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />

@@ -22,18 +22,21 @@ class UserRepositoryTest {
         override fun observeUser(userId: String): Flow<User?> = flowOf(user)
         override suspend fun getUser(userId: String): User? = user
         override suspend fun upsertUser(user: User) { this.user = user }
+        override suspend fun updateUser(user: User) { this.user = user }
         override suspend fun deleteUser(userId: String) { this.user = null }
 
-        override suspend fun insertQuizResult(record: QuizResultRecord): Long {
+        override suspend fun insertQuizResult(record: QuizResultRecord) {
             quizResults.add(record)
-            return 1L
         }
         override fun observeQuizResults(userId: String): Flow<List<QuizResultRecord>> = flowOf(quizResults)
         override suspend fun getBestQuizScore(userId: String, quizId: Int): Int? = quizResults.filter { it.quizId == quizId }.maxOfOrNull { it.score }
         override suspend fun getHighestScore(userId: String): Int? = quizResults.maxOfOrNull { it.score }
         override suspend fun getAverageScore(userId: String): Double? = if (quizResults.isEmpty()) 0.0 else quizResults.map { it.score }.average()
+        override suspend fun getTotalPoints(userId: String): Int? = quizResults.sumOf { it.pointsEarned }
         override suspend fun countDistinctQuizzesCompleted(userId: String): Int = quizResults.map { it.quizId }.distinct().size
         override suspend fun getCompletedQuizIds(userId: String): List<Int> = quizResults.map { it.quizId }.distinct()
+        override suspend fun getLastQuizResult(userId: String, quizId: Int): QuizResultRecord? =
+            quizResults.filter { it.quizId == quizId }.maxByOrNull { it.completedAt }
         override suspend fun deleteQuizResults(userId: String) { quizResults.clear() }
 
         // Mocks vazios para as outras funções não testadas

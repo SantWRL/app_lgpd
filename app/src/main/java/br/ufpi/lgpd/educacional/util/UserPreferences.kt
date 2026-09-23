@@ -28,10 +28,20 @@ class UserPreferences(context: Context) {
         get() = prefs.getInt(KEY_REMINDER_MINUTE, 0)
         set(value) = prefs.edit { putInt(KEY_REMINDER_MINUTE, value) }
 
+    /**
+     * Opt-out do ranking global: quando false, o XP sobe para o placar público
+     * como "Anônimo" (sem nome/avatar escolhidos). Tema pertinente num app
+     * educativo sobre LGPD.
+     */
+    var leaderboardParticipation: Boolean
+        get() = prefs.getBoolean(KEY_LEADERBOARD_PARTICIPATION, true)
+        set(value) = prefs.edit { putBoolean(KEY_LEADERBOARD_PARTICIPATION, value) }
+
     companion object {
         private const val KEY_HAS_SEEN_ONBOARDING = "has_seen_onboarding"
         private const val KEY_REMINDER_ENABLED = "reminder_enabled"
         private const val KEY_REMINDER_HOUR = "reminder_hour"
         private const val KEY_REMINDER_MINUTE = "reminder_minute"
+        private const val KEY_LEADERBOARD_PARTICIPATION = "leaderboard_participation"
     }
 }
